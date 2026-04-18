@@ -911,32 +911,146 @@ p  { color: var(--rp-ink-500); }
 }
 .rp-cc__ads .rp-ad__card.just-unlocked { animation: rpCCUnlock 0.7s var(--rp-ease); }
 
-/* ---------- Footer CTA ---------- */
+/* ---------- Footer CTA (★ THE BIG ONE ★) ---------- */
 .rp-cc__footer {
-  padding: 0.875rem 1.125rem;
+  padding: 1rem 1.125rem 1.125rem;
   border-top: 1px solid var(--rp-ink-100);
-  background: #FFFFFF;
+  background: linear-gradient(180deg, #FFFFFF 0%, var(--rp-ink-25) 100%);
   flex-shrink: 0;
 }
+
+/* Live score line above button */
+.rp-cc__cta-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--rp-ink-500);
+  margin-bottom: 0.625rem;
+  letter-spacing: 0.02em;
+}
+.rp-cc__cta-status-score {
+  color: var(--rp-primary);
+  font-weight: 700;
+  font-family: var(--rp-font-mono);
+  font-size: 0.75rem;
+}
+.rp-cc__cta-status-tier {
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: #DBEAFE;
+  color: #1E40AF;
+  transition: background 0.4s, color 0.4s;
+}
+.rp-cc__cta-status-tier--warm    { background: #FEF3C7; color: #92400E; }
+.rp-cc__cta-status-tier--engaged { background: #FED7AA; color: #9A3412; }
+.rp-cc__cta-status-tier--hot     { background: #FECACA; color: #991B1B; }
+.rp-cc__cta-status-tier--ready   { background: #FEE2E2; color: #7F1D1D; }
+
+/* The button itself — big, breathing, impossible to miss */
 .rp-cc__cta {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   width: 100%;
-  padding: 0.75rem 1rem;
-  background: var(--rp-primary);
+  padding: 1rem 1.125rem;
+  background: linear-gradient(135deg, var(--rp-primary) 0%, var(--rp-primary-dark) 100%);
   color: #FFFFFF;
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight: 700;
-  font-size: 0.875rem;
-  transition: var(--rp-transition);
-  box-shadow: 0 2px 6px rgba(0, 82, 204, 0.25);
+  font-size: 1.0625rem;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  transition: transform 0.2s, box-shadow 0.3s;
+  overflow: hidden;
+  animation: rpCCCtaBreathe 2.6s ease-in-out infinite;
+  text-align: center;
 }
 .rp-cc__cta:hover {
-  background: var(--rp-primary-dark);
-  box-shadow: 0 8px 20px rgba(0, 82, 204, 0.35);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  animation-play-state: paused;
+  box-shadow: 0 14px 32px rgba(0, 82, 204, 0.45);
+}
+.rp-cc__cta:active { transform: translateY(0); }
+
+/* Breathing pulse glow */
+@keyframes rpCCCtaBreathe {
+  0%, 100% {
+    box-shadow: 0 4px 14px rgba(0, 82, 204, 0.3), 0 0 0 0 rgba(0, 82, 204, 0.35);
+  }
+  50% {
+    box-shadow: 0 8px 22px rgba(0, 82, 204, 0.45), 0 0 0 6px rgba(0, 82, 204, 0);
+  }
+}
+
+/* Shine sweep every 3s */
+.rp-cc__cta::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.35) 50%, transparent 100%);
+  transform: skewX(-20deg);
+  animation: rpCCShine 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes rpCCShine {
+  0%, 100% { left: -75%; }
+  60%, 100% { left: 150%; }
+}
+
+.rp-cc__cta-text { position: relative; z-index: 1; }
+.rp-cc__cta-arrow {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  font-size: 1.25rem;
+  transition: transform 0.25s var(--rp-ease);
+}
+.rp-cc__cta:hover .rp-cc__cta-arrow { transform: translateX(5px); }
+
+/* Fine print below button */
+.rp-cc__cta-fine {
+  text-align: center;
+  font-size: 0.6875rem;
+  color: var(--rp-ink-400);
+  margin-top: 0.625rem;
+  letter-spacing: 0.01em;
+}
+.rp-cc__cta-fine strong {
+  color: var(--rp-ink-700);
+  font-weight: 700;
+}
+.rp-cc__cta-fine-sep {
+  color: var(--rp-ink-200);
+  margin: 0 0.375rem;
+}
+
+/* URGENT STATE — when score hits 81+, CTA switches to pulsing red */
+.rp-cc.is-ready .rp-cc__cta {
+  background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);
+  animation: rpCCCtaBreatheRed 1.6s ease-in-out infinite;
+}
+.rp-cc.is-ready .rp-cc__cta:hover {
+  box-shadow: 0 14px 32px rgba(239, 68, 68, 0.5);
+}
+@keyframes rpCCCtaBreatheRed {
+  0%, 100% {
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.45), 0 0 0 0 rgba(239, 68, 68, 0.5);
+  }
+  50% {
+    box-shadow: 0 10px 28px rgba(239, 68, 68, 0.6), 0 0 0 10px rgba(239, 68, 68, 0);
+  }
 }
 
 /* ---------- Mobile: slide-off rail + floating button ---------- */
@@ -4116,9 +4230,19 @@ p  { color: var(--rp-ink-500); }
 
   </div>
 
-  <!-- Footer CTA -->
+  <!-- Footer CTA — prominent, score-reactive, impossible to miss -->
   <div class="rp-cc__footer">
-    <a href="#final-cta" class="rp-cc__cta">Book a demo <span>→</span></a>
+    <div class="rp-cc__cta-status">
+      Your lead score: <span class="rp-cc__cta-status-score" id="rpCCCtaScore">0</span>/100
+      <span class="rp-cc__cta-status-tier" id="rpCCCtaTier">Cold</span>
+    </div>
+    <a href="#final-cta" class="rp-cc__cta" onclick="if(typeof rpTrackEvent==='function')rpTrackEvent('Clicked rail CTA',20)">
+      <span class="rp-cc__cta-text" id="rpCCCtaText">See this running on YOUR site</span>
+      <span class="rp-cc__cta-arrow">→</span>
+    </a>
+    <div class="rp-cc__cta-fine">
+      <strong>Free 14-day trial</strong><span class="rp-cc__cta-fine-sep">·</span>20-min demo<span class="rp-cc__cta-fine-sep">·</span>No credit card
+    </div>
   </div>
 
 </aside>
@@ -5226,6 +5350,7 @@ function rpViUpdateScore() {
   tierDesc.textContent = t.desc;
   if (typeof rpAdUpdatePlatforms === 'function') rpAdUpdatePlatforms();
   if (typeof rpCCUpdateFab === 'function') rpCCUpdateFab();
+  if (typeof rpCCUpdateCTA === 'function') rpCCUpdateCTA();
   if (typeof rpCCMarkNew === 'function') rpCCMarkNew('score');
 }
 
@@ -5663,6 +5788,33 @@ function rpCCUpdateFab() {
   const score = (typeof rpVI !== 'undefined' && rpVI.score) || 0;
   const el = document.getElementById('rpCCFabScore');
   if (el) el.textContent = score;
+}
+
+/* Dynamic footer CTA — copy and styling evolve with the visitor's lead score */
+const rpCCTierMap = [
+  { min: 0,  name: 'Cold',         cls: '',         text: 'See this running on YOUR site' },
+  { min: 21, name: 'Warm',         cls: 'warm',     text: 'Watch your visitors score like this' },
+  { min: 41, name: 'Engaged',      cls: 'engaged',  text: 'Now imagine this for every visitor' },
+  { min: 61, name: 'Hot Lead',     cls: 'hot',      text: 'You\'d be priority #1 — get this' },
+  { min: 81, name: 'Sales-Ready',  cls: 'ready',    text: '⚡ You\'re sales-ready — claim demo' }
+];
+
+function rpCCUpdateCTA() {
+  const score = (typeof rpVI !== 'undefined' && rpVI.score) || 0;
+  const scoreEl = document.getElementById('rpCCCtaScore');
+  const textEl  = document.getElementById('rpCCCtaText');
+  const tierEl  = document.getElementById('rpCCCtaTier');
+  const rail    = document.getElementById('rpCC');
+
+  const tier = rpCCTierMap.slice().reverse().find(t => score >= t.min);
+
+  if (scoreEl) scoreEl.textContent = score;
+  if (textEl)  textEl.textContent  = tier.text;
+  if (tierEl) {
+    tierEl.textContent = tier.name;
+    tierEl.className = 'rp-cc__cta-status-tier' + (tier.cls ? ' rp-cc__cta-status-tier--' + tier.cls : '');
+  }
+  if (rail) rail.classList.toggle('is-ready', score >= 81);
 }
 
 
