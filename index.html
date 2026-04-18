@@ -236,6 +236,785 @@ p  { color: var(--rp-ink-500); }
 
 /* ============================================================================
    ████████████████████████████████████████████████████████████████████████████
+   SECTION 00.5: COMMAND CENTER (★ PERSISTENT LIVE RAIL ★)
+   ████████████████████████████████████████████████████████████████████████████
+   A permanent right-side rail that replaces the VISITOR-INTEL and AD-CAMPAIGN
+   sections. Shows live visitor fingerprint, lead score, and ad campaign in 3
+   tabs. Follows the visitor through the entire page. Mobile → floating pill.
+
+   SAFE TO DELETE. Remove the HTML tagged COMMAND-CENTER at the top of <body>
+   AND this CSS block AND the rpCC* JS functions at the bottom. Then restore
+   the body padding rule below.
+   ============================================================================ */
+/* START: COMMAND-CENTER STYLES */
+
+/* ---------- Body adjustment: make room for the rail on desktop ---------- */
+@media (min-width: 1200px) {
+  body { padding-right: 400px; }
+}
+
+/* ---------- Rail container ---------- */
+.rp-cc {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 400px;
+  background: #FFFFFF;
+  border-left: 1px solid var(--rp-ink-100);
+  z-index: 45;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -6px 0 24px rgba(15, 23, 42, 0.06);
+  font-family: var(--rp-font-body);
+}
+
+/* ---------- Rail header ---------- */
+.rp-cc__header {
+  background: linear-gradient(135deg, var(--rp-ink-900) 0%, var(--rp-primary-dark) 100%);
+  color: #FFFFFF;
+  padding: 1rem 1.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.rp-cc__header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+.rp-cc__brand {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+.rp-cc__brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.rp-cc__brand-name {
+  font-family: var(--rp-font-display);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.rp-cc__brand-status {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.6875rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  margin-top: 0.125rem;
+}
+.rp-cc__live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--rp-success);
+  animation: rpCCPulse 1.6s ease-in-out infinite;
+}
+@keyframes rpCCPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+  50%      { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+}
+.rp-cc__minimize {
+  position: relative;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, background 0.2s;
+}
+.rp-cc__minimize:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ---------- Tabs ---------- */
+.rp-cc__tabs {
+  display: flex;
+  border-bottom: 1px solid var(--rp-ink-100);
+  background: #FFFFFF;
+  flex-shrink: 0;
+}
+.rp-cc__tab {
+  flex: 1;
+  padding: 0.8125rem 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--rp-ink-500);
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  position: relative;
+  background: transparent;
+}
+.rp-cc__tab:hover { color: var(--rp-ink-700); }
+.rp-cc__tab.is-active {
+  color: var(--rp-primary);
+  border-bottom-color: var(--rp-primary);
+}
+.rp-cc__tab-dot {
+  display: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--rp-danger);
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  animation: rpCCNewDot 1.5s ease-in-out infinite;
+}
+.rp-cc__tab.has-new .rp-cc__tab-dot { display: block; }
+@keyframes rpCCNewDot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+  50%      { box-shadow: 0 0 0 5px rgba(239, 68, 68, 0); }
+}
+
+/* ---------- Content / panes ---------- */
+.rp-cc__content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--rp-ink-25);
+}
+.rp-cc__content::-webkit-scrollbar { width: 6px; }
+.rp-cc__content::-webkit-scrollbar-thumb {
+  background: var(--rp-ink-200);
+  border-radius: 3px;
+}
+
+.rp-cc__pane {
+  display: none;
+  padding: 1.125rem;
+}
+.rp-cc__pane.is-active { display: block; }
+
+.rp-cc__pane-heading {
+  font-family: var(--rp-font-body);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--rp-ink-900);
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.01em;
+}
+.rp-cc__pane-sub {
+  font-size: 0.8125rem;
+  color: var(--rp-ink-500);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.rp-cc__section-label {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rp-ink-400);
+  margin: 1.125rem 0 0.5rem;
+}
+.rp-cc__section-label:first-child { margin-top: 0; }
+
+/* ---------- Compact map ---------- */
+.rp-cc__map {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--rp-ink-100);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  position: relative;
+  border: 1px solid var(--rp-ink-100);
+}
+.rp-cc__map iframe { width: 100%; height: 100%; border: 0; display: block; }
+.rp-cc__map-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rp-ink-400);
+  font-size: 0.75rem;
+}
+
+/* ---------- Data rows (stacked label/value) ---------- */
+.rp-cc__rows {
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.rp-cc__row {
+  padding: 0.625rem 0.875rem;
+  border-bottom: 1px solid var(--rp-ink-100);
+}
+.rp-cc__row:last-child { border-bottom: none; }
+.rp-cc__row-label {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rp-ink-400);
+  margin-bottom: 0.1875rem;
+}
+.rp-cc__row-value {
+  font-family: var(--rp-font-mono);
+  font-size: 0.8125rem;
+  color: var(--rp-ink-900);
+  font-weight: 600;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+.rp-cc__row-flag { margin-right: 0.375rem; font-family: var(--rp-font-body); }
+
+/* ---------- Score display ---------- */
+.rp-cc__score-card {
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: 12px;
+  padding: 1.5rem 1rem 1.25rem;
+  text-align: center;
+}
+.rp-cc__score-num {
+  font-family: var(--rp-font-display);
+  font-size: 3.75rem;
+  font-weight: 700;
+  color: var(--rp-primary);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  display: inline-block;
+  transition: color 0.4s, transform 0.3s var(--rp-ease);
+}
+.rp-cc__score-num.is-bumping { transform: scale(1.15); }
+.rp-cc__score-over {
+  font-size: 1rem;
+  color: var(--rp-ink-300);
+  font-weight: 400;
+}
+.rp-cc__tier {
+  display: inline-block;
+  padding: 0.3125rem 0.875rem;
+  border-radius: 999px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--rp-ink-100);
+  color: var(--rp-ink-500);
+  transition: background 0.4s, color 0.4s;
+  margin: 0.625rem 0;
+}
+.rp-cc__tier--cold    { background: #DBEAFE; color: #1E40AF; }
+.rp-cc__tier--warm    { background: #FEF3C7; color: #92400E; }
+.rp-cc__tier--engaged { background: #FED7AA; color: #9A3412; }
+.rp-cc__tier--hot     { background: #FECACA; color: #991B1B; }
+.rp-cc__tier--ready   { background: #FEE2E2; color: #7F1D1D; animation: rpCCTierReady 2s ease-in-out infinite; }
+@keyframes rpCCTierReady {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  50%      { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+}
+.rp-cc__tier-desc {
+  font-size: 0.75rem;
+  color: var(--rp-ink-500);
+  line-height: 1.5;
+  max-width: 16rem;
+  margin: 0 auto 0.875rem;
+}
+.rp-cc__bar {
+  width: 100%;
+  height: 6px;
+  background: var(--rp-ink-100);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.rp-cc__bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #3B82F6 0%, #F59E0B 50%, #EF4444 100%);
+  border-radius: 999px;
+  transition: width 0.6s var(--rp-ease);
+}
+
+/* ---------- Activity feed ---------- */
+.rp-cc__feed {
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: 10px;
+  padding: 0.75rem 0.875rem;
+  max-height: 260px;
+  overflow-y: auto;
+}
+.rp-cc__feed:empty::after {
+  content: "No activity yet. Start scrolling.";
+  display: block;
+  color: var(--rp-ink-300);
+  font-size: 0.75rem;
+  font-style: italic;
+  padding: 0.375rem 0;
+}
+.rp-cc__event {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4375rem 0;
+  font-size: 0.75rem;
+  color: var(--rp-ink-700);
+  border-bottom: 1px dashed var(--rp-ink-100);
+  animation: rpCCEventSlide 0.4s var(--rp-ease);
+}
+.rp-cc__event:last-child { border-bottom: none; }
+@keyframes rpCCEventSlide {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.rp-cc__event-tick {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--rp-success);
+  color: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.5625rem;
+  font-weight: 700;
+}
+.rp-cc__event-pts {
+  margin-left: auto;
+  font-size: 0.6875rem;
+  color: var(--rp-success);
+  font-weight: 700;
+  font-family: var(--rp-font-mono);
+}
+
+/* ---------- Locked enrichment preview ---------- */
+.rp-cc__lock {
+  background: linear-gradient(135deg, var(--rp-ink-900) 0%, var(--rp-primary-dark) 100%);
+  border-radius: 12px;
+  padding: 1rem;
+  color: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+}
+.rp-cc__lock::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+.rp-cc__lock-head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.rp-cc__lock-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+.rp-cc__lock-title {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+.rp-cc__lock-rows {
+  position: relative;
+  display: grid;
+  gap: 0.375rem;
+  margin-bottom: 0.875rem;
+}
+.rp-cc__lock-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  padding: 0.25rem 0;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+.rp-cc__lock-row:last-child { border-bottom: none; }
+.rp-cc__lock-row-label {
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 600;
+}
+.rp-cc__lock-blur {
+  background: rgba(255, 255, 255, 0.15);
+  color: transparent;
+  filter: blur(5px);
+  user-select: none;
+  padding: 0 0.4rem;
+  border-radius: 3px;
+  font-family: var(--rp-font-mono);
+  font-size: 0.75rem;
+}
+.rp-cc__lock-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  width: 100%;
+  background: #FFFFFF;
+  color: var(--rp-ink-900);
+  padding: 0.625rem 0.875rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  transition: transform 0.2s;
+}
+.rp-cc__lock-btn:hover { transform: translateY(-1px); }
+
+/* ---------- Campaign pane components ---------- */
+.rp-cc__picker {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.375rem;
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: 10px;
+  padding: 0.375rem;
+  margin-bottom: 1rem;
+}
+.rp-cc__picker-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0.5rem;
+  border-radius: 7px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--rp-ink-500);
+  transition: var(--rp-transition);
+  background: transparent;
+}
+.rp-cc__picker-btn:hover { color: var(--rp-ink-900); }
+.rp-cc__picker-btn.is-active {
+  background: var(--rp-primary);
+  color: #FFFFFF;
+}
+.rp-cc__picker-btn span { font-size: 1rem; }
+
+.rp-cc__biz {
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: 10px;
+  padding: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.rp-cc__biz-emoji { font-size: 1.75rem; line-height: 1; }
+.rp-cc__biz-name {
+  font-family: var(--rp-font-display);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--rp-ink-900);
+  line-height: 1.2;
+  margin-bottom: 0.125rem;
+}
+.rp-cc__biz-addr {
+  font-size: 0.6875rem;
+  color: var(--rp-ink-500);
+  font-family: var(--rp-font-mono);
+}
+
+.rp-cc__loc {
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: 10px;
+  padding: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.rp-cc__loc-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--rp-ink-200);
+  flex-shrink: 0;
+  animation: rpCCPulse 2s ease-in-out infinite;
+}
+.rp-cc__loc.is-prime   .rp-cc__loc-dot { background: var(--rp-success); }
+.rp-cc__loc.is-edge    .rp-cc__loc-dot { background: var(--rp-warning); }
+.rp-cc__loc.is-outside .rp-cc__loc-dot { background: #F97316; }
+.rp-cc__loc.is-out     .rp-cc__loc-dot { background: var(--rp-danger); }
+.rp-cc__loc-title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--rp-ink-900);
+  line-height: 1.2;
+}
+.rp-cc__loc-sub {
+  font-size: 0.6875rem;
+  color: var(--rp-ink-500);
+  margin-top: 0.1875rem;
+}
+
+.rp-cc__comp {
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: 10px;
+  padding: 0.5rem 0.875rem;
+}
+.rp-cc__comp-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.375rem 0;
+  font-size: 0.75rem;
+  color: var(--rp-ink-500);
+  border-bottom: 1px dashed var(--rp-ink-100);
+}
+.rp-cc__comp-row:last-child { border-bottom: none; }
+.rp-cc__comp-num {
+  font-family: var(--rp-font-mono);
+  font-weight: 700;
+  color: var(--rp-danger);
+  font-size: 0.8125rem;
+  transition: transform 0.2s;
+}
+.rp-cc__comp-num.is-bumping { transform: scale(1.1); color: #DC2626; }
+
+/* ---------- Ad platform stack ---------- */
+.rp-cc__ads {
+  display: grid;
+  gap: 0.75rem;
+}
+
+/* Re-scope the existing .rp-ad__card look to fit inside the rail */
+.rp-cc__ads .rp-ad__card {
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  transition: var(--rp-transition);
+}
+.rp-cc__ads .rp-ad__card.is-locked {
+  filter: grayscale(1);
+  opacity: 0.55;
+}
+.rp-cc__ads .rp-ad__card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.4375rem 0.625rem;
+  border-bottom: 1px solid var(--rp-ink-100);
+  background: var(--rp-ink-25);
+}
+.rp-cc__ads .rp-ad__card-logo-wrap {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+}
+.rp-cc__ads .rp-ad__card-logo-wrap svg { width: 11px; height: 11px; }
+.rp-cc__ads .rp-ad__card-platform {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--rp-ink-700);
+  flex: 1;
+}
+.rp-cc__ads .rp-ad__card-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.1875rem;
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rp-success);
+}
+.rp-cc__ads .rp-ad__card-status::before {
+  content: "";
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--rp-success);
+  animation: rpCCPulse 1.5s ease-in-out infinite;
+}
+.rp-cc__ads .rp-ad__card.is-locked .rp-ad__card-status { display: none; }
+.rp-cc__ads .rp-ad__card-body { padding: 0.625rem; }
+.rp-cc__ads .rp-ad__card-lock {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  z-index: 5;
+}
+.rp-cc__ads .rp-ad__card.is-locked .rp-ad__card-lock { opacity: 1; pointer-events: auto; }
+.rp-cc__ads .rp-ad__card-lock-icon { font-size: 1.125rem; }
+.rp-cc__ads .rp-ad__card-lock-text {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+@keyframes rpCCUnlock {
+  0%   { transform: scale(0.97); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.35); }
+  50%  { transform: scale(1.01); box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.35); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+.rp-cc__ads .rp-ad__card.just-unlocked { animation: rpCCUnlock 0.7s var(--rp-ease); }
+
+/* ---------- Footer CTA ---------- */
+.rp-cc__footer {
+  padding: 0.875rem 1.125rem;
+  border-top: 1px solid var(--rp-ink-100);
+  background: #FFFFFF;
+  flex-shrink: 0;
+}
+.rp-cc__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--rp-primary);
+  color: #FFFFFF;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.875rem;
+  transition: var(--rp-transition);
+  box-shadow: 0 2px 6px rgba(0, 82, 204, 0.25);
+}
+.rp-cc__cta:hover {
+  background: var(--rp-primary-dark);
+  box-shadow: 0 8px 20px rgba(0, 82, 204, 0.35);
+  transform: translateY(-1px);
+}
+
+/* ---------- Mobile: slide-off rail + floating button ---------- */
+@media (max-width: 1199px) {
+  .rp-cc {
+    transform: translateX(100%);
+    transition: transform 0.35s var(--rp-ease);
+    z-index: 65;
+    box-shadow: -12px 0 48px rgba(15, 23, 42, 0.2);
+    width: min(400px, 100vw);
+  }
+  .rp-cc.is-mobile-open { transform: translateX(0); }
+}
+@media (min-width: 1200px) {
+  .rp-cc__fab, .rp-cc__backdrop { display: none !important; }
+}
+
+/* Mobile FAB */
+.rp-cc__fab {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 55;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--rp-ink-900);
+  color: #FFFFFF;
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.3);
+  transition: transform 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.rp-cc__fab:hover { transform: translateY(-2px); }
+.rp-cc__fab-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rp-success);
+  animation: rpCCPulse 1.5s ease-in-out infinite;
+}
+.rp-cc__fab-label {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.625rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+.rp-cc__fab-score {
+  font-family: var(--rp-font-mono);
+  font-size: 0.875rem;
+  color: #FFFFFF;
+  padding-left: 0.375rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Mobile backdrop */
+.rp-cc__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  z-index: 60;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.rp-cc__backdrop.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* END: COMMAND-CENTER STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
    SECTION 01: ANNOUNCEMENT BAR (dismissible)
    ████████████████████████████████████████████████████████████████████████████
    SAFE TO DELETE. Remove HTML block tagged ANNOUNCEMENT-BAR AND this CSS block.
@@ -2941,6 +3720,421 @@ p  { color: var(--rp-ink-500); }
 
 <!-- ============================================================================
      ████████████████████████████████████████████████████████████████████████████
+     SECTION 00.5: COMMAND CENTER (★ PERSISTENT LIVE RAIL ★)
+     ████████████████████████████████████████████████████████████████████████████
+     Always-visible right-side rail on desktop (≥1200px). On mobile, collapses
+     to a floating pill button bottom-right that expands to full overlay.
+     All element IDs here match the engine's expectations so the existing
+     scripts at the bottom of the page continue to work without modification.
+     ============================================================================ -->
+<!-- START: COMMAND-CENTER -->
+
+<!-- Mobile backdrop -->
+<div class="rp-cc__backdrop" id="rpCCBackdrop" onclick="rpCCToggleMobile()"></div>
+
+<!-- The rail -->
+<aside class="rp-cc" id="rpCC" aria-label="ProspectAI live command center">
+
+  <!-- Rail header -->
+  <div class="rp-cc__header">
+    <div class="rp-cc__brand">
+      <div class="rp-cc__brand-mark">⚡</div>
+      <div>
+        <div class="rp-cc__brand-name">ProspectAI</div>
+        <div class="rp-cc__brand-status">
+          <span class="rp-cc__live-dot"></span>
+          Live command center
+        </div>
+      </div>
+    </div>
+    <button class="rp-cc__minimize" aria-label="Close panel" onclick="rpCCToggleMobile()">×</button>
+  </div>
+
+  <!-- Tabs -->
+  <nav class="rp-cc__tabs" role="tablist">
+    <button class="rp-cc__tab is-active" data-tab="visitor" onclick="rpCCSwitchTab('visitor')">
+      Visitor<span class="rp-cc__tab-dot"></span>
+    </button>
+    <button class="rp-cc__tab" data-tab="score" onclick="rpCCSwitchTab('score')">
+      Score<span class="rp-cc__tab-dot"></span>
+    </button>
+    <button class="rp-cc__tab" data-tab="campaign" onclick="rpCCSwitchTab('campaign')">
+      Campaign<span class="rp-cc__tab-dot"></span>
+    </button>
+  </nav>
+
+  <!-- Content -->
+  <div class="rp-cc__content">
+
+    <!-- =================== TAB 1: VISITOR =================== -->
+    <div class="rp-cc__pane is-active" data-pane="visitor">
+
+      <div class="rp-cc__pane-heading">🌍 Your digital fingerprint</div>
+      <div class="rp-cc__pane-sub">What ProspectID sees about you right now — without a single form fill.</div>
+
+      <div class="rp-cc__map" id="rpViMap">
+        <div class="rp-cc__map-loading">Detecting your location…</div>
+      </div>
+
+      <div class="rp-cc__rows">
+        <div class="rp-cc__row">
+          <div class="rp-cc__row-label">Location</div>
+          <div class="rp-cc__row-value" id="rpViLoc">Detecting…</div>
+        </div>
+        <div class="rp-cc__row">
+          <div class="rp-cc__row-label">IP Address</div>
+          <div class="rp-cc__row-value" id="rpViIp">Detecting…</div>
+        </div>
+        <div class="rp-cc__row">
+          <div class="rp-cc__row-label">Network</div>
+          <div class="rp-cc__row-value" id="rpViIsp">Detecting…</div>
+        </div>
+        <div class="rp-cc__row">
+          <div class="rp-cc__row-label">Device</div>
+          <div class="rp-cc__row-value" id="rpViDevice">Detecting…</div>
+        </div>
+        <div class="rp-cc__row">
+          <div class="rp-cc__row-label">Screen</div>
+          <div class="rp-cc__row-value" id="rpViScreen">Detecting…</div>
+        </div>
+        <div class="rp-cc__row">
+          <div class="rp-cc__row-label">Timezone</div>
+          <div class="rp-cc__row-value" id="rpViTz">Detecting…</div>
+        </div>
+        <div class="rp-cc__row">
+          <div class="rp-cc__row-label">Local Time</div>
+          <div class="rp-cc__row-value" id="rpViTime">--:--:--</div>
+        </div>
+        <div class="rp-cc__row">
+          <div class="rp-cc__row-label">Came From</div>
+          <div class="rp-cc__row-value" id="rpViRef">Direct traffic</div>
+        </div>
+        <div class="rp-cc__row">
+          <div class="rp-cc__row-label">Visit Count</div>
+          <div class="rp-cc__row-value" id="rpViVisits">1st visit</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- =================== TAB 2: SCORE =================== -->
+    <div class="rp-cc__pane" data-pane="score">
+
+      <div class="rp-cc__pane-heading">🔥 Lead quality score</div>
+      <div class="rp-cc__pane-sub">Updates in real-time based on every action you take on this page.</div>
+
+      <div class="rp-cc__score-card">
+        <div>
+          <span class="rp-cc__score-num" id="rpViScore">0</span><span class="rp-cc__score-over">/100</span>
+        </div>
+        <div class="rp-cc__tier rp-cc__tier--cold" id="rpViTier">Just Browsing</div>
+        <p class="rp-cc__tier-desc" id="rpViTierDesc">Keep scrolling — we'll score you in real time.</p>
+        <div class="rp-cc__bar"><div class="rp-cc__bar-fill" id="rpViBar"></div></div>
+      </div>
+
+      <div class="rp-cc__section-label">↗ Live activity feed</div>
+      <div class="rp-cc__feed" id="rpViEvents"></div>
+
+      <div class="rp-cc__section-label">🔒 ProspectID enrichment</div>
+      <div class="rp-cc__lock">
+        <div class="rp-cc__lock-head">
+          <div class="rp-cc__lock-icon">🔒</div>
+          <div class="rp-cc__lock-title">What you'd unlock</div>
+        </div>
+        <div class="rp-cc__lock-rows">
+          <div class="rp-cc__lock-row">
+            <span class="rp-cc__lock-row-label">Company</span>
+            <span class="rp-cc__lock-blur">Confidential Corp</span>
+          </div>
+          <div class="rp-cc__lock-row">
+            <span class="rp-cc__lock-row-label">Role</span>
+            <span class="rp-cc__lock-blur">VP of Growth</span>
+          </div>
+          <div class="rp-cc__lock-row">
+            <span class="rp-cc__lock-row-label">Revenue</span>
+            <span class="rp-cc__lock-blur">$10M-$50M ARR</span>
+          </div>
+          <div class="rp-cc__lock-row">
+            <span class="rp-cc__lock-row-label">Industry</span>
+            <span class="rp-cc__lock-blur">B2B SaaS</span>
+          </div>
+          <div class="rp-cc__lock-row">
+            <span class="rp-cc__lock-row-label">Intent</span>
+            <span class="rp-cc__lock-blur">87 — high</span>
+          </div>
+        </div>
+        <a href="#final-cta" class="rp-cc__lock-btn">Unlock this for your visitors <span>→</span></a>
+      </div>
+
+    </div>
+
+    <!-- =================== TAB 3: CAMPAIGN =================== -->
+    <div class="rp-cc__pane" data-pane="campaign">
+
+      <div class="rp-cc__pane-heading">📣 Your remarketing campaign</div>
+      <div class="rp-cc__pane-sub">Live preview of the ads ProspectAI would serve you across every platform.</div>
+
+      <div class="rp-cc__picker">
+        <button class="rp-cc__picker-btn is-active" data-industry="plumbing" onclick="rpAdSwitchIndustry('plumbing')">
+          <span>🔧</span> Plumbing
+        </button>
+        <button class="rp-cc__picker-btn" data-industry="dental" onclick="rpAdSwitchIndustry('dental')">
+          <span>🦷</span> Dental
+        </button>
+      </div>
+
+      <div class="rp-cc__section-label">Advertiser</div>
+      <div class="rp-cc__biz">
+        <span class="rp-cc__biz-emoji" id="rpAdEmoji">🔧</span>
+        <div>
+          <div class="rp-cc__biz-name" id="rpAdName">Acme Plumbing Co.</div>
+          <div class="rp-cc__biz-addr" id="rpAdAddr">📍 Milwaukee, WI · 30mi radius</div>
+        </div>
+      </div>
+
+      <div class="rp-cc__section-label">Location match</div>
+      <div class="rp-cc__loc" id="rpAdLoc">
+        <div class="rp-cc__loc-dot"></div>
+        <div>
+          <div class="rp-cc__loc-title" id="rpAdLocTitle">Calculating…</div>
+          <div class="rp-cc__loc-sub" id="rpAdLocSub">Detecting distance from business</div>
+        </div>
+      </div>
+
+      <div class="rp-cc__section-label">⚡ Competitor activity (live)</div>
+      <div class="rp-cc__comp">
+        <div class="rp-cc__comp-row">
+          <span>Ad spend this session</span>
+          <span class="rp-cc__comp-num" id="rpAdCompSpend">$0.00</span>
+        </div>
+        <div class="rp-cc__comp-row">
+          <span>Impressions in area</span>
+          <span class="rp-cc__comp-num" id="rpAdCompImp">0</span>
+        </div>
+        <div class="rp-cc__comp-row">
+          <span>Leads captured</span>
+          <span class="rp-cc__comp-num" id="rpAdCompLeads">0</span>
+        </div>
+      </div>
+
+      <div class="rp-cc__section-label">🚀 Ad platforms</div>
+      <div class="rp-cc__ads">
+
+        <!-- ===== Facebook ===== -->
+        <div class="rp-ad__card is-unlocked" data-platform="facebook" data-unlock-at="0">
+          <div class="rp-ad__card-header">
+            <div class="rp-ad__card-logo-wrap" style="background:#1877F2">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </div>
+            <span class="rp-ad__card-platform">Facebook</span>
+            <span class="rp-ad__card-status">Active</span>
+          </div>
+          <div class="rp-ad__card-body">
+            <div class="rp-fb__head">
+              <div class="rp-fb__avatar" data-ad-initial>A</div>
+              <div>
+                <div class="rp-fb__name" data-ad-name>Acme Plumbing Co.</div>
+                <div class="rp-fb__meta">Sponsored · <span data-ad-city>Milwaukee</span></div>
+              </div>
+            </div>
+            <div class="rp-fb__copy" data-ad-body>Need a plumber? 24/7 service in Milwaukee.</div>
+            <div class="rp-fb__image">
+              <div class="rp-fb__image-icon" data-ad-icon>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              </div>
+            </div>
+            <div class="rp-fb__cta-row">
+              <div>
+                <div class="rp-fb__url" data-ad-url>ACMEPLUMBING.COM</div>
+                <div class="rp-fb__headline" data-ad-headline>Need a plumber?</div>
+              </div>
+              <button class="rp-fb__btn" data-ad-cta>Learn More</button>
+            </div>
+          </div>
+          <div class="rp-ad__card-lock">
+            <div class="rp-ad__card-lock-icon">🔒</div>
+            <div class="rp-ad__card-lock-text">Always active</div>
+          </div>
+        </div>
+
+        <!-- ===== Instagram ===== -->
+        <div class="rp-ad__card is-locked" data-platform="instagram" data-unlock-at="15">
+          <div class="rp-ad__card-header">
+            <div class="rp-ad__card-logo-wrap" style="background:linear-gradient(45deg,#F58529 0%,#DD2A7B 50%,#8134AF 100%)">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </div>
+            <span class="rp-ad__card-platform">Instagram</span>
+            <span class="rp-ad__card-status">Active</span>
+          </div>
+          <div class="rp-ad__card-body">
+            <div class="rp-ig__head">
+              <div class="rp-ig__avatar"><div class="rp-ig__avatar-inner" data-ad-initial>A</div></div>
+              <div>
+                <div class="rp-ig__username" data-ad-handle>acmeplumbing</div>
+                <div class="rp-ig__sponsored">Sponsored · <span data-ad-city>Milwaukee</span></div>
+              </div>
+            </div>
+            <div class="rp-ig__img">
+              <div class="rp-ig__img-icon" data-ad-icon>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              </div>
+            </div>
+            <div class="rp-ig__icons">♡ 💬 ↗ <span style="margin-left:auto">🔖</span></div>
+            <div class="rp-ig__caption"><strong data-ad-handle>acmeplumbing</strong><span data-ad-body>Need a plumber? 24/7 service.</span></div>
+          </div>
+          <div class="rp-ad__card-lock">
+            <div class="rp-ad__card-lock-icon">🔒</div>
+            <div class="rp-ad__card-lock-text">Unlocks at 15</div>
+          </div>
+        </div>
+
+        <!-- ===== Google Search ===== -->
+        <div class="rp-ad__card is-locked" data-platform="google-search" data-unlock-at="30">
+          <div class="rp-ad__card-header">
+            <div class="rp-ad__card-logo-wrap" style="background:#FFFFFF;border:1px solid var(--rp-ink-100);color:#4285F4">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            </div>
+            <span class="rp-ad__card-platform">Google Search</span>
+            <span class="rp-ad__card-status">Active</span>
+          </div>
+          <div class="rp-ad__card-body">
+            <div class="rp-gs">
+              <div class="rp-gs__ad-row">
+                <span class="rp-gs__ad-badge">Ad</span>
+                <span>·</span>
+                <span class="rp-gs__url" data-ad-url>acmeplumbing.com</span>
+              </div>
+              <div class="rp-gs__headline" data-ad-headline>Need a plumber?</div>
+              <div class="rp-gs__desc" data-ad-body>24/7 emergency service in the Milwaukee area.</div>
+              <div class="rp-gs__rating">
+                <span class="rp-gs__stars">★★★★★</span>
+                <span>4.9 · 347 reviews</span>
+              </div>
+            </div>
+          </div>
+          <div class="rp-ad__card-lock">
+            <div class="rp-ad__card-lock-icon">🔒</div>
+            <div class="rp-ad__card-lock-text">Unlocks at 30</div>
+          </div>
+        </div>
+
+        <!-- ===== Google Display ===== -->
+        <div class="rp-ad__card is-locked" data-platform="google-display" data-unlock-at="45">
+          <div class="rp-ad__card-header">
+            <div class="rp-ad__card-logo-wrap" style="background:#EA4335">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 5H3C1.9 5 1 5.9 1 7v10c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 12H3V7h18v10z"/></svg>
+            </div>
+            <span class="rp-ad__card-platform">Google Display</span>
+            <span class="rp-ad__card-status">Active</span>
+          </div>
+          <div class="rp-ad__card-body">
+            <div class="rp-gd">
+              <div>
+                <div class="rp-gd__headline" data-ad-headline>Need a plumber?</div>
+                <div class="rp-gd__sub" data-ad-body>24/7 service in Milwaukee.</div>
+              </div>
+              <div class="rp-gd__bottom">
+                <div class="rp-gd__brand" data-ad-name>Acme Plumbing</div>
+                <span class="rp-gd__btn" data-ad-cta>Learn More</span>
+              </div>
+            </div>
+          </div>
+          <div class="rp-ad__card-lock">
+            <div class="rp-ad__card-lock-icon">🔒</div>
+            <div class="rp-ad__card-lock-text">Unlocks at 45</div>
+          </div>
+        </div>
+
+        <!-- ===== LinkedIn ===== -->
+        <div class="rp-ad__card is-locked" data-platform="linkedin" data-unlock-at="60">
+          <div class="rp-ad__card-header">
+            <div class="rp-ad__card-logo-wrap" style="background:#0A66C2">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </div>
+            <span class="rp-ad__card-platform">LinkedIn</span>
+            <span class="rp-ad__card-status">Active</span>
+          </div>
+          <div class="rp-ad__card-body">
+            <div class="rp-li__head">
+              <div class="rp-li__logo" data-ad-initial>A</div>
+              <div>
+                <div class="rp-li__name" data-ad-name>Acme Plumbing Co.</div>
+                <div class="rp-li__meta">1,247 followers · Promoted</div>
+              </div>
+            </div>
+            <div class="rp-li__copy" data-ad-body>Need a plumber? 24/7 service in Milwaukee.</div>
+            <div class="rp-li__img">
+              <div class="rp-li__img-icon" data-ad-icon>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              </div>
+            </div>
+            <div class="rp-li__cta">
+              <span class="rp-li__cta-text" data-ad-url>acmeplumbing.com</span>
+              <span class="rp-li__btn" data-ad-cta>Learn More</span>
+            </div>
+          </div>
+          <div class="rp-ad__card-lock">
+            <div class="rp-ad__card-lock-icon">🔒</div>
+            <div class="rp-ad__card-lock-text">Unlocks at 60</div>
+          </div>
+        </div>
+
+        <!-- ===== YouTube ===== -->
+        <div class="rp-ad__card is-locked" data-platform="youtube" data-unlock-at="75">
+          <div class="rp-ad__card-header">
+            <div class="rp-ad__card-logo-wrap" style="background:#FF0000">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </div>
+            <span class="rp-ad__card-platform">YouTube</span>
+            <span class="rp-ad__card-status">Active</span>
+          </div>
+          <div class="rp-ad__card-body">
+            <div class="rp-yt">
+              <div class="rp-yt__video">
+                <div class="rp-yt__play">▶</div>
+              </div>
+              <div class="rp-yt__ad-label">AD · 0:15</div>
+              <div class="rp-yt__skip">Skip Ad ▸</div>
+            </div>
+            <div class="rp-yt__info">
+              <div>
+                <div class="rp-yt__info-brand" data-ad-name>Acme Plumbing Co.</div>
+                <div class="rp-yt__info-meta" data-ad-headline>Need a plumber?</div>
+              </div>
+              <div class="rp-yt__info-meta" data-ad-url>acmeplumbing.com</div>
+            </div>
+          </div>
+          <div class="rp-ad__card-lock">
+            <div class="rp-ad__card-lock-icon">🔒</div>
+            <div class="rp-ad__card-lock-text">Unlocks at 75</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Footer CTA -->
+  <div class="rp-cc__footer">
+    <a href="#final-cta" class="rp-cc__cta">Book a demo <span>→</span></a>
+  </div>
+
+</aside>
+
+<!-- Mobile floating pill button -->
+<button class="rp-cc__fab" id="rpCCFab" onclick="rpCCToggleMobile()" aria-label="Open live command center">
+  <span class="rp-cc__fab-dot"></span>
+  <span class="rp-cc__fab-label">Live</span>
+  <span class="rp-cc__fab-score" id="rpCCFabScore">0</span>
+</button>
+
+<!-- END: COMMAND-CENTER -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
      SECTION 01: ANNOUNCEMENT BAR (dismissible)
      ████████████████████████████████████████████████████████████████████████████
      TO DELETE: remove everything between <!-- START: ANNOUNCEMENT-BAR -- > and
@@ -3065,378 +4259,6 @@ p  { color: var(--rp-ink-500); }
   </div>
 </section>
 <!-- END: TRUST-LOGOS -->
-
-
-<!-- ============================================================================
-     ████████████████████████████████████████████████████████████████████████████
-     SECTION 04.5: LIVE VISITOR INTELLIGENCE (★ THE KILLER DEMO FEATURE ★)
-     ████████████████████████████████████████████████████████████████████████████
-     Shows the visitor their OWN live data as proof-of-product. The score
-     updates in real-time as they scroll, click, and interact with the page.
-     DEPENDS ON: the "VISITOR INTELLIGENCE ENGINE" script block at the bottom.
-     ============================================================================ -->
-<!-- START: VISITOR-INTEL -->
-<section class="rp-vi rp-section">
-  <div class="rp-container">
-    <div class="rp-vi__header">
-      <span class="rp-vi__eyebrow">Live · Right now · This is you</span>
-      <h2 class="rp-section__heading">This is what ProspectID sees the moment you load the page</h2>
-      <p class="rp-section__subheading">No forms. No cookies. No opt-in required. We know who you are, where you came from, and how interested you are — in real time, right now, on this page.</p>
-    </div>
-
-    <div class="rp-vi__grid">
-
-      <!-- LEFT: Visitor Fingerprint -->
-      <div class="rp-vi__panel">
-        <div class="rp-vi__panel-title">
-          <span>🌍 Visitor Fingerprint</span>
-          <span class="rp-vi__panel-status">Live</span>
-        </div>
-        <div class="rp-vi__map" id="rpViMap">
-          <div class="rp-vi__map-loading">Detecting your location…</div>
-        </div>
-        <div class="rp-vi__rows">
-          <div class="rp-vi__row"><span class="rp-vi__row-label">Location</span><span class="rp-vi__row-value" id="rpViLoc">Detecting…</span></div>
-          <div class="rp-vi__row"><span class="rp-vi__row-label">IP Address</span><span class="rp-vi__row-value" id="rpViIp">Detecting…</span></div>
-          <div class="rp-vi__row"><span class="rp-vi__row-label">Network</span><span class="rp-vi__row-value" id="rpViIsp">Detecting…</span></div>
-          <div class="rp-vi__row"><span class="rp-vi__row-label">Device</span><span class="rp-vi__row-value" id="rpViDevice">Detecting…</span></div>
-          <div class="rp-vi__row"><span class="rp-vi__row-label">Screen</span><span class="rp-vi__row-value" id="rpViScreen">Detecting…</span></div>
-          <div class="rp-vi__row"><span class="rp-vi__row-label">Timezone</span><span class="rp-vi__row-value" id="rpViTz">Detecting…</span></div>
-          <div class="rp-vi__row"><span class="rp-vi__row-label">Local Time</span><span class="rp-vi__row-value" id="rpViTime">--:--:--</span></div>
-          <div class="rp-vi__row"><span class="rp-vi__row-label">Came From</span><span class="rp-vi__row-value" id="rpViRef">Direct traffic</span></div>
-          <div class="rp-vi__row"><span class="rp-vi__row-label">Visit Count</span><span class="rp-vi__row-value" id="rpViVisits">1st visit</span></div>
-        </div>
-      </div>
-
-      <!-- RIGHT: Live Lead Quality Score -->
-      <div class="rp-vi__panel">
-        <div class="rp-vi__panel-title">
-          <span>🔥 Lead Quality Score</span>
-          <span class="rp-vi__panel-status">Live</span>
-        </div>
-        <div class="rp-vi__score-wrap">
-          <div>
-            <span class="rp-vi__score" id="rpViScore">0</span><span class="rp-vi__score-out-of">/100</span>
-          </div>
-          <div class="rp-vi__tier rp-vi__tier--cold" id="rpViTier">Just Browsing</div>
-          <p class="rp-vi__tier-desc" id="rpViTierDesc">Keep scrolling — we'll score you in real time.</p>
-          <div class="rp-vi__bar"><div class="rp-vi__bar-fill" id="rpViBar"></div></div>
-        </div>
-        <div class="rp-vi__feed">
-          <div class="rp-vi__feed-title">↗ Live activity feed</div>
-          <div class="rp-vi__events" id="rpViEvents"></div>
-        </div>
-      </div>
-
-      <!-- BOTTOM: Locked enrichment panel -->
-      <div class="rp-vi__lock">
-        <div class="rp-vi__lock-inner">
-          <div>
-            <div class="rp-vi__lock-header">
-              <span class="rp-vi__lock-icon">🔒</span>
-              <span class="rp-vi__lock-label">ProspectID Enrichment</span>
-            </div>
-            <h3 class="rp-vi__lock-title">With ProspectID, you'd also see this about every visitor</h3>
-            <p class="rp-vi__lock-desc">We enrich every anonymous visitor with business identity data — so your sales team knows exactly who's in-market before they ever fill out a form.</p>
-            <a href="#final-cta" class="rp-vi__lock-btn">Unlock this for your visitors <span>→</span></a>
-          </div>
-          <div class="rp-vi__lock-rows">
-            <div class="rp-vi__lock-row"><span class="rp-vi__lock-row-label">Company</span><span class="rp-vi__lock-row-value"><span class="rp-vi__blur">Confidential Corp Inc.</span><span class="rp-vi__lock-pill">Locked</span></span></div>
-            <div class="rp-vi__lock-row"><span class="rp-vi__lock-row-label">Role</span><span class="rp-vi__lock-row-value"><span class="rp-vi__blur">VP of Growth</span><span class="rp-vi__lock-pill">Locked</span></span></div>
-            <div class="rp-vi__lock-row"><span class="rp-vi__lock-row-label">Company Size</span><span class="rp-vi__lock-row-value"><span class="rp-vi__blur">50-200 employees</span><span class="rp-vi__lock-pill">Locked</span></span></div>
-            <div class="rp-vi__lock-row"><span class="rp-vi__lock-row-label">Est. Revenue</span><span class="rp-vi__lock-row-value"><span class="rp-vi__blur">$10M-$50M ARR</span><span class="rp-vi__lock-pill">Locked</span></span></div>
-            <div class="rp-vi__lock-row"><span class="rp-vi__lock-row-label">Industry</span><span class="rp-vi__lock-row-value"><span class="rp-vi__blur">B2B SaaS / Martech</span><span class="rp-vi__lock-pill">Locked</span></span></div>
-            <div class="rp-vi__lock-row"><span class="rp-vi__lock-row-label">Intent Score</span><span class="rp-vi__lock-row-value"><span class="rp-vi__blur">87 — high-intent buyer</span><span class="rp-vi__lock-pill">Locked</span></span></div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-<!-- END: VISITOR-INTEL -->
-
-
-<!-- ============================================================================
-     ████████████████████████████████████████████████████████████████████████████
-     SECTION 04.7: LIVE AD CAMPAIGN GENERATOR (★ SECOND KILLER FEATURE ★)
-     ████████████████████████████████████████████████████████████████████████████
-     Builds the visitor's actual remarketing campaign in real time. Pick an
-     industry, watch 6 platform ads light up as score climbs, messaging evolves
-     through awareness → consideration → decision tiers.
-     DEPENDS ON: "AD CAMPAIGN ENGINE" script block at the bottom of the page.
-     ============================================================================ -->
-<!-- START: AD-CAMPAIGN -->
-<section class="rp-ad rp-section">
-  <div class="rp-container">
-    <div class="rp-ad__header">
-      <span class="rp-vi__eyebrow">Live · Building your campaign</span>
-      <h2 class="rp-section__heading">Watch your remarketing campaign build itself — in real time</h2>
-      <p class="rp-section__subheading">Pick an industry below. See the exact ads ProspectAI would serve across every major platform. Messaging evolves as your lead score climbs. Platforms unlock as engagement grows.</p>
-    </div>
-
-    <!-- Industry picker -->
-    <div class="rp-ad__picker-wrap">
-      <div class="rp-ad__picker">
-        <button class="rp-ad__picker-btn is-active" data-industry="plumbing" onclick="rpAdSwitchIndustry('plumbing')">
-          <span>🔧</span> Plumbing
-        </button>
-        <button class="rp-ad__picker-btn" data-industry="dental" onclick="rpAdSwitchIndustry('dental')">
-          <span>🦷</span> Dental
-        </button>
-      </div>
-    </div>
-
-    <!-- Top row: 3 live panels -->
-    <div class="rp-ad__toprow">
-
-      <!-- Advertiser card -->
-      <div class="rp-ad__info-card">
-        <div class="rp-ad__info-label">Advertiser</div>
-        <div class="rp-ad__info-business">
-          <span class="rp-ad__info-emoji" id="rpAdEmoji">🔧</span>
-          <div>
-            <div class="rp-ad__info-name" id="rpAdName">Acme Plumbing Co.</div>
-            <div class="rp-ad__info-addr" id="rpAdAddr">📍 Milwaukee, WI · 30mi radius</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Location score card -->
-      <div class="rp-ad__info-card">
-        <div class="rp-ad__info-label">Location Match Score</div>
-        <div class="rp-ad__loc" id="rpAdLoc">
-          <div class="rp-ad__loc-dot"></div>
-          <div>
-            <div class="rp-ad__loc-title" id="rpAdLocTitle">Calculating…</div>
-            <div class="rp-ad__loc-sub" id="rpAdLocSub">Detecting distance from business</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Competitor activity ticker -->
-      <div class="rp-ad__info-card">
-        <div class="rp-ad__info-label">⚡ Competitor Activity (live)</div>
-        <div class="rp-ad__comp-row">
-          <span>Ad spend this session</span>
-          <span class="rp-ad__comp-num" id="rpAdCompSpend">$0.00</span>
-        </div>
-        <div class="rp-ad__comp-row">
-          <span>Impressions in your area</span>
-          <span class="rp-ad__comp-num" id="rpAdCompImp">0</span>
-        </div>
-        <div class="rp-ad__comp-row">
-          <span>Leads they captured</span>
-          <span class="rp-ad__comp-num" id="rpAdCompLeads">0</span>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Ad platform grid -->
-    <div class="rp-ad__grid">
-
-      <!-- ======= PLATFORM 1: FACEBOOK ======= -->
-      <div class="rp-ad__card is-unlocked" data-platform="facebook" data-unlock-at="0">
-        <div class="rp-ad__card-header">
-          <div class="rp-ad__card-logo-wrap" style="background:#1877F2">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-          </div>
-          <span class="rp-ad__card-platform">Facebook</span>
-          <span class="rp-ad__card-status">Active</span>
-        </div>
-        <div class="rp-ad__card-body">
-          <div class="rp-fb__head">
-            <div class="rp-fb__avatar" data-ad-initial>A</div>
-            <div>
-              <div class="rp-fb__name" data-ad-name>Acme Plumbing Co.</div>
-              <div class="rp-fb__meta">Sponsored · <span data-ad-city>Milwaukee</span> · <span>🌐</span></div>
-            </div>
-          </div>
-          <div class="rp-fb__copy" data-ad-body>Need a plumber? 24/7 emergency service in the Milwaukee area.</div>
-          <div class="rp-fb__image">
-            <div class="rp-fb__image-icon" data-ad-icon>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-            </div>
-          </div>
-          <div class="rp-fb__cta-row">
-            <div>
-              <div class="rp-fb__url" data-ad-url>ACMEPLUMBING.COM</div>
-              <div class="rp-fb__headline" data-ad-headline>Need a plumber?</div>
-            </div>
-            <button class="rp-fb__btn" data-ad-cta>Learn More</button>
-          </div>
-        </div>
-        <div class="rp-ad__card-lock">
-          <div class="rp-ad__card-lock-icon">🔒</div>
-          <div class="rp-ad__card-lock-text">Always active (score 0+)</div>
-        </div>
-      </div>
-
-      <!-- ======= PLATFORM 2: INSTAGRAM ======= -->
-      <div class="rp-ad__card is-locked" data-platform="instagram" data-unlock-at="15">
-        <div class="rp-ad__card-header">
-          <div class="rp-ad__card-logo-wrap" style="background:linear-gradient(45deg,#F58529 0%,#DD2A7B 50%,#8134AF 100%)">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-          </div>
-          <span class="rp-ad__card-platform">Instagram</span>
-          <span class="rp-ad__card-status">Active</span>
-        </div>
-        <div class="rp-ad__card-body">
-          <div class="rp-ig__head">
-            <div class="rp-ig__avatar"><div class="rp-ig__avatar-inner" data-ad-initial>A</div></div>
-            <div>
-              <div class="rp-ig__username" data-ad-handle>acmeplumbing</div>
-              <div class="rp-ig__sponsored">Sponsored · <span data-ad-city>Milwaukee</span></div>
-            </div>
-          </div>
-          <div class="rp-ig__img">
-            <div class="rp-ig__img-icon" data-ad-icon>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-            </div>
-          </div>
-          <div class="rp-ig__icons">♡ 💬 ↗ <span style="margin-left:auto">🔖</span></div>
-          <div class="rp-ig__caption"><strong data-ad-handle>acmeplumbing</strong><span data-ad-body>Need a plumber? 24/7 emergency service in the Milwaukee area.</span></div>
-        </div>
-        <div class="rp-ad__card-lock">
-          <div class="rp-ad__card-lock-icon">🔒</div>
-          <div class="rp-ad__card-lock-text">Unlocks at score 15</div>
-        </div>
-      </div>
-
-      <!-- ======= PLATFORM 3: GOOGLE SEARCH ======= -->
-      <div class="rp-ad__card is-locked" data-platform="google-search" data-unlock-at="30">
-        <div class="rp-ad__card-header">
-          <div class="rp-ad__card-logo-wrap" style="background:#FFFFFF;border:1px solid var(--rp-ink-100);color:#4285F4">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-          </div>
-          <span class="rp-ad__card-platform">Google Search</span>
-          <span class="rp-ad__card-status">Active</span>
-        </div>
-        <div class="rp-ad__card-body">
-          <div class="rp-gs">
-            <div class="rp-gs__ad-row">
-              <span class="rp-gs__ad-badge">Ad</span>
-              <span>·</span>
-              <span class="rp-gs__url" data-ad-url>acmeplumbing.com</span>
-            </div>
-            <div class="rp-gs__headline" data-ad-headline>Need a plumber?</div>
-            <div class="rp-gs__desc" data-ad-body>24/7 emergency service in the Milwaukee area.</div>
-            <div class="rp-gs__rating">
-              <span class="rp-gs__stars">★★★★★</span>
-              <span>4.9 · 347 Google reviews</span>
-            </div>
-            <div class="rp-gs__sitelinks">
-              <a href="#" onclick="return false">Emergency Service</a>
-              <a href="#" onclick="return false">Service Areas</a>
-            </div>
-          </div>
-        </div>
-        <div class="rp-ad__card-lock">
-          <div class="rp-ad__card-lock-icon">🔒</div>
-          <div class="rp-ad__card-lock-text">Unlocks at score 30</div>
-        </div>
-      </div>
-
-      <!-- ======= PLATFORM 4: GOOGLE DISPLAY ======= -->
-      <div class="rp-ad__card is-locked" data-platform="google-display" data-unlock-at="45">
-        <div class="rp-ad__card-header">
-          <div class="rp-ad__card-logo-wrap" style="background:#EA4335">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 5H3C1.9 5 1 5.9 1 7v10c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 12H3V7h18v10z"/></svg>
-          </div>
-          <span class="rp-ad__card-platform">Google Display</span>
-          <span class="rp-ad__card-status">Active</span>
-        </div>
-        <div class="rp-ad__card-body">
-          <div class="rp-gd">
-            <div>
-              <div class="rp-gd__headline" data-ad-headline>Need a plumber?</div>
-              <div class="rp-gd__sub" data-ad-body>24/7 emergency service in Milwaukee.</div>
-            </div>
-            <div class="rp-gd__bottom">
-              <div class="rp-gd__brand" data-ad-name>Acme Plumbing</div>
-              <span class="rp-gd__btn" data-ad-cta>Learn More</span>
-            </div>
-          </div>
-        </div>
-        <div class="rp-ad__card-lock">
-          <div class="rp-ad__card-lock-icon">🔒</div>
-          <div class="rp-ad__card-lock-text">Unlocks at score 45</div>
-        </div>
-      </div>
-
-      <!-- ======= PLATFORM 5: LINKEDIN ======= -->
-      <div class="rp-ad__card is-locked" data-platform="linkedin" data-unlock-at="60">
-        <div class="rp-ad__card-header">
-          <div class="rp-ad__card-logo-wrap" style="background:#0A66C2">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-          </div>
-          <span class="rp-ad__card-platform">LinkedIn</span>
-          <span class="rp-ad__card-status">Active</span>
-        </div>
-        <div class="rp-ad__card-body">
-          <div class="rp-li__head">
-            <div class="rp-li__logo" data-ad-initial>A</div>
-            <div>
-              <div class="rp-li__name" data-ad-name>Acme Plumbing Co.</div>
-              <div class="rp-li__meta">1,247 followers · Promoted</div>
-            </div>
-          </div>
-          <div class="rp-li__copy" data-ad-body>Need a plumber? 24/7 emergency service in the Milwaukee area.</div>
-          <div class="rp-li__img">
-            <div class="rp-li__img-icon" data-ad-icon>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-            </div>
-          </div>
-          <div class="rp-li__cta">
-            <span class="rp-li__cta-text" data-ad-url>acmeplumbing.com</span>
-            <span class="rp-li__btn" data-ad-cta>Learn More</span>
-          </div>
-        </div>
-        <div class="rp-ad__card-lock">
-          <div class="rp-ad__card-lock-icon">🔒</div>
-          <div class="rp-ad__card-lock-text">Unlocks at score 60</div>
-        </div>
-      </div>
-
-      <!-- ======= PLATFORM 6: YOUTUBE ======= -->
-      <div class="rp-ad__card is-locked" data-platform="youtube" data-unlock-at="75">
-        <div class="rp-ad__card-header">
-          <div class="rp-ad__card-logo-wrap" style="background:#FF0000">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-          </div>
-          <span class="rp-ad__card-platform">YouTube pre-roll</span>
-          <span class="rp-ad__card-status">Active</span>
-        </div>
-        <div class="rp-ad__card-body">
-          <div class="rp-yt">
-            <div class="rp-yt__video">
-              <div class="rp-yt__play">▶</div>
-            </div>
-            <div class="rp-yt__ad-label">AD · 0:15</div>
-            <div class="rp-yt__skip">Skip Ad ▸</div>
-          </div>
-          <div class="rp-yt__info">
-            <div>
-              <div class="rp-yt__info-brand" data-ad-name>Acme Plumbing Co.</div>
-              <div class="rp-yt__info-meta" data-ad-headline>Need a plumber?</div>
-            </div>
-            <div class="rp-yt__info-meta" data-ad-url>acmeplumbing.com</div>
-          </div>
-        </div>
-        <div class="rp-ad__card-lock">
-          <div class="rp-ad__card-lock-icon">🔒</div>
-          <div class="rp-ad__card-lock-text">Unlocks at score 75</div>
-        </div>
-      </div>
-
-    </div>
-
-    <p class="rp-ad__note">💡 This isn't a mockup — it's how ProspectAI actually works. Every lead, every platform, every touchpoint, personalized and timed to maximum intent. Locked cards unlock as your lead score climbs.</p>
-
-  </div>
-</section>
-<!-- END: AD-CAMPAIGN -->
 
 
 <!-- ============================================================================
@@ -4403,6 +5225,8 @@ function rpViUpdateScore() {
   tier.textContent = t.tier;
   tierDesc.textContent = t.desc;
   if (typeof rpAdUpdatePlatforms === 'function') rpAdUpdatePlatforms();
+  if (typeof rpCCUpdateFab === 'function') rpCCUpdateFab();
+  if (typeof rpCCMarkNew === 'function') rpCCMarkNew('score');
 }
 
 function rpViRenderEvents() {
@@ -4693,6 +5517,7 @@ function rpAdUpdatePlatforms() {
       card.classList.remove('is-locked');
       card.classList.add('is-unlocked', 'just-unlocked');
       setTimeout(() => card.classList.remove('just-unlocked'), 700);
+      if (typeof rpCCMarkNew === 'function') rpCCMarkNew('campaign');
     } else if (!shouldBeUnlocked && !wasLocked) {
       card.classList.remove('is-unlocked');
       card.classList.add('is-locked');
@@ -4797,6 +5622,47 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', rpAdInit);
 } else {
   rpAdInit();
+}
+
+
+/* ============================================================================
+   COMMAND CENTER CONTROLS (powers SECTION 00.5 — the persistent rail)
+   - Tab switching
+   - Unread indicators (red dot on tabs when their content updated off-screen)
+   - Mobile FAB open/close behavior
+   ============================================================================ */
+
+function rpCCSwitchTab(tabName) {
+  document.querySelectorAll('.rp-cc__tab').forEach(t => {
+    const match = t.dataset.tab === tabName;
+    t.classList.toggle('is-active', match);
+    if (match) t.classList.remove('has-new');
+  });
+  document.querySelectorAll('.rp-cc__pane').forEach(p => {
+    p.classList.toggle('is-active', p.dataset.pane === tabName);
+  });
+  if (typeof rpTrackEvent === 'function') rpTrackEvent('Opened ' + tabName + ' tab', 2);
+}
+
+function rpCCMarkNew(tabName) {
+  const tab = document.querySelector('.rp-cc__tab[data-tab="' + tabName + '"]');
+  if (tab && !tab.classList.contains('is-active')) {
+    tab.classList.add('has-new');
+  }
+}
+
+function rpCCToggleMobile() {
+  const rail = document.getElementById('rpCC');
+  const backdrop = document.getElementById('rpCCBackdrop');
+  if (!rail) return;
+  const open = rail.classList.toggle('is-mobile-open');
+  if (backdrop) backdrop.classList.toggle('is-visible', open);
+}
+
+function rpCCUpdateFab() {
+  const score = (typeof rpVI !== 'undefined' && rpVI.score) || 0;
+  const el = document.getElementById('rpCCFabScore');
+  if (el) el.textContent = score;
 }
 
 
