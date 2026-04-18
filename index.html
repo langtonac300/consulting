@@ -1124,6 +1124,114 @@ p  { color: var(--rp-ink-500); }
   pointer-events: auto;
 }
 
+
+/* ---- MODE SWITCHING (visitor ↔ patient/sandbox) ---- */
+
+/* Mode strip — between header and tabs, visible only in patient mode */
+.rp-cc__mode-strip {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  background: linear-gradient(135deg, #0891B2 0%, #0E7490 100%);
+  color: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.rp-cc.is-patient-mode .rp-cc__mode-strip {
+  display: flex;
+  animation: rpCCModeEnter 0.35s var(--rp-ease);
+}
+@keyframes rpCCModeEnter {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rp-cc__mode-strip::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 16px 16px;
+  pointer-events: none;
+}
+.rp-cc__mode-strip-label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.rp-cc__mode-strip-icon { font-size: 1.125rem; flex-shrink: 0; }
+.rp-cc__mode-strip-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+.rp-cc__mode-strip-sim {
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1;
+}
+.rp-cc__mode-strip-main {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Exit button */
+.rp-cc__exit-btn {
+  position: relative;
+  background: rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  padding: 0.375rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition: background 0.2s, transform 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.rp-cc__exit-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateX(2px);
+}
+
+/* Patient-mode accent: score number turns teal */
+.rp-cc.is-patient-mode .rp-cc__score-num,
+.rp-cc.is-patient-mode .rp-cc__cta-status-score {
+  color: #0891B2;
+  transition: color 0.4s;
+}
+
+/* Patient-mode CTA: teal gradient instead of blue (emergency at 81+ still red) */
+.rp-cc.is-patient-mode:not(.is-ready) .rp-cc__cta {
+  background: linear-gradient(135deg, #0891B2 0%, #0E7490 100%);
+  animation: rpCCCtaBreatheTeal 2.6s ease-in-out infinite;
+}
+@keyframes rpCCCtaBreatheTeal {
+  0%, 100% {
+    box-shadow: 0 4px 14px rgba(8, 145, 178, 0.3), 0 0 0 0 rgba(8, 145, 178, 0.35);
+  }
+  50% {
+    box-shadow: 0 8px 22px rgba(8, 145, 178, 0.45), 0 0 0 6px rgba(8, 145, 178, 0);
+  }
+}
+.rp-cc.is-patient-mode:not(.is-ready) .rp-cc__cta:hover {
+  box-shadow: 0 14px 32px rgba(8, 145, 178, 0.5);
+}
+
 /* END: COMMAND-CENTER STYLES */
 
 
@@ -3551,6 +3659,314 @@ p  { color: var(--rp-ink-500); }
   word-break: break-word;
 }
 
+
+/* ---- LAUNCHER CARD (pre-launch state) ---- */
+.rp-dental__launcher {
+  max-width: 860px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #FFFFFF 0%, var(--rp-dent-primary-50) 100%);
+  border: 2px solid var(--rp-dent-primary-light);
+  border-radius: var(--rp-radius-2xl);
+  padding: var(--rp-space-12) var(--rp-space-8);
+  box-shadow: 0 24px 64px rgba(8, 145, 178, 0.12);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: opacity 0.4s, transform 0.4s;
+}
+.rp-dental__launcher.is-launched {
+  display: none;
+}
+.rp-dental__launcher::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(8, 145, 178, 0.06) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(8, 145, 178, 0.06) 0%, transparent 40%);
+  pointer-events: none;
+}
+.rp-dental__launcher-inner { position: relative; }
+
+.rp-dental__launcher-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--rp-dent-primary-dark);
+  background: var(--rp-dent-primary-light);
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  margin-bottom: var(--rp-space-6);
+}
+.rp-dental__launcher-badge::before,
+.rp-dental__launcher-badge::after {
+  content: "↓";
+  font-weight: 700;
+  animation: rpDentalBadgeBounce 1.2s ease-in-out infinite;
+}
+@keyframes rpDentalBadgeBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+
+.rp-dental__launcher-title {
+  font-family: var(--rp-font-display);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 700;
+  color: var(--rp-ink-900);
+  line-height: 1.15;
+  margin-bottom: var(--rp-space-4);
+  letter-spacing: -0.02em;
+}
+.rp-dental__launcher-desc {
+  font-size: 1rem;
+  color: var(--rp-ink-500);
+  line-height: 1.65;
+  max-width: 34rem;
+  margin: 0 auto var(--rp-space-8);
+}
+
+.rp-dental__launcher-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  max-width: 640px;
+  margin: 0 auto var(--rp-space-8);
+}
+.rp-dental__launcher-step {
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: var(--rp-radius-lg);
+  padding: var(--rp-space-4) var(--rp-space-3);
+  transition: var(--rp-transition);
+  position: relative;
+}
+.rp-dental__launcher-step::before {
+  content: attr(data-num);
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: var(--rp-ink-300);
+  font-family: var(--rp-font-mono);
+  letter-spacing: 0.08em;
+}
+.rp-dental__launcher-step:hover {
+  transform: translateY(-2px);
+  border-color: var(--rp-dent-primary);
+  box-shadow: 0 8px 20px rgba(8, 145, 178, 0.1);
+}
+.rp-dental__launcher-step-icon {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+.rp-dental__launcher-step-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--rp-ink-900);
+  margin-bottom: 0.25rem;
+  line-height: 1.25;
+}
+.rp-dental__launcher-step-sub {
+  font-size: 0.75rem;
+  color: var(--rp-ink-500);
+  line-height: 1.4;
+}
+
+/* THE massive button */
+.rp-dental__launcher-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-width: 320px;
+  padding: 1.375rem 2rem;
+  background: linear-gradient(135deg, var(--rp-dent-primary) 0%, var(--rp-dent-primary-dark) 100%);
+  color: #FFFFFF;
+  border-radius: 14px;
+  font-size: 1.1875rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  transition: transform 0.2s, box-shadow 0.3s;
+  animation: rpDentalLauncherPulse 2.2s ease-in-out infinite;
+  overflow: hidden;
+  border: none;
+  cursor: pointer;
+}
+@keyframes rpDentalLauncherPulse {
+  0%, 100% {
+    box-shadow: 0 8px 24px rgba(8, 145, 178, 0.35), 0 0 0 0 rgba(8, 145, 178, 0.45);
+  }
+  50% {
+    box-shadow: 0 12px 36px rgba(8, 145, 178, 0.55), 0 0 0 14px rgba(8, 145, 178, 0);
+  }
+}
+.rp-dental__launcher-btn:hover {
+  transform: translateY(-3px);
+  animation-play-state: paused;
+  box-shadow: 0 18px 48px rgba(8, 145, 178, 0.6);
+}
+.rp-dental__launcher-btn:active { transform: translateY(-1px); }
+.rp-dental__launcher-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.35) 50%, transparent 100%);
+  transform: skewX(-20deg);
+  animation: rpDentalLauncherShine 3s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes rpDentalLauncherShine {
+  0%, 100% { left: -75%; }
+  60%, 100% { left: 150%; }
+}
+.rp-dental__launcher-btn-main {
+  position: relative;
+  z-index: 1;
+}
+.rp-dental__launcher-btn-arrow {
+  position: relative;
+  z-index: 1;
+  font-size: 1.375rem;
+  transition: transform 0.25s var(--rp-ease);
+}
+.rp-dental__launcher-btn:hover .rp-dental__launcher-btn-arrow {
+  transform: translateX(6px);
+}
+
+.rp-dental__launcher-fine {
+  margin-top: var(--rp-space-4);
+  font-size: 0.8125rem;
+  color: var(--rp-dent-primary-dark);
+  font-weight: 600;
+}
+
+/* ---- SANDBOX BODY (hidden until launched) ---- */
+.rp-dental__body {
+  display: none;
+}
+.rp-dental__body.is-launched {
+  display: block;
+  animation: rpDentalBodyEnter 0.5s var(--rp-ease);
+}
+@keyframes rpDentalBodyEnter {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- CALLOUT pointing to the rail ---- */
+.rp-dental__callout {
+  display: none;
+  max-width: 1050px;
+  margin: 0 auto var(--rp-space-6);
+  background: linear-gradient(135deg, var(--rp-dent-primary) 0%, var(--rp-dent-primary-dark) 100%);
+  color: #FFFFFF;
+  border-radius: var(--rp-radius-xl);
+  padding: 1rem 1.25rem;
+  align-items: center;
+  gap: var(--rp-space-3);
+  box-shadow: 0 12px 32px rgba(8, 145, 178, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+.rp-dental__callout.is-visible {
+  display: flex;
+  animation: rpDentalCalloutEnter 0.5s var(--rp-ease);
+}
+@keyframes rpDentalCalloutEnter {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rp-dental__callout::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+}
+.rp-dental__callout-icon {
+  position: relative;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+.rp-dental__callout-text {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.rp-dental__callout-title {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.rp-dental__callout-sub {
+  font-size: 0.8125rem;
+  opacity: 0.85;
+  line-height: 1.4;
+}
+.rp-dental__callout-arrow {
+  position: relative;
+  font-size: 1.75rem;
+  animation: rpDentalArrowBounce 1.2s ease-in-out infinite;
+  color: #FFFFFF;
+  flex-shrink: 0;
+}
+@keyframes rpDentalArrowBounce {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(10px); }
+}
+.rp-dental__callout-dismiss {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.rp-dental__callout-dismiss:hover { background: rgba(255, 255, 255, 0.28); }
+
+/* ---- RAIL ATTENTION GLOW (triggered when sandbox launches) ---- */
+@keyframes rpCCAttention {
+  0%, 100% {
+    box-shadow: -6px 0 24px rgba(15, 23, 42, 0.06);
+  }
+  50% {
+    box-shadow: -6px 0 64px rgba(8, 145, 178, 0.6), 0 0 0 4px rgba(8, 145, 178, 0.3);
+  }
+}
+.rp-cc.is-attention {
+  animation: rpCCAttention 1.5s ease-in-out 2;
+}
+
+/* Mobile adjustments for launcher */
+@media (max-width: 700px) {
+  .rp-dental__launcher { padding: var(--rp-space-8) var(--rp-space-4); }
+  .rp-dental__launcher-steps { grid-template-columns: 1fr; }
+  .rp-dental__launcher-btn { min-width: 100%; font-size: 1rem; padding: 1.125rem 1.25rem; }
+  .rp-dental__callout { flex-wrap: wrap; }
+  .rp-dental__callout-arrow { display: none; }
+}
+
 /* END: DENTAL-SANDBOX STYLES */
 
 
@@ -4489,6 +4905,18 @@ p  { color: var(--rp-ink-500); }
     <button class="rp-cc__minimize" aria-label="Close panel" onclick="rpCCToggleMobile()">×</button>
   </div>
 
+  <!-- Mode strip — visible only when in patient (sandbox) mode -->
+  <div class="rp-cc__mode-strip" id="rpCCModeStrip">
+    <div class="rp-cc__mode-strip-label">
+      <span class="rp-cc__mode-strip-icon">🦷</span>
+      <div class="rp-cc__mode-strip-text">
+        <span class="rp-cc__mode-strip-sim">Simulation Mode</span>
+        <span class="rp-cc__mode-strip-main" id="rpCCModeStripMain">Smith Dental · Patient Intake</span>
+      </div>
+    </div>
+    <button class="rp-cc__exit-btn" onclick="rpCCSetMode('visitor')">Exit →</button>
+  </div>
+
   <!-- Tabs -->
   <nav class="rp-cc__tabs" role="tablist">
     <button class="rp-cc__tab is-active" data-tab="visitor" onclick="rpCCSwitchTab('visitor')">
@@ -4508,8 +4936,8 @@ p  { color: var(--rp-ink-500); }
     <!-- =================== TAB 1: VISITOR =================== -->
     <div class="rp-cc__pane is-active" data-pane="visitor">
 
-      <div class="rp-cc__pane-heading">🌍 Your digital fingerprint</div>
-      <div class="rp-cc__pane-sub">What ProspectID sees about you right now — without a single form fill.</div>
+      <div class="rp-cc__pane-heading" data-mode-heading data-visitor="🌍 Your digital fingerprint" data-patient="🦷 Patient digital fingerprint">🌍 Your digital fingerprint</div>
+      <div class="rp-cc__pane-sub" data-mode-heading data-visitor="What ProspectID sees about you right now — without a single form fill." data-patient="What Smith Dental would capture about this patient automatically.">What ProspectID sees about you right now — without a single form fill.</div>
 
       <div class="rp-cc__map" id="rpViMap">
         <div class="rp-cc__map-loading">Detecting your location…</div>
@@ -4559,8 +4987,8 @@ p  { color: var(--rp-ink-500); }
     <!-- =================== TAB 2: SCORE =================== -->
     <div class="rp-cc__pane" data-pane="score">
 
-      <div class="rp-cc__pane-heading">🔥 Lead quality score</div>
-      <div class="rp-cc__pane-sub">Updates in real-time based on every action you take on this page.</div>
+      <div class="rp-cc__pane-heading" data-mode-heading data-visitor="🔥 Lead quality score" data-patient="🦷 Patient qualification score">🔥 Lead quality score</div>
+      <div class="rp-cc__pane-sub" data-mode-heading data-visitor="Updates in real-time based on every action you take on this page." data-patient="Updates as the patient fills out their intake form.">Updates in real-time based on every action you take on this page.</div>
 
       <div class="rp-cc__score-card">
         <div>
@@ -4866,7 +5294,7 @@ p  { color: var(--rp-ink-500); }
   <!-- Footer CTA — prominent, score-reactive, impossible to miss -->
   <div class="rp-cc__footer">
     <div class="rp-cc__cta-status">
-      Your lead score: <span class="rp-cc__cta-status-score" id="rpCCCtaScore">0</span>/100
+      <span id="rpCCCtaLabel">Your lead score:</span> <span class="rp-cc__cta-status-score" id="rpCCCtaScore">0</span>/100
       <span class="rp-cc__cta-status-tier" id="rpCCCtaTier">Cold</span>
     </div>
     <a href="#final-cta" class="rp-cc__cta" onclick="if(typeof rpTrackEvent==='function')rpTrackEvent('Clicked rail CTA',20)">
@@ -5324,7 +5752,55 @@ p  { color: var(--rp-ink-500); }
       <span class="rp-dental__section-eyebrow">🦷 Industry Sandbox · Dental Practice</span>
     </div>
     <h2 class="rp-section__heading">Try a real patient intake — see personalization live</h2>
-    <p class="rp-section__subheading">This is a working demo of what ProspectAI builds for dental practices. Answer the questions, mark your concerns on the tooth diagram, and watch the rail update with your data, score, and personalized ads in real time.</p>
+    <p class="rp-section__subheading">This is a working demo of what ProspectAI builds for dental practices. Fill it out and watch the right-side rail track your lead score, patient data, and personalized ads in real time.</p>
+
+    <!-- LAUNCHER — pre-launch marketing card with the massive CTA -->
+    <div class="rp-dental__launcher" id="rpDentalLauncher">
+      <div class="rp-dental__launcher-inner">
+        <div class="rp-dental__launcher-badge">Interactive Demo · Click to Begin</div>
+        <h3 class="rp-dental__launcher-title">Experience what your patients would</h3>
+        <p class="rp-dental__launcher-desc">In 60 seconds, fill out a real patient intake and watch ProspectAI personalize everything in real time — your lead score, the live data panel, and all 6 ad platforms in the rail.</p>
+
+        <div class="rp-dental__launcher-steps">
+          <div class="rp-dental__launcher-step" data-num="01">
+            <div class="rp-dental__launcher-step-icon">✏️</div>
+            <div class="rp-dental__launcher-step-title">Answer 3 quick questions</div>
+            <div class="rp-dental__launcher-step-sub">~30 seconds</div>
+          </div>
+          <div class="rp-dental__launcher-step" data-num="02">
+            <div class="rp-dental__launcher-step-icon">🦷</div>
+            <div class="rp-dental__launcher-step-title">Flag your tooth concerns</div>
+            <div class="rp-dental__launcher-step-sub">Click, drag, multi-select</div>
+          </div>
+          <div class="rp-dental__launcher-step" data-num="03">
+            <div class="rp-dental__launcher-step-icon">⚡</div>
+            <div class="rp-dental__launcher-step-title">Watch the rail update live</div>
+            <div class="rp-dental__launcher-step-sub">Score, data, and ads</div>
+          </div>
+        </div>
+
+        <button class="rp-dental__launcher-btn" onclick="rpDentalLaunch()">
+          <span class="rp-dental__launcher-btn-main">🚀 Launch Interactive Demo</span>
+          <span class="rp-dental__launcher-btn-arrow">→</span>
+        </button>
+
+        <p class="rp-dental__launcher-fine">→ The rail on your right will light up the moment you click</p>
+      </div>
+    </div>
+
+    <!-- SANDBOX BODY — hidden until launched -->
+    <div class="rp-dental__body" id="rpDentalBody">
+
+      <!-- CALLOUT — appears on launch with arrow pointing to rail -->
+      <div class="rp-dental__callout" id="rpDentalCallout">
+        <div class="rp-dental__callout-icon">👉</div>
+        <div class="rp-dental__callout-text">
+          <div class="rp-dental__callout-title">The rail on the right is now watching you</div>
+          <div class="rp-dental__callout-sub">Every answer and tooth-click updates your live score, data panel, and ads in real time</div>
+        </div>
+        <div class="rp-dental__callout-arrow">→</div>
+        <button class="rp-dental__callout-dismiss" onclick="rpDentalDismissCallout()" aria-label="Dismiss hint">✕</button>
+      </div>
 
     <div class="rp-dental__grid">
 
@@ -5411,6 +5887,8 @@ p  { color: var(--rp-ink-500); }
         </div>
       </div>
     </div>
+
+    </div>  <!-- /rp-dental__body -->
 
   </div>
 
@@ -6082,7 +6560,15 @@ p  { color: var(--rp-ink-500); }
    swap the fetch URL to your own enrichment endpoint.
    ============================================================================ */
 
-const rpVI = { score: 0, events: [], fired: new Set(), scrollMarkers: new Set() };
+const rpVI = { score: 0, events: [], fired: new Set(), scrollMarkers: new Set(), mode: 'visitor', patientScore: 0, patientEvents: [], patientFired: new Set() };
+
+const rpViPatientTierMap = [
+  { min: 0,  tier: 'New Patient',          cls: 'cold',    desc: 'Fresh intake — gathering information.' },
+  { min: 21, tier: 'Intake Started',       cls: 'warm',    desc: 'Patient is providing details. Early funnel.' },
+  { min: 41, tier: 'Qualified Patient',    cls: 'engaged', desc: 'Enough data to route to a specialist.' },
+  { min: 61, tier: 'Priority Patient',     cls: 'hot',     desc: 'High intent. Book within 24 hours.' },
+  { min: 81, tier: 'Emergency / Ready',    cls: 'ready',   desc: '🚨 Route to on-call immediately.' }
+];
 
 const rpViTierMap = [
   { min: 0,  tier: 'Just Browsing',    cls: 'cold',    desc: 'Keep scrolling — we\'ll score you in real time.' },
@@ -6092,13 +6578,32 @@ const rpViTierMap = [
   { min: 81, tier: 'Sales-Ready',      cls: 'ready',   desc: '🎯 Route to sales immediately. Call within 5 minutes.' }
 ];
 
-function rpTrackEvent(name, points) {
-  if (rpVI.fired.has(name)) return; // dedupe
-  rpVI.fired.add(name);
-  rpVI.score = Math.min(100, rpVI.score + points);
-  rpVI.events.unshift({ name: name, points: points });
+function rpTrackEvent(name, points, bucket) {
+  bucket = bucket || 'visitor';
+  // Freeze-aware: events fired for the non-active bucket are silently ignored
+  if (bucket === 'visitor' && rpVI.mode === 'patient') return;
+  if (bucket === 'patient' && rpVI.mode !== 'patient') return;
+
+  const firedSet = bucket === 'patient' ? rpVI.patientFired : rpVI.fired;
+  if (firedSet.has(name)) return; // dedupe
+  firedSet.add(name);
+
+  if (bucket === 'patient') {
+    rpVI.patientScore = Math.min(100, rpVI.patientScore + points);
+    rpVI.patientEvents.unshift({ name: name, points: points });
+  } else {
+    rpVI.score = Math.min(100, rpVI.score + points);
+    rpVI.events.unshift({ name: name, points: points });
+  }
   rpViRenderEvents();
   rpViUpdateScore();
+}
+
+function rpVIActiveScore() {
+  return rpVI.mode === 'patient' ? rpVI.patientScore : rpVI.score;
+}
+function rpVIActiveEvents() {
+  return rpVI.mode === 'patient' ? rpVI.patientEvents : rpVI.events;
 }
 
 function rpViUpdateScore() {
@@ -6107,11 +6612,13 @@ function rpViUpdateScore() {
   const tier = document.getElementById('rpViTier');
   const tierDesc = document.getElementById('rpViTierDesc');
   if (!el) return;
-  el.textContent = rpVI.score;
+  const activeScore = rpVIActiveScore();
+  const activeMap = rpVI.mode === 'patient' ? rpViPatientTierMap : rpViTierMap;
+  el.textContent = activeScore;
   el.classList.add('is-bumping');
   setTimeout(() => el.classList.remove('is-bumping'), 300);
-  bar.style.width = rpVI.score + '%';
-  const t = rpViTierMap.slice().reverse().find(t => rpVI.score >= t.min);
+  bar.style.width = activeScore + '%';
+  const t = activeMap.slice().reverse().find(t => activeScore >= t.min);
   tier.className = 'rp-vi__tier rp-vi__tier--' + t.cls;
   tier.textContent = t.tier;
   tierDesc.textContent = t.desc;
@@ -6124,7 +6631,7 @@ function rpViUpdateScore() {
 function rpViRenderEvents() {
   const feed = document.getElementById('rpViEvents');
   if (!feed) return;
-  feed.innerHTML = rpVI.events.slice(0, 8).map(e =>
+  feed.innerHTML = rpVIActiveEvents().slice(0, 8).map(e =>
     '<div class="rp-vi__event">' +
       '<span class="rp-vi__event-tick">✓</span>' +
       '<span>' + e.name + '</span>' +
@@ -6392,7 +6899,7 @@ function rpAdRenderBusiness() {
 
 function rpAdRenderCopy() {
   const ind = rpAdIndustries[rpAdState.current];
-  const tier = rpAdGetTier(rpVI && rpVI.score || 0);
+  const tier = rpAdGetTier(typeof rpVIActiveScore === 'function' ? rpVIActiveScore() : (rpVI && rpVI.score) || 0);
   const copy = ind.tiers[tier];
   document.querySelectorAll('[data-ad-headline]').forEach(el => el.textContent = copy.headline);
   document.querySelectorAll('[data-ad-body]').forEach(el => el.textContent = copy.body);
@@ -6400,7 +6907,7 @@ function rpAdRenderCopy() {
 }
 
 function rpAdUpdatePlatforms() {
-  const score = (rpVI && rpVI.score) || 0;
+  const score = (typeof rpVIActiveScore === 'function' ? rpVIActiveScore() : ((rpVI && rpVI.score) || 0));
   document.querySelectorAll('.rp-ad__card').forEach(card => {
     const threshold = parseInt(card.dataset.unlockAt, 10);
     const wasLocked = card.classList.contains('is-locked');
@@ -6552,12 +7059,20 @@ function rpCCToggleMobile() {
 }
 
 function rpCCUpdateFab() {
-  const score = (typeof rpVI !== 'undefined' && rpVI.score) || 0;
+  const score = (typeof rpVIActiveScore === 'function' ? rpVIActiveScore() : 0);
   const el = document.getElementById('rpCCFabScore');
   if (el) el.textContent = score;
 }
 
 /* Dynamic footer CTA — copy and styling evolve with the visitor's lead score */
+const rpCCPatientTierMap = [
+  { min: 0,  name: 'New',          cls: '',        text: 'See how ProspectAI handles dental leads' },
+  { min: 21, name: 'Warming',      cls: 'warm',    text: 'Watch this patient get qualified' },
+  { min: 41, name: 'Engaged',      cls: 'engaged', text: 'Imagine this for every visitor you get' },
+  { min: 61, name: 'Priority',     cls: 'hot',     text: '🔥 Patient is priority — get this for your site' },
+  { min: 81, name: 'Emergency',    cls: 'ready',   text: '🚨 Emergency patient — claim your demo' }
+];
+
 const rpCCTierMap = [
   { min: 0,  name: 'Cold',         cls: '',         text: 'See this running on YOUR site' },
   { min: 21, name: 'Warm',         cls: 'warm',     text: 'Watch your visitors score like this' },
@@ -6567,21 +7082,52 @@ const rpCCTierMap = [
 ];
 
 function rpCCUpdateCTA() {
-  const score = (typeof rpVI !== 'undefined' && rpVI.score) || 0;
+  const score = (typeof rpVIActiveScore === 'function' ? rpVIActiveScore() : 0);
   const scoreEl = document.getElementById('rpCCCtaScore');
   const textEl  = document.getElementById('rpCCCtaText');
   const tierEl  = document.getElementById('rpCCCtaTier');
+  const labelEl = document.getElementById('rpCCCtaLabel');
   const rail    = document.getElementById('rpCC');
 
-  const tier = rpCCTierMap.slice().reverse().find(t => score >= t.min);
+  const isPatient = typeof rpVI !== 'undefined' && rpVI.mode === 'patient';
+  const map = isPatient ? rpCCPatientTierMap : rpCCTierMap;
+  const tier = map.slice().reverse().find(t => score >= t.min);
 
   if (scoreEl) scoreEl.textContent = score;
   if (textEl)  textEl.textContent  = tier.text;
+  if (labelEl) labelEl.textContent = isPatient ? 'Patient score:' : 'Your lead score:';
   if (tierEl) {
     tierEl.textContent = tier.name;
     tierEl.className = 'rp-cc__cta-status-tier' + (tier.cls ? ' rp-cc__cta-status-tier--' + tier.cls : '');
   }
   if (rail) rail.classList.toggle('is-ready', score >= 81);
+}
+
+function rpCCSetMode(newMode) {
+  if (newMode !== 'visitor' && newMode !== 'patient') return;
+  if (typeof rpVI === 'undefined') return;
+  rpVI.mode = newMode;
+
+  const rail = document.getElementById('rpCC');
+  if (rail) rail.classList.toggle('is-patient-mode', newMode === 'patient');
+
+  // Swap heading copy
+  document.querySelectorAll('[data-mode-heading]').forEach(el => {
+    const next = newMode === 'patient' ? el.dataset.patient : el.dataset.visitor;
+    if (next) el.textContent = next;
+  });
+
+  // "What you've shared" block is only visible in patient mode
+  const shared = document.getElementById('rpDentalShared');
+  if (shared) shared.classList.toggle('is-visible', newMode === 'patient');
+
+  // Re-render score + events + CTA + ads against the new active bucket
+  if (typeof rpViUpdateScore === 'function') rpViUpdateScore();
+  if (typeof rpViRenderEvents === 'function') rpViRenderEvents();
+
+  if (typeof rpTrackEvent === 'function' && newMode === 'visitor') {
+    rpTrackEvent('Exited patient simulation', 3, 'visitor');
+  }
 }
 
 
@@ -6677,6 +7223,10 @@ function rpDentalRenderTeeth() {
 
 /* ---------- Click a tooth ---------- */
 function rpDentalClickTooth(num, evt) {
+  // Auto-re-enter patient mode if user returns to sandbox after exiting
+  if (typeof rpVI !== 'undefined' && rpVI.mode === 'visitor' && typeof rpCCSetMode === 'function') {
+    rpCCSetMode('patient');
+  }
   if (evt && evt.shiftKey) {
     // Multi-select mode
     if (rpDentalState.selected.has(num)) {
@@ -6786,7 +7336,7 @@ function rpDentalSaveModal() {
     rpDentalState.selected.clear();
     rpDentalUpdateSelectionUI();
     rpDentalRenderAllTeeth();
-    if (typeof rpTrackEvent === 'function') rpTrackEvent('Marked ' + count + ' teeth at once', 12);
+    if (typeof rpTrackEvent === 'function') rpTrackEvent('Marked ' + count + ' teeth at once', 12, 'patient');
   } else {
     if (chosen.length === 0) {
       delete rpDentalState.teeth[rpDentalState.editing];
@@ -6798,7 +7348,7 @@ function rpDentalSaveModal() {
       const issueCount = chosen.length;
       if (issueCount > 0) {
         const label = issueCount > 1 ? 'Flagged tooth #' + rpDentalState.editing + ' (' + issueCount + ' issues)' : 'Flagged tooth #' + rpDentalState.editing;
-        rpTrackEvent(label, 5);
+        rpTrackEvent(label, 5, 'patient');
       }
     }
   }
@@ -6841,6 +7391,10 @@ function rpDentalRenderTooth(num) {
 
 /* ---------- Handle quick-question answers ---------- */
 function rpDentalAnswer(btn) {
+  // Auto-re-enter patient mode if user returns to sandbox after exiting
+  if (typeof rpVI !== 'undefined' && rpVI.mode === 'visitor' && typeof rpCCSetMode === 'function') {
+    rpCCSetMode('patient');
+  }
   const q = btn.dataset.q;
   const v = btn.dataset.v;
   rpDentalState.answers[q] = v;
@@ -6851,7 +7405,7 @@ function rpDentalAnswer(btn) {
   if (typeof rpTrackEvent === 'function') {
     const label = rpDentalAnswerLabels[q] && rpDentalAnswerLabels[q][v] || v;
     const points = (q === 'urgency' && v === 'emergency') ? 15 : (q === 'urgency' ? 5 : 3);
-    rpTrackEvent('Answered ' + q + ': ' + label, points);
+    rpTrackEvent('Answered ' + q + ': ' + label, points, 'patient');
   }
   rpDentalMarkStarted();
   rpDentalUpdateAll();
@@ -6860,12 +7414,10 @@ function rpDentalAnswer(btn) {
 function rpDentalMarkStarted() {
   if (rpDentalState.hasStarted) return;
   rpDentalState.hasStarted = true;
-  if (typeof rpTrackEvent === 'function') rpTrackEvent('Started dental intake', 8);
+  if (typeof rpTrackEvent === 'function') rpTrackEvent('Started dental intake', 8, 'patient');
   // Auto-switch rail Campaign tab to Dental
   if (typeof rpAdSwitchIndustry === 'function') rpAdSwitchIndustry('dental');
-  // Reveal "What you've shared" block in rail
-  const shared = document.getElementById('rpDentalShared');
-  if (shared) shared.classList.add('is-visible');
+  // Mode-switch + shared-block visibility are handled by rpCCSetMode('patient')
 }
 
 /* ---------- Update summary, rail, ads ---------- */
@@ -6875,8 +7427,8 @@ function rpDentalUpdateAll() {
   rpDentalUpdateAdCopy();
   // Milestone score bumps
   const toothCount = Object.keys(rpDentalState.teeth).length;
-  if (toothCount >= 3 && typeof rpTrackEvent === 'function') rpTrackEvent('Flagged 3+ teeth', 10);
-  if (toothCount >= 5 && typeof rpTrackEvent === 'function') rpTrackEvent('Flagged 5+ teeth — high intent', 15);
+  if (toothCount >= 3 && typeof rpTrackEvent === 'function') rpTrackEvent('Flagged 3+ teeth', 10, 'patient');
+  if (toothCount >= 5 && typeof rpTrackEvent === 'function') rpTrackEvent('Flagged 5+ teeth — high intent', 15, 'patient');
 }
 
 function rpDentalGetSummaryRows() {
@@ -7071,6 +7623,48 @@ function rpDentalUpdateAdCopy() {
     rpAdIndustries.dental.tiers[2] = overrides[dominant];
     if (typeof rpAdRenderCopy === 'function') rpAdRenderCopy();
   }
+}
+
+/* ---------- Launcher / callout controls ---------- */
+function rpDentalLaunch() {
+  const launcher = document.getElementById('rpDentalLauncher');
+  const body = document.getElementById('rpDentalBody');
+  const callout = document.getElementById('rpDentalCallout');
+  const rail = document.getElementById('rpCC');
+
+  if (launcher) launcher.classList.add('is-launched');
+  if (body) body.classList.add('is-launched');
+  if (callout) callout.classList.add('is-visible');
+
+  // Pulse the rail to grab attention
+  if (rail) {
+    rail.classList.add('is-attention');
+    setTimeout(() => rail.classList.remove('is-attention'), 3100);
+  }
+
+  // If we're on mobile, slide the rail open so they can see it updating
+  if (rail && window.innerWidth < 1200) {
+    setTimeout(() => {
+      if (!rail.classList.contains('is-mobile-open')) {
+        if (typeof rpCCToggleMobile === 'function') rpCCToggleMobile();
+      }
+    }, 500);
+  }
+
+  // Auto-dismiss callout after 14s (or user can dismiss sooner)
+  setTimeout(() => rpDentalDismissCallout(), 14000);
+
+  // Switch rail into patient mode FIRST so subsequent events route to patient bucket
+  if (typeof rpCCSetMode === 'function') rpCCSetMode('patient');
+
+  // Track + mark that the dental flow has started
+  if (typeof rpTrackEvent === 'function') rpTrackEvent('Launched dental sandbox', 10, 'patient');
+  if (typeof rpDentalMarkStarted === 'function') rpDentalMarkStarted();
+}
+
+function rpDentalDismissCallout() {
+  const callout = document.getElementById('rpDentalCallout');
+  if (callout) callout.classList.remove('is-visible');
 }
 
 /* ---------- Init ---------- */
