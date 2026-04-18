@@ -1,0 +1,3676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="ReadyProspect — Enterprise lead generation and AI-powered customer response. Capture every lead. Convert 3x more. Trusted by 500+ businesses.">
+<title>ReadyProspect — Enterprise AI Lead Automation</title>
+
+<style>
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
+   SECTION 00: GLOBAL VARIABLES, RESET, TYPOGRAPHY
+   ████████████████████████████████████████████████████████████████████████████
+   THIS SECTION IS REQUIRED. DO NOT DELETE.
+   Everything in this file depends on the variables below.
+   ============================================================================ */
+/* START: GLOBAL STYLES */
+
+:root {
+  /* ---------- BRAND COLORS (edit these to rebrand the entire page) ---------- */
+  --rp-primary:        #0052CC;  /* Main brand blue */
+  --rp-primary-dark:   #003D99;  /* Hover / accent */
+  --rp-primary-light:  #E8F0FF;  /* Backgrounds, soft highlights */
+  --rp-primary-50:     #F4F8FF;  /* Very soft blue bg */
+
+  --rp-success:        #10B981;  /* Positive metrics, green */
+  --rp-warning:        #F59E0B;  /* Stars, alerts */
+  --rp-danger:         #EF4444;  /* Problem callouts */
+
+  /* ---------- NEUTRAL PALETTE ---------- */
+  --rp-ink-900:        #0A1628;  /* Darkest headings */
+  --rp-ink-800:        #111E33;  /* Dark surfaces (footer) */
+  --rp-ink-700:        #1E293B;  /* Body dark text */
+  --rp-ink-500:        #475569;  /* Secondary text */
+  --rp-ink-400:        #64748B;  /* Muted text */
+  --rp-ink-300:        #94A3B8;  /* Hints, placeholders */
+  --rp-ink-200:        #CBD5E1;  /* Dividers */
+  --rp-ink-100:        #E2E8F0;  /* Borders */
+  --rp-ink-50:         #F1F5F9;  /* Light surfaces */
+  --rp-ink-25:         #F8FAFC;  /* Page bg tint */
+
+  /* ---------- TYPOGRAPHY ---------- */
+  --rp-font-display:   'Georgia', 'Times New Roman', serif;
+  --rp-font-body:      -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --rp-font-mono:      'SF Mono', Monaco, Consolas, 'Courier New', monospace;
+
+  /* ---------- SPACING SCALE ---------- */
+  --rp-space-1: 0.25rem;   /*  4px */
+  --rp-space-2: 0.5rem;    /*  8px */
+  --rp-space-3: 0.75rem;   /* 12px */
+  --rp-space-4: 1rem;      /* 16px */
+  --rp-space-6: 1.5rem;    /* 24px */
+  --rp-space-8: 2rem;      /* 32px */
+  --rp-space-12: 3rem;     /* 48px */
+  --rp-space-16: 4rem;     /* 64px */
+  --rp-space-20: 5rem;     /* 80px */
+  --rp-space-24: 6rem;     /* 96px */
+
+  /* ---------- LAYOUT ---------- */
+  --rp-container-max:  1200px;
+  --rp-radius-sm:      0.375rem;
+  --rp-radius-md:      0.5rem;
+  --rp-radius-lg:      0.75rem;
+  --rp-radius-xl:      1rem;
+  --rp-radius-2xl:     1.5rem;
+
+  /* ---------- ELEVATION ---------- */
+  --rp-shadow-sm:      0 1px 2px rgba(15, 23, 42, 0.04);
+  --rp-shadow-md:      0 4px 12px rgba(15, 23, 42, 0.06);
+  --rp-shadow-lg:      0 12px 32px rgba(15, 23, 42, 0.08);
+  --rp-shadow-xl:      0 24px 48px rgba(15, 23, 42, 0.12);
+  --rp-shadow-brand:   0 12px 32px rgba(0, 82, 204, 0.25);
+
+  /* ---------- MOTION ---------- */
+  --rp-ease:           cubic-bezier(0.16, 1, 0.3, 1);
+  --rp-transition:     all 0.25s var(--rp-ease);
+}
+
+/* ---------- RESET ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--rp-font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--rp-ink-700);
+  background: #FFFFFF;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+input, textarea, select { font-family: inherit; font-size: inherit; }
+
+/* ---------- SHARED TYPOGRAPHY ---------- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--rp-font-display);
+  color: var(--rp-ink-900);
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: clamp(2.25rem, 5vw, 3.75rem); }
+h2 { font-size: clamp(1.875rem, 3.5vw, 2.75rem); }
+h3 { font-size: clamp(1.375rem, 2vw, 1.75rem); }
+h4 { font-size: 1.25rem; }
+
+p  { color: var(--rp-ink-500); }
+
+/* ---------- SHARED CONTAINER ---------- */
+.rp-container {
+  max-width: var(--rp-container-max);
+  margin: 0 auto;
+  padding: 0 var(--rp-space-6);
+  width: 100%;
+}
+
+/* ---------- SHARED SECTION PADDING ---------- */
+.rp-section {
+  padding: var(--rp-space-24) 0;
+  position: relative;
+}
+.rp-section--tight { padding: var(--rp-space-16) 0; }
+.rp-section--loose { padding: var(--rp-space-24) 0 calc(var(--rp-space-24) + 2rem); }
+
+/* ---------- SHARED SECTION HEADER ---------- */
+.rp-section__eyebrow {
+  display: inline-block;
+  font-family: var(--rp-font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rp-primary);
+  background: var(--rp-primary-light);
+  padding: 0.375rem 0.875rem;
+  border-radius: 999px;
+  margin-bottom: var(--rp-space-4);
+}
+
+.rp-section__heading {
+  max-width: 48rem;
+  margin: 0 auto var(--rp-space-4);
+  text-align: center;
+}
+
+.rp-section__subheading {
+  max-width: 42rem;
+  margin: 0 auto var(--rp-space-12);
+  text-align: center;
+  font-size: 1.125rem;
+  color: var(--rp-ink-500);
+  line-height: 1.7;
+}
+
+/* ---------- SHARED BUTTONS ---------- */
+.rp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border-radius: var(--rp-radius-md);
+  transition: var(--rp-transition);
+  white-space: nowrap;
+  border: 1.5px solid transparent;
+}
+
+.rp-btn--primary {
+  background: var(--rp-primary);
+  color: #FFFFFF;
+  border-color: var(--rp-primary);
+  box-shadow: var(--rp-shadow-sm);
+}
+.rp-btn--primary:hover {
+  background: var(--rp-primary-dark);
+  border-color: var(--rp-primary-dark);
+  box-shadow: var(--rp-shadow-brand);
+  transform: translateY(-1px);
+}
+
+.rp-btn--secondary {
+  background: #FFFFFF;
+  color: var(--rp-ink-900);
+  border-color: var(--rp-ink-100);
+}
+.rp-btn--secondary:hover {
+  border-color: var(--rp-ink-300);
+  background: var(--rp-ink-25);
+}
+
+.rp-btn--ghost {
+  background: transparent;
+  color: var(--rp-ink-700);
+  border-color: transparent;
+}
+.rp-btn--ghost:hover {
+  color: var(--rp-primary);
+}
+
+.rp-btn--lg {
+  padding: 1.125rem 2rem;
+  font-size: 1rem;
+}
+
+/* ---------- FADE-IN ANIMATION (used across sections) ---------- */
+@keyframes rpFadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.rp-fade-in {
+  opacity: 0;
+  animation: rpFadeInUp 0.8s var(--rp-ease) forwards;
+}
+.rp-fade-in--delay-1 { animation-delay: 0.1s; }
+.rp-fade-in--delay-2 { animation-delay: 0.2s; }
+.rp-fade-in--delay-3 { animation-delay: 0.3s; }
+.rp-fade-in--delay-4 { animation-delay: 0.4s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rp-fade-in { animation: none; opacity: 1; }
+  html { scroll-behavior: auto; }
+}
+
+/* END: GLOBAL STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
+   SECTION 01: ANNOUNCEMENT BAR (dismissible)
+   ████████████████████████████████████████████████████████████████████████████
+   SAFE TO DELETE. Remove HTML block tagged ANNOUNCEMENT-BAR AND this CSS block.
+   ============================================================================ */
+/* START: ANNOUNCEMENT-BAR STYLES */
+
+.rp-announce {
+  background: var(--rp-ink-900);
+  color: #FFFFFF;
+  padding: 0.75rem var(--rp-space-6);
+  font-size: 0.875rem;
+  text-align: center;
+  position: relative;
+  z-index: 60;
+}
+.rp-announce__inner {
+  max-width: var(--rp-container-max);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.rp-announce__badge {
+  background: var(--rp-primary);
+  color: #FFFFFF;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+}
+.rp-announce__link {
+  color: #FFFFFF;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.rp-announce__link:hover { color: var(--rp-primary-light); }
+.rp-announce__close {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255,255,255,0.6);
+  font-size: 1.25rem;
+  padding: 0.25rem 0.5rem;
+  line-height: 1;
+}
+.rp-announce__close:hover { color: #FFFFFF; }
+.rp-announce.is-hidden { display: none; }
+
+@media (max-width: 640px) {
+  .rp-announce { font-size: 0.8125rem; padding-right: 2.5rem; }
+  .rp-announce__close { right: 0.5rem; }
+}
+
+/* END: ANNOUNCEMENT-BAR STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
+   SECTION 02: STICKY HEADER / NAVIGATION
+   ████████████████████████████████████████████████████████████████████████████
+   SAFE TO DELETE (but recommended to keep). Remove HTML block tagged HEADER-NAV.
+   ============================================================================ */
+/* START: HEADER-NAV STYLES */
+
+.rp-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--rp-ink-100);
+}
+
+.rp-header__inner {
+  max-width: var(--rp-container-max);
+  margin: 0 auto;
+  padding: 0 var(--rp-space-6);
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--rp-space-6);
+}
+
+.rp-header__logo {
+  font-family: var(--rp-font-display);
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--rp-ink-900);
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.rp-header__logo-mark {
+  width: 28px;
+  height: 28px;
+  background: var(--rp-primary);
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-family: var(--rp-font-body);
+}
+
+.rp-header__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--rp-space-6);
+  flex: 1;
+  justify-content: center;
+}
+.rp-header__nav a {
+  color: var(--rp-ink-700);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.rp-header__nav a:hover { color: var(--rp-primary); }
+
+.rp-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rp-header__mobile-toggle {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--rp-radius-md);
+  color: var(--rp-ink-700);
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 960px) {
+  .rp-header__nav { display: none; }
+  .rp-header__actions .rp-btn--ghost { display: none; }
+  .rp-header__mobile-toggle { display: inline-flex; }
+}
+
+/* END: HEADER-NAV STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
+   SECTION 03: HERO (remarketing-aware)
+   ████████████████████████████████████████████████████████████████████████████
+   SAFE TO DELETE. Remove HTML block tagged HERO AND this CSS block.
+   ============================================================================ */
+/* START: HERO STYLES */
+
+.rp-hero {
+  position: relative;
+  padding: var(--rp-space-24) 0 var(--rp-space-20);
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, var(--rp-primary-50) 0%, transparent 60%),
+    linear-gradient(180deg, #FFFFFF 0%, var(--rp-ink-25) 100%);
+  overflow: hidden;
+}
+
+.rp-hero::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 100%;
+  background-image:
+    linear-gradient(rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 60% 50% at 50% 30%, #000 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 30%, #000 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.rp-hero__inner {
+  position: relative;
+  max-width: var(--rp-container-max);
+  margin: 0 auto;
+  padding: 0 var(--rp-space-6);
+  text-align: center;
+}
+
+.rp-hero__welcome-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--rp-ink-500);
+  margin-bottom: var(--rp-space-6);
+  box-shadow: var(--rp-shadow-sm);
+}
+.rp-hero__welcome-back::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rp-success);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+.rp-hero__title {
+  font-size: clamp(2.5rem, 5.5vw, 4.25rem);
+  line-height: 1.05;
+  margin-bottom: var(--rp-space-6);
+  max-width: 54rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.rp-hero__title-accent {
+  color: var(--rp-primary);
+  position: relative;
+  white-space: nowrap;
+}
+
+.rp-hero__subtitle {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: var(--rp-ink-500);
+  max-width: 44rem;
+  margin: 0 auto var(--rp-space-8);
+}
+
+.rp-hero__cta-group {
+  display: flex;
+  gap: 0.875rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--rp-space-8);
+}
+
+.rp-hero__trust-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rp-space-4);
+  flex-wrap: wrap;
+  font-size: 0.8125rem;
+  color: var(--rp-ink-400);
+  margin-bottom: var(--rp-space-16);
+}
+.rp-hero__trust-note-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+.rp-hero__trust-note-item::before {
+  content: "✓";
+  color: var(--rp-success);
+  font-weight: 700;
+}
+
+.rp-hero__stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--rp-ink-100);
+  border: 1px solid var(--rp-ink-100);
+  border-radius: var(--rp-radius-xl);
+  overflow: hidden;
+  max-width: 56rem;
+  margin: 0 auto;
+  box-shadow: var(--rp-shadow-lg);
+}
+.rp-hero__stat {
+  background: #FFFFFF;
+  padding: var(--rp-space-6) var(--rp-space-4);
+  text-align: center;
+}
+.rp-hero__stat-num {
+  font-family: var(--rp-font-display);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 700;
+  color: var(--rp-ink-900);
+  line-height: 1;
+  margin-bottom: 0.375rem;
+  letter-spacing: -0.02em;
+}
+.rp-hero__stat-num-accent { color: var(--rp-primary); }
+.rp-hero__stat-label {
+  font-size: 0.8125rem;
+  color: var(--rp-ink-500);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .rp-hero { padding: var(--rp-space-16) 0; }
+  .rp-hero__stats { grid-template-columns: repeat(2, 1fr); }
+  .rp-hero__cta-group .rp-btn { width: 100%; max-width: 320px; }
+}
+
+/* END: HERO STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
+   SECTION 04: TRUST LOGO BAR
+   ████████████████████████████████████████████████████████████████████████████
+   SAFE TO DELETE. Remove HTML block tagged TRUST-LOGOS AND this CSS block.
+   ============================================================================ */
+/* START: TRUST-LOGOS STYLES */
+
+.rp-trust {
+  padding: var(--rp-space-12) 0;
+  border-top: 1px solid var(--rp-ink-100);
+  border-bottom: 1px solid var(--rp-ink-100);
+  background: #FFFFFF;
+}
+.rp-trust__label {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rp-ink-400);
+  margin-bottom: var(--rp-space-6);
+}
+.rp-trust__grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--rp-space-6);
+  align-items: center;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.rp-trust__logo {
+  font-family: var(--rp-font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--rp-ink-300);
+  text-align: center;
+  letter-spacing: -0.02em;
+  transition: color 0.3s;
+  padding: 0.5rem;
+}
+.rp-trust__logo:hover { color: var(--rp-ink-500); }
+
+@media (max-width: 768px) {
+  .rp-trust__grid { grid-template-columns: repeat(3, 1fr); gap: var(--rp-space-4); }
+  .rp-trust__logo { font-size: 0.9375rem; }
+}
+
+/* END: TRUST-LOGOS STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
+   SECTION 04.5: LIVE VISITOR INTELLIGENCE (★ THE KILLER DEMO FEATURE ★)
+   ████████████████████████████████████████████████████████████████████████████
+   SAFE TO DELETE. Remove HTML block tagged VISITOR-INTEL AND this CSS block
+   AND the "VISITOR INTELLIGENCE ENGINE" script block at the bottom of the page.
+   ============================================================================ */
+/* START: VISITOR-INTEL STYLES */
+
+.rp-vi {
+  background: linear-gradient(180deg, #FFFFFF 0%, var(--rp-ink-25) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.rp-vi__header { text-align: center; margin-bottom: var(--rp-space-12); }
+.rp-vi__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rp-danger);
+  background: #FEE2E2;
+  padding: 0.375rem 0.875rem;
+  border-radius: 999px;
+  margin-bottom: var(--rp-space-4);
+}
+.rp-vi__eyebrow::before {
+  content: "";
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--rp-danger);
+  animation: rpPulseRed 1.5s ease-in-out infinite;
+}
+@keyframes rpPulseRed {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+  50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+}
+
+.rp-vi__grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: var(--rp-space-4);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.rp-vi__panel {
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: var(--rp-radius-xl);
+  padding: var(--rp-space-6);
+  box-shadow: var(--rp-shadow-md);
+}
+.rp-vi__panel-title {
+  font-family: var(--rp-font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rp-ink-400);
+  margin-bottom: var(--rp-space-4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.rp-vi__panel-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.6875rem;
+  color: var(--rp-success);
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 600;
+}
+.rp-vi__panel-status::before {
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--rp-success);
+  animation: rpPulseGreen 1.5s ease-in-out infinite;
+}
+@keyframes rpPulseGreen {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+  50% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+}
+
+/* Map */
+.rp-vi__map {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--rp-ink-25);
+  border-radius: var(--rp-radius-md);
+  border: 1px solid var(--rp-ink-100);
+  overflow: hidden;
+  margin-bottom: var(--rp-space-4);
+  position: relative;
+}
+.rp-vi__map iframe { width: 100%; height: 100%; border: none; display: block; }
+.rp-vi__map-loading {
+  position: absolute; inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rp-ink-400);
+  font-size: 0.875rem;
+  background: var(--rp-ink-25);
+}
+
+/* Data rows */
+.rp-vi__rows { display: grid; gap: 0.25rem; }
+.rp-vi__row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: var(--rp-space-3);
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed var(--rp-ink-100);
+  font-size: 0.8125rem;
+  align-items: center;
+}
+.rp-vi__row:last-child { border-bottom: none; }
+.rp-vi__row-label {
+  color: var(--rp-ink-400);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.6875rem;
+}
+.rp-vi__row-value {
+  color: var(--rp-ink-900);
+  font-weight: 600;
+  font-family: var(--rp-font-mono);
+  font-size: 0.8125rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rp-vi__row-flag { margin-right: 0.375rem; font-family: var(--rp-font-body); }
+
+/* Score panel */
+.rp-vi__score-wrap { text-align: center; padding: var(--rp-space-2) 0 var(--rp-space-4); }
+.rp-vi__score {
+  font-family: var(--rp-font-display);
+  font-size: 5rem;
+  font-weight: 700;
+  color: var(--rp-primary);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  display: inline-block;
+  transition: color 0.4s, transform 0.3s var(--rp-ease);
+}
+.rp-vi__score.is-bumping { transform: scale(1.12); }
+.rp-vi__score-out-of {
+  font-size: 1.25rem;
+  color: var(--rp-ink-300);
+  font-weight: 400;
+}
+.rp-vi__tier {
+  display: inline-block;
+  padding: 0.375rem 1rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--rp-ink-100);
+  color: var(--rp-ink-500);
+  transition: background 0.4s, color 0.4s;
+  margin: 0.75rem 0;
+}
+.rp-vi__tier--cold    { background: #DBEAFE; color: #1E40AF; }
+.rp-vi__tier--warm    { background: #FEF3C7; color: #92400E; }
+.rp-vi__tier--engaged { background: #FED7AA; color: #9A3412; }
+.rp-vi__tier--hot     { background: #FECACA; color: #991B1B; }
+.rp-vi__tier--ready   { background: #FEE2E2; color: #7F1D1D; animation: rpTierReady 2s ease-in-out infinite; }
+@keyframes rpTierReady {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+}
+.rp-vi__tier-desc {
+  font-size: 0.875rem;
+  color: var(--rp-ink-500);
+  margin-bottom: var(--rp-space-6);
+  min-height: 1.5rem;
+}
+
+/* Progress bar */
+.rp-vi__bar {
+  width: 100%;
+  height: 8px;
+  background: var(--rp-ink-100);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: var(--rp-space-6);
+}
+.rp-vi__bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #3B82F6 0%, #F59E0B 50%, #EF4444 100%);
+  border-radius: 999px;
+  transition: width 0.6s var(--rp-ease);
+}
+
+/* Event feed */
+.rp-vi__feed {
+  border-top: 1px solid var(--rp-ink-100);
+  padding-top: var(--rp-space-4);
+  text-align: left;
+}
+.rp-vi__feed-title {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rp-ink-400);
+  margin-bottom: var(--rp-space-3);
+}
+.rp-vi__events {
+  max-height: 200px;
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(180deg, #000 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent 100%);
+}
+.rp-vi__events:empty::after {
+  content: "Waiting for activity…";
+  display: block;
+  padding: 0.5rem 0;
+  font-size: 0.8125rem;
+  color: var(--rp-ink-300);
+  font-style: italic;
+}
+.rp-vi__event {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0;
+  font-size: 0.8125rem;
+  color: var(--rp-ink-700);
+  animation: rpEventSlide 0.4s var(--rp-ease);
+}
+@keyframes rpEventSlide {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rp-vi__event-tick {
+  flex-shrink: 0;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--rp-success);
+  color: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.5625rem;
+  font-weight: 700;
+}
+.rp-vi__event-pts {
+  margin-left: auto;
+  font-size: 0.6875rem;
+  color: var(--rp-success);
+  font-weight: 700;
+  font-family: var(--rp-font-mono);
+}
+
+/* Lock panel */
+.rp-vi__lock {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, var(--rp-ink-900) 0%, var(--rp-primary-dark) 100%);
+  border-radius: var(--rp-radius-xl);
+  padding: var(--rp-space-8);
+  color: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+  margin-top: var(--rp-space-4);
+}
+.rp-vi__lock::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+}
+.rp-vi__lock-inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--rp-space-8);
+  align-items: center;
+}
+.rp-vi__lock-header {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: var(--rp-space-3);
+}
+.rp-vi__lock-icon {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+}
+.rp-vi__lock-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  font-weight: 700;
+}
+.rp-vi__lock-title {
+  font-family: var(--rp-font-display);
+  font-size: 1.5rem;
+  color: #FFFFFF;
+  margin-bottom: var(--rp-space-3);
+  line-height: 1.2;
+}
+.rp-vi__lock-desc {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  margin-bottom: var(--rp-space-4);
+}
+.rp-vi__lock-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #FFFFFF;
+  color: var(--rp-ink-900);
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--rp-radius-md);
+  font-weight: 700;
+  font-size: 0.875rem;
+  transition: var(--rp-transition);
+}
+.rp-vi__lock-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+.rp-vi__lock-rows {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--rp-radius-md);
+  padding: var(--rp-space-4);
+  display: grid;
+  gap: 0.375rem;
+}
+.rp-vi__lock-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: var(--rp-space-3);
+  align-items: center;
+  padding: 0.4rem 0;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+.rp-vi__lock-row:last-child { border-bottom: none; }
+.rp-vi__lock-row-label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 600;
+}
+.rp-vi__lock-row-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--rp-font-mono);
+  font-size: 0.8125rem;
+}
+.rp-vi__blur {
+  background: rgba(255, 255, 255, 0.2);
+  color: transparent;
+  filter: blur(6px);
+  user-select: none;
+  padding: 0 0.5rem;
+  border-radius: 3px;
+}
+.rp-vi__lock-pill {
+  font-size: 0.625rem;
+  font-weight: 700;
+  padding: 0.125rem 0.5rem;
+  background: rgba(239, 68, 68, 0.25);
+  color: #FCA5A5;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 900px) {
+  .rp-vi__grid { grid-template-columns: 1fr; }
+  .rp-vi__lock-inner { grid-template-columns: 1fr; }
+  .rp-vi__score { font-size: 4rem; }
+}
+
+/* END: VISITOR-INTEL STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
+   SECTION 05: PROBLEM AMPLIFICATION (remarketing objection-handling)
+   ████████████████████████████████████████████████████████████████████████████
+   SAFE TO DELETE. Remove HTML block tagged PROBLEM AND this CSS block.
+   ============================================================================ */
+/* START: PROBLEM STYLES */
+
+.rp-problem { background: var(--rp-ink-25); }
+.rp-problem__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--rp-space-6);
+  margin-top: var(--rp-space-12);
+}
+.rp-problem__card {
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: var(--rp-radius-xl);
+  padding: var(--rp-space-8);
+  transition: var(--rp-transition);
+}
+.rp-problem__card:hover {
+  border-color: var(--rp-ink-200);
+  box-shadow: var(--rp-shadow-md);
+  transform: translateY(-2px);
+}
+.rp-problem__card-loss {
+  font-family: var(--rp-font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--rp-danger);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+.rp-problem__card-title {
+  font-family: var(--rp-font-body);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--rp-ink-900);
+  margin-bottom: 0.75rem;
+}
+.rp-problem__card-text {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .rp-problem__grid { grid-template-columns: 1fr; }
+}
+
+/* END: PROBLEM STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
+   SECTION 06: PRODUCT SHOWCASE (ProspectID + ProspectMax tabs)
+   ████████████████████████████████████████████████████████████████████████████
+   SAFE TO DELETE. Remove HTML block tagged PRODUCT-SHOWCASE AND this CSS block.
+   ============================================================================ */
+/* START: PRODUCT-SHOWCASE STYLES */
+
+.rp-products {
+  background: linear-gradient(180deg, #FFFFFF 0%, var(--rp-primary-50) 100%);
+}
+.rp-products__tabs {
+  display: inline-flex;
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: 999px;
+  padding: 0.375rem;
+  margin: 0 auto var(--rp-space-12);
+  box-shadow: var(--rp-shadow-sm);
+  gap: 0.25rem;
+}
+.rp-products__tab-wrap { text-align: center; }
+.rp-products__tab {
+  padding: 0.625rem 1.5rem;
+  border-radius: 999px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--rp-ink-500);
+  transition: var(--rp-transition);
+}
+.rp-products__tab.is-active {
+  background: var(--rp-primary);
+  color: #FFFFFF;
+  box-shadow: var(--rp-shadow-sm);
+}
+
+.rp-products__panel {
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--rp-space-16);
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.rp-products__panel.is-active { display: grid; }
+
+.rp-products__badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rp-primary);
+  background: var(--rp-primary-light);
+  padding: 0.375rem 0.875rem;
+  border-radius: 999px;
+  margin-bottom: var(--rp-space-4);
+}
+.rp-products__title {
+  font-size: 2.25rem;
+  margin-bottom: var(--rp-space-4);
+  line-height: 1.15;
+}
+.rp-products__tagline {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--rp-ink-500);
+  margin-bottom: var(--rp-space-6);
+}
+.rp-products__features {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: var(--rp-space-8);
+}
+.rp-products__feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.9375rem;
+  color: var(--rp-ink-700);
+}
+.rp-products__feature::before {
+  content: "";
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--rp-primary-light) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%230052CC'><path d='M16.7 5.3a1 1 0 0 1 0 1.4l-8 8a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.4L8 12.6l7.3-7.3a1 1 0 0 1 1.4 0z'/></svg>") no-repeat center / 14px;
+  margin-top: 1px;
+}
+
+.rp-products__visual {
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: var(--rp-radius-2xl);
+  padding: var(--rp-space-4);
+  box-shadow: var(--rp-shadow-xl);
+  aspect-ratio: 4 / 3;
+  position: relative;
+}
+.rp-products__visual-screen {
+  width: 100%; height: 100%;
+  background: var(--rp-ink-25);
+  border-radius: var(--rp-radius-lg);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 0.75rem;
+}
+.rp-products__visual-topbar {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--rp-ink-100);
+}
+.rp-products__visual-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--rp-ink-200);
+}
+.rp-products__visual-dot:nth-child(1) { background: #F87171; }
+.rp-products__visual-dot:nth-child(2) { background: #FBBF24; }
+.rp-products__visual-dot:nth-child(3) { background: #4ADE80; }
+
+.rp-products__visual-bar {
+  height: 12px;
+  background: var(--rp-ink-100);
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+.rp-products__visual-bar--wide { width: 70%; }
+.rp-products__visual-bar--mid { width: 50%; }
+.rp-products__visual-bar--brand { background: var(--rp-primary); width: 40%; height: 16px; }
+.rp-products__visual-bar--success { background: var(--rp-success); width: 30%; height: 14px; }
+
+.rp-products__visual-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.rp-products__visual-tile {
+  aspect-ratio: 1;
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: var(--rp-radius-md);
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.rp-products__visual-metric {
+  font-family: var(--rp-font-display);
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--rp-ink-900);
+  line-height: 1;
+}
+.rp-products__visual-metric-label {
+  font-size: 0.625rem;
+  color: var(--rp-ink-400);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 900px) {
+  .rp-products__panel.is-active { grid-template-columns: 1fr; gap: var(--rp-space-8); }
+}
+
+/* END: PRODUCT-SHOWCASE STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
+   SECTION 07: ENTERPRISE FEATURES GRID (12 features)
+   ████████████████████████████████████████████████████████████████████████████
+   SAFE TO DELETE. Remove HTML block tagged FEATURES-GRID AND this CSS block.
+   ============================================================================ */
+/* START: FEATURES-GRID STYLES */
+
+.rp-features { background: #FFFFFF; }
+.rp-features__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--rp-space-4);
+  margin-top: var(--rp-space-8);
+}
+.rp-features__card {
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: var(--rp-radius-xl);
+  padding: var(--rp-space-6);
+  transition: var(--rp-transition);
+}
+.rp-features__card:hover {
+  border-color: var(--rp-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--rp-shadow-md);
+}
+.rp-features__icon {
+  width: 44px;
+  height: 44px;
+  background: var(--rp-primary-light);
+  border-radius: var(--rp-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rp-primary);
+  margin-bottom: var(--rp-space-4);
+}
+.rp-features__icon svg { width: 22px; height: 22px; }
+.rp-features__title {
+  font-family: var(--rp-font-body);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--rp-ink-900);
+  margin-bottom: 0.5rem;
+}
+.rp-features__desc {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--rp-ink-500);
+}
+
+@media (max-width: 960px) { .rp-features__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .rp-features__grid { grid-template-columns: 1fr; } }
+
+/* END: FEATURES-GRID STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
+   SECTION 08: HOW IT WORKS (4 steps)
+   ████████████████████████████████████████████████████████████████████████████
+   SAFE TO DELETE. Remove HTML block tagged HOW-IT-WORKS AND this CSS block.
+   ============================================================================ */
+/* START: HOW-IT-WORKS STYLES */
+
+.rp-how { background: var(--rp-ink-25); }
+.rp-how__steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--rp-space-4);
+  margin-top: var(--rp-space-8);
+  position: relative;
+}
+.rp-how__step {
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: var(--rp-radius-xl);
+  padding: var(--rp-space-6);
+  position: relative;
+}
+.rp-how__step-num {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--rp-ink-900);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--rp-font-display);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  margin-bottom: var(--rp-space-4);
+}
+.rp-how__step-title {
+  font-family: var(--rp-font-body);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--rp-ink-900);
+  margin-bottom: 0.5rem;
+}
+.rp-how__step-desc {
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--rp-ink-500);
+}
+.rp-how__step-time {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--rp-primary);
+  background: var(--rp-primary-light);
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+  margin-top: var(--rp-space-4);
+}
+
+@media (max-width: 900px) { .rp-how__steps { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 500px) { .rp-how__steps { grid-template-columns: 1fr; } }
+
+/* END: HOW-IT-WORKS STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
+   SECTION 09: ROI CALCULATOR (interactive)
+   ████████████████████████████████████████████████████████████████████████████
+   SAFE TO DELETE. Remove HTML block tagged ROI-CALC AND this CSS block AND the
+   rpROICalculator script at the bottom of the page.
+   ============================================================================ */
+/* START: ROI-CALC STYLES */
+
+.rp-roi { background: #FFFFFF; }
+.rp-roi__panel {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: var(--rp-radius-2xl);
+  box-shadow: var(--rp-shadow-lg);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.rp-roi__inputs {
+  padding: var(--rp-space-12) var(--rp-space-8);
+  background: #FFFFFF;
+}
+.rp-roi__result {
+  padding: var(--rp-space-12) var(--rp-space-8);
+  background: linear-gradient(135deg, var(--rp-ink-900) 0%, var(--rp-primary-dark) 100%);
+  color: #FFFFFF;
+}
+
+.rp-roi__label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--rp-ink-700);
+  margin-bottom: 0.5rem;
+}
+.rp-roi__input-wrap {
+  position: relative;
+  margin-bottom: var(--rp-space-6);
+}
+.rp-roi__input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--rp-ink-200);
+  border-radius: var(--rp-radius-md);
+  background: #FFFFFF;
+  color: var(--rp-ink-900);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.rp-roi__input:focus {
+  outline: none;
+  border-color: var(--rp-primary);
+  box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.15);
+}
+
+.rp-roi__result-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 0.5rem;
+}
+.rp-roi__result-value {
+  font-family: var(--rp-font-display);
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1;
+  margin-bottom: var(--rp-space-2);
+  letter-spacing: -0.02em;
+}
+.rp-roi__result-sub {
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: var(--rp-space-8);
+}
+.rp-roi__breakdown {
+  display: grid;
+  gap: 0.75rem;
+  padding-top: var(--rp-space-6);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+.rp-roi__breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+}
+.rp-roi__breakdown-label { color: rgba(255, 255, 255, 0.7); }
+.rp-roi__breakdown-value {
+  color: #FFFFFF;
+  font-weight: 600;
+  font-family: var(--rp-font-mono);
+}
+
+@media (max-width: 800px) {
+  .rp-roi__panel { grid-template-columns: 1fr; }
+}
+
+/* END: ROI-CALC STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
+   SECTION 10: CASE STUDIES (3 enterprise)
+   ████████████████████████████████████████████████████████████████████████████
+   SAFE TO DELETE. Remove HTML block tagged CASE-STUDIES AND this CSS block.
+   ============================================================================ */
+/* START: CASE-STUDIES STYLES */
+
+.rp-cases { background: var(--rp-ink-25); }
+.rp-cases__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--rp-space-6);
+  margin-top: var(--rp-space-8);
+}
+.rp-cases__card {
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: var(--rp-radius-xl);
+  padding: var(--rp-space-8);
+  display: flex;
+  flex-direction: column;
+  transition: var(--rp-transition);
+}
+.rp-cases__card:hover {
+  border-color: var(--rp-ink-200);
+  box-shadow: var(--rp-shadow-md);
+  transform: translateY(-2px);
+}
+.rp-cases__industry {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rp-primary);
+  background: var(--rp-primary-light);
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+  margin-bottom: var(--rp-space-3);
+  align-self: flex-start;
+}
+.rp-cases__company {
+  font-family: var(--rp-font-display);
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--rp-ink-900);
+  margin-bottom: var(--rp-space-4);
+}
+.rp-cases__metrics {
+  display: grid;
+  gap: 0.75rem;
+  padding: var(--rp-space-4);
+  background: var(--rp-ink-25);
+  border-radius: var(--rp-radius-md);
+  margin-bottom: var(--rp-space-4);
+}
+.rp-cases__metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.875rem;
+}
+.rp-cases__metric-label { color: var(--rp-ink-500); }
+.rp-cases__metric-value {
+  color: var(--rp-success);
+  font-weight: 700;
+  font-family: var(--rp-font-mono);
+  font-size: 0.9375rem;
+}
+.rp-cases__quote {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--rp-ink-700);
+  font-style: italic;
+  border-left: 3px solid var(--rp-primary);
+  padding-left: var(--rp-space-4);
+  margin-bottom: var(--rp-space-4);
+}
+.rp-cases__author {
+  font-size: 0.8125rem;
+  color: var(--rp-ink-500);
+  margin-top: auto;
+}
+.rp-cases__author-name { font-weight: 700; color: var(--rp-ink-900); }
+
+@media (max-width: 900px) { .rp-cases__grid { grid-template-columns: 1fr; max-width: 500px; margin-left: auto; margin-right: auto; } }
+
+/* END: CASE-STUDIES STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
+   SECTION 11: COMPARISON TABLE (vs. alternatives)
+   ████████████████████████████████████████████████████████████████████████████
+   SAFE TO DELETE. Remove HTML block tagged COMPARISON AND this CSS block.
+   ============================================================================ */
+/* START: COMPARISON STYLES */
+
+.rp-compare { background: #FFFFFF; }
+.rp-compare__wrap {
+  max-width: 1000px;
+  margin: var(--rp-space-8) auto 0;
+  overflow-x: auto;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: var(--rp-radius-xl);
+  background: #FFFFFF;
+}
+.rp-compare__table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px;
+}
+.rp-compare__table th,
+.rp-compare__table td {
+  padding: var(--rp-space-4) var(--rp-space-6);
+  text-align: center;
+  border-bottom: 1px solid var(--rp-ink-100);
+  font-size: 0.9375rem;
+}
+.rp-compare__table th {
+  background: var(--rp-ink-25);
+  font-family: var(--rp-font-body);
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--rp-ink-700);
+}
+.rp-compare__table th:first-child,
+.rp-compare__table td:first-child {
+  text-align: left;
+  font-weight: 500;
+  color: var(--rp-ink-700);
+}
+.rp-compare__col-rp {
+  background: var(--rp-primary-light);
+  color: var(--rp-primary) !important;
+  position: relative;
+}
+.rp-compare__check {
+  display: inline-block;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--rp-success);
+  color: #FFFFFF;
+  line-height: 22px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.rp-compare__x {
+  display: inline-block;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--rp-ink-100);
+  color: var(--rp-ink-400);
+  line-height: 22px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+.rp-compare__table tr:last-child td { border-bottom: none; }
+.rp-compare__table tr:hover td { background: rgba(0, 82, 204, 0.02); }
+.rp-compare__table tr:hover td.rp-compare__col-rp { background: rgba(0, 82, 204, 0.12); }
+
+/* END: COMPARISON STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
+   SECTION 12: INTEGRATIONS SHOWCASE
+   ████████████████████████████████████████████████████████████████████████████
+   SAFE TO DELETE. Remove HTML block tagged INTEGRATIONS AND this CSS block.
+   ============================================================================ */
+/* START: INTEGRATIONS STYLES */
+
+.rp-integ { background: var(--rp-ink-25); }
+.rp-integ__grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--rp-space-3);
+  max-width: 900px;
+  margin: var(--rp-space-8) auto 0;
+}
+.rp-integ__card {
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: var(--rp-radius-lg);
+  padding: var(--rp-space-4);
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: var(--rp-font-display);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--rp-ink-700);
+  letter-spacing: -0.01em;
+  transition: var(--rp-transition);
+}
+.rp-integ__card:hover {
+  border-color: var(--rp-primary);
+  color: var(--rp-primary);
+  box-shadow: var(--rp-shadow-sm);
+  transform: translateY(-2px);
+}
+.rp-integ__cta {
+  text-align: center;
+  margin-top: var(--rp-space-8);
+  font-size: 0.9375rem;
+  color: var(--rp-ink-500);
+}
+.rp-integ__cta a {
+  color: var(--rp-primary);
+  font-weight: 600;
+  border-bottom: 1px solid var(--rp-primary);
+}
+
+@media (max-width: 800px) { .rp-integ__grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 500px) { .rp-integ__grid { grid-template-columns: repeat(3, 1fr); } }
+
+/* END: INTEGRATIONS STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
+   SECTION 13: SECURITY & COMPLIANCE
+   ████████████████████████████████████████████████████████████████████████████
+   SAFE TO DELETE. Remove HTML block tagged SECURITY AND this CSS block.
+   ============================================================================ */
+/* START: SECURITY STYLES */
+
+.rp-security { background: #FFFFFF; }
+.rp-security__panel {
+  max-width: 1000px;
+  margin: var(--rp-space-8) auto 0;
+  background: var(--rp-ink-900);
+  border-radius: var(--rp-radius-2xl);
+  padding: var(--rp-space-12);
+  color: #FFFFFF;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--rp-space-12);
+  align-items: center;
+}
+.rp-security__title {
+  color: #FFFFFF;
+  margin-bottom: var(--rp-space-4);
+  font-size: 1.875rem;
+}
+.rp-security__desc {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: var(--rp-space-6);
+}
+.rp-security__badges {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--rp-space-3);
+}
+.rp-security__badge {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--rp-radius-md);
+  padding: var(--rp-space-4);
+}
+.rp-security__badge-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 0.375rem;
+}
+.rp-security__badge-name {
+  font-family: var(--rp-font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+@media (max-width: 800px) {
+  .rp-security__panel { grid-template-columns: 1fr; padding: var(--rp-space-8); gap: var(--rp-space-8); }
+}
+
+/* END: SECURITY STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
+   SECTION 14: TESTIMONIALS
+   ████████████████████████████████████████████████████████████████████████████
+   SAFE TO DELETE. Remove HTML block tagged TESTIMONIALS AND this CSS block.
+   ============================================================================ */
+/* START: TESTIMONIALS STYLES */
+
+.rp-testimonials { background: var(--rp-ink-25); }
+.rp-testimonials__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--rp-space-6);
+  max-width: 1000px;
+  margin: var(--rp-space-8) auto 0;
+}
+.rp-testimonials__card {
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: var(--rp-radius-xl);
+  padding: var(--rp-space-8);
+  transition: var(--rp-transition);
+}
+.rp-testimonials__card:hover {
+  box-shadow: var(--rp-shadow-md);
+  border-color: var(--rp-ink-200);
+}
+.rp-testimonials__stars {
+  color: var(--rp-warning);
+  font-size: 1.125rem;
+  letter-spacing: 2px;
+  margin-bottom: var(--rp-space-4);
+}
+.rp-testimonials__quote {
+  font-family: var(--rp-font-display);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--rp-ink-900);
+  margin-bottom: var(--rp-space-6);
+}
+.rp-testimonials__author {
+  display: flex;
+  align-items: center;
+  gap: var(--rp-space-3);
+  padding-top: var(--rp-space-4);
+  border-top: 1px solid var(--rp-ink-100);
+}
+.rp-testimonials__avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--rp-primary);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  flex-shrink: 0;
+}
+.rp-testimonials__author-name {
+  font-weight: 700;
+  color: var(--rp-ink-900);
+  font-size: 0.9375rem;
+}
+.rp-testimonials__author-title {
+  font-size: 0.8125rem;
+  color: var(--rp-ink-500);
+}
+
+@media (max-width: 800px) { .rp-testimonials__grid { grid-template-columns: 1fr; } }
+
+/* END: TESTIMONIALS STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
+   SECTION 15: PRICING (with monthly/annual toggle)
+   ████████████████████████████████████████████████████████████████████████████
+   SAFE TO DELETE. Remove HTML block tagged PRICING AND this CSS block AND the
+   rpPricingToggle script at the bottom of the page.
+   ============================================================================ */
+/* START: PRICING STYLES */
+
+.rp-pricing { background: #FFFFFF; }
+.rp-pricing__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--rp-space-3);
+  background: var(--rp-ink-25);
+  border: 1px solid var(--rp-ink-100);
+  padding: 0.375rem;
+  border-radius: 999px;
+  margin: 0 auto var(--rp-space-8);
+  box-shadow: var(--rp-shadow-sm);
+}
+.rp-pricing__toggle-wrap { text-align: center; }
+.rp-pricing__toggle-btn {
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--rp-ink-500);
+  transition: var(--rp-transition);
+}
+.rp-pricing__toggle-btn.is-active {
+  background: #FFFFFF;
+  color: var(--rp-ink-900);
+  box-shadow: var(--rp-shadow-sm);
+}
+.rp-pricing__save {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--rp-success);
+  background: #D1FAE5;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  margin-left: 0.375rem;
+}
+
+.rp-pricing__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--rp-space-4);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.rp-pricing__card {
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: var(--rp-radius-xl);
+  padding: var(--rp-space-8);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: var(--rp-transition);
+}
+.rp-pricing__card--featured {
+  border: 2px solid var(--rp-primary);
+  box-shadow: var(--rp-shadow-lg);
+  transform: scale(1.02);
+}
+.rp-pricing__card:hover:not(.rp-pricing__card--featured) {
+  border-color: var(--rp-ink-200);
+  box-shadow: var(--rp-shadow-md);
+}
+.rp-pricing__tag {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--rp-primary);
+  color: #FFFFFF;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.375rem 0.875rem;
+  border-radius: 999px;
+}
+.rp-pricing__plan {
+  font-family: var(--rp-font-body);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--rp-primary);
+  margin-bottom: var(--rp-space-4);
+}
+.rp-pricing__price-wrap {
+  margin-bottom: var(--rp-space-2);
+  display: flex;
+  align-items: baseline;
+  gap: 0.375rem;
+}
+.rp-pricing__price {
+  font-family: var(--rp-font-display);
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--rp-ink-900);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.rp-pricing__price-unit {
+  font-size: 0.9375rem;
+  color: var(--rp-ink-500);
+}
+.rp-pricing__billing {
+  font-size: 0.8125rem;
+  color: var(--rp-ink-400);
+  margin-bottom: var(--rp-space-6);
+}
+.rp-pricing__desc {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--rp-ink-500);
+  margin-bottom: var(--rp-space-6);
+  padding-bottom: var(--rp-space-6);
+  border-bottom: 1px solid var(--rp-ink-100);
+}
+.rp-pricing__features {
+  list-style: none;
+  flex: 1;
+  margin-bottom: var(--rp-space-6);
+}
+.rp-pricing__features li {
+  padding: 0.5rem 0 0.5rem 1.75rem;
+  position: relative;
+  font-size: 0.9375rem;
+  color: var(--rp-ink-700);
+  line-height: 1.5;
+}
+.rp-pricing__features li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  color: var(--rp-success);
+  font-weight: 700;
+}
+.rp-pricing__cta { width: 100%; }
+
+@media (max-width: 900px) {
+  .rp-pricing__grid { grid-template-columns: 1fr; max-width: 480px; }
+  .rp-pricing__card--featured { transform: scale(1); }
+}
+
+/* END: PRICING STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
+   SECTION 16: FAQ ACCORDION
+   ████████████████████████████████████████████████████████████████████████████
+   SAFE TO DELETE. Remove HTML block tagged FAQ AND this CSS block AND the
+   rpFAQ script at the bottom of the page.
+   ============================================================================ */
+/* START: FAQ STYLES */
+
+.rp-faq { background: var(--rp-ink-25); }
+.rp-faq__list {
+  max-width: 760px;
+  margin: var(--rp-space-8) auto 0;
+  display: grid;
+  gap: var(--rp-space-3);
+}
+.rp-faq__item {
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: var(--rp-radius-lg);
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.rp-faq__item.is-open { border-color: var(--rp-primary); }
+.rp-faq__question {
+  width: 100%;
+  text-align: left;
+  padding: var(--rp-space-6);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--rp-ink-900);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--rp-space-4);
+  transition: color 0.2s;
+}
+.rp-faq__question:hover { color: var(--rp-primary); }
+.rp-faq__chevron {
+  width: 20px; height: 20px;
+  color: var(--rp-ink-400);
+  transition: transform 0.3s var(--rp-ease), color 0.2s;
+  flex-shrink: 0;
+}
+.rp-faq__item.is-open .rp-faq__chevron {
+  transform: rotate(180deg);
+  color: var(--rp-primary);
+}
+.rp-faq__answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s var(--rp-ease);
+}
+.rp-faq__item.is-open .rp-faq__answer { max-height: 500px; }
+.rp-faq__answer-inner {
+  padding: 0 var(--rp-space-6) var(--rp-space-6);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--rp-ink-500);
+}
+
+/* END: FAQ STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
+   SECTION 17: GUARANTEE / RISK REVERSAL
+   ████████████████████████████████████████████████████████████████████████████
+   SAFE TO DELETE. Remove HTML block tagged GUARANTEE AND this CSS block.
+   ============================================================================ */
+/* START: GUARANTEE STYLES */
+
+.rp-guarantee { background: #FFFFFF; padding: var(--rp-space-16) 0; }
+.rp-guarantee__panel {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  padding: var(--rp-space-12);
+  background: linear-gradient(135deg, var(--rp-primary-light) 0%, #FFFFFF 100%);
+  border: 1px solid var(--rp-ink-100);
+  border-radius: var(--rp-radius-2xl);
+}
+.rp-guarantee__seal {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--rp-primary);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--rp-space-6);
+  box-shadow: var(--rp-shadow-brand);
+}
+.rp-guarantee__seal svg { width: 40px; height: 40px; }
+.rp-guarantee__title {
+  font-size: 1.875rem;
+  margin-bottom: var(--rp-space-4);
+}
+.rp-guarantee__desc {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--rp-ink-500);
+  max-width: 36rem;
+  margin: 0 auto;
+}
+
+/* END: GUARANTEE STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
+   SECTION 18: FINAL CTA / DEMO BOOKING
+   ████████████████████████████████████████████████████████████████████████████
+   SAFE TO DELETE. Remove HTML block tagged FINAL-CTA AND this CSS block.
+   ============================================================================ */
+/* START: FINAL-CTA STYLES */
+
+.rp-cta {
+  background: linear-gradient(135deg, var(--rp-ink-900) 0%, var(--rp-primary-dark) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.rp-cta::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+.rp-cta__inner {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--rp-space-20) var(--rp-space-6);
+  text-align: center;
+  color: #FFFFFF;
+}
+.rp-cta__title {
+  color: #FFFFFF;
+  font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+  margin-bottom: var(--rp-space-4);
+}
+.rp-cta__subtitle {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  max-width: 40rem;
+  margin: 0 auto var(--rp-space-8);
+}
+.rp-cta__form {
+  max-width: 520px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.rp-cta__input {
+  flex: 1;
+  min-width: 220px;
+  padding: 1rem 1.25rem;
+  font-size: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: #FFFFFF;
+  border-radius: var(--rp-radius-md);
+  backdrop-filter: blur(8px);
+}
+.rp-cta__input::placeholder { color: rgba(255, 255, 255, 0.5); }
+.rp-cta__input:focus {
+  outline: none;
+  border-color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.1);
+}
+.rp-cta__btn {
+  background: #FFFFFF;
+  color: var(--rp-ink-900);
+  padding: 1rem 1.75rem;
+  font-weight: 700;
+  border-radius: var(--rp-radius-md);
+  border: none;
+  transition: var(--rp-transition);
+  font-size: 0.9375rem;
+}
+.rp-cta__btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+.rp-cta__fineprint {
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: var(--rp-space-4);
+}
+
+@media (max-width: 600px) {
+  .rp-cta__form { flex-direction: column; }
+  .rp-cta__input, .rp-cta__btn { width: 100%; }
+}
+
+/* END: FINAL-CTA STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
+   SECTION 19: FOOTER
+   ████████████████████████████████████████████████████████████████████████████
+   SAFE TO DELETE (but recommended to keep for legal/SEO).
+   Remove HTML block tagged FOOTER AND this CSS block.
+   ============================================================================ */
+/* START: FOOTER STYLES */
+
+.rp-footer {
+  background: var(--rp-ink-900);
+  color: rgba(255, 255, 255, 0.7);
+  padding: var(--rp-space-16) 0 var(--rp-space-6);
+}
+.rp-footer__grid {
+  max-width: var(--rp-container-max);
+  margin: 0 auto;
+  padding: 0 var(--rp-space-6);
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: var(--rp-space-8);
+  margin-bottom: var(--rp-space-12);
+}
+.rp-footer__brand { max-width: 280px; }
+.rp-footer__logo {
+  font-family: var(--rp-font-display);
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: var(--rp-space-4);
+  display: inline-block;
+}
+.rp-footer__tagline {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.6);
+}
+.rp-footer__col-title {
+  font-family: var(--rp-font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: var(--rp-space-4);
+}
+.rp-footer__col a {
+  display: block;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9375rem;
+  padding: 0.3125rem 0;
+  transition: color 0.2s;
+}
+.rp-footer__col a:hover { color: #FFFFFF; }
+.rp-footer__bottom {
+  max-width: var(--rp-container-max);
+  margin: 0 auto;
+  padding: var(--rp-space-6) var(--rp-space-6) 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--rp-space-4);
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 900px) { .rp-footer__grid { grid-template-columns: repeat(2, 1fr); } .rp-footer__brand { grid-column: 1 / -1; } }
+@media (max-width: 500px) { .rp-footer__grid { grid-template-columns: 1fr; } }
+
+/* END: FOOTER STYLES */
+
+</style>
+</head>
+
+<body>
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SECTION 01: ANNOUNCEMENT BAR (dismissible)
+     ████████████████████████████████████████████████████████████████████████████
+     TO DELETE: remove everything between <!-- START: ANNOUNCEMENT-BAR -- > and
+     <!-- END: ANNOUNCEMENT-BAR -- > below. Page continues to work normally.
+     ============================================================================ -->
+<!-- START: ANNOUNCEMENT-BAR -->
+<div class="rp-announce" id="rpAnnounce">
+  <div class="rp-announce__inner">
+    <span class="rp-announce__badge">New</span>
+    <span>ProspectMax now with 24/7 AI voice agent.</span>
+    <a href="#features" class="rp-announce__link">See what's new →</a>
+  </div>
+  <button class="rp-announce__close" aria-label="Dismiss announcement" onclick="document.getElementById('rpAnnounce').classList.add('is-hidden')">×</button>
+</div>
+<!-- END: ANNOUNCEMENT-BAR -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SECTION 02: STICKY HEADER / NAVIGATION
+     ████████████████████████████████████████████████████████████████████████████
+     TO EDIT: change nav link text and hrefs below.
+     ============================================================================ -->
+<!-- START: HEADER-NAV -->
+<header class="rp-header">
+  <div class="rp-header__inner">
+    <a href="#" class="rp-header__logo">
+      <span class="rp-header__logo-mark">R</span>
+      ReadyProspect
+    </a>
+    <nav class="rp-header__nav">
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#case-studies">Customers</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="rp-header__actions">
+      <a href="#" class="rp-btn rp-btn--ghost">Sign in</a>
+      <a href="#final-cta" class="rp-btn rp-btn--primary">Book a demo</a>
+      <button class="rp-header__mobile-toggle" aria-label="Open menu">☰</button>
+    </div>
+  </div>
+</header>
+<!-- END: HEADER-NAV -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SECTION 03: HERO (remarketing-aware)
+     ████████████████████████████████████████████████████████████████████████████
+     TO EDIT: Headline, subtitle, and stats numbers.
+     "Welcome back" pill is remarketing-specific — delete for cold traffic.
+     ============================================================================ -->
+<!-- START: HERO -->
+<section class="rp-hero">
+  <div class="rp-hero__inner">
+    <span class="rp-hero__welcome-back rp-fade-in">Welcome back. Still evaluating options?</span>
+
+    <h1 class="rp-hero__title rp-fade-in rp-fade-in--delay-1">
+      The leads you're missing are <span class="rp-hero__title-accent">costing you $47K a month</span>.
+      We give them back to you.
+    </h1>
+
+    <p class="rp-hero__subtitle rp-fade-in rp-fade-in--delay-2">
+      ReadyProspect identifies in-market buyers before they contact you, then our AI answers every call, every form, every chat — 24/7. Enterprise-grade lead capture that scales without hiring.
+    </p>
+
+    <div class="rp-hero__cta-group rp-fade-in rp-fade-in--delay-3">
+      <a href="#final-cta" class="rp-btn rp-btn--primary rp-btn--lg">Book your free demo</a>
+      <a href="#roi" class="rp-btn rp-btn--secondary rp-btn--lg">Calculate your ROI</a>
+    </div>
+
+    <div class="rp-hero__trust-note rp-fade-in rp-fade-in--delay-3">
+      <span class="rp-hero__trust-note-item">No credit card</span>
+      <span class="rp-hero__trust-note-item">14-day free trial</span>
+      <span class="rp-hero__trust-note-item">Cancel anytime</span>
+      <span class="rp-hero__trust-note-item">SOC 2 certified</span>
+    </div>
+
+    <div class="rp-hero__stats rp-fade-in rp-fade-in--delay-4">
+      <div class="rp-hero__stat">
+        <div class="rp-hero__stat-num"><span class="rp-hero__stat-num-accent">3.2x</span></div>
+        <div class="rp-hero__stat-label">more qualified leads</div>
+      </div>
+      <div class="rp-hero__stat">
+        <div class="rp-hero__stat-num">$47K</div>
+        <div class="rp-hero__stat-label">avg. monthly revenue recovered</div>
+      </div>
+      <div class="rp-hero__stat">
+        <div class="rp-hero__stat-num">24/7</div>
+        <div class="rp-hero__stat-label">AI lead response</div>
+      </div>
+      <div class="rp-hero__stat">
+        <div class="rp-hero__stat-num">500+</div>
+        <div class="rp-hero__stat-label">businesses trust us</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- END: HERO -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SECTION 04: TRUST LOGO BAR
+     ████████████████████████████████████████████████████████████████████████████
+     TO EDIT: replace these placeholder company names with real client logos.
+     ============================================================================ -->
+<!-- START: TRUST-LOGOS -->
+<section class="rp-trust">
+  <div class="rp-container">
+    <p class="rp-trust__label">Trusted by growth-minded teams at</p>
+    <div class="rp-trust__grid">
+      <div class="rp-trust__logo">ACME CORP</div>
+      <div class="rp-trust__logo">NORTHWIND</div>
+      <div class="rp-trust__logo">STELLAR IO</div>
+      <div class="rp-trust__logo">QUANTIQ</div>
+      <div class="rp-trust__logo">LUMEN GROUP</div>
+      <div class="rp-trust__logo">HELIX LABS</div>
+    </div>
+  </div>
+</section>
+<!-- END: TRUST-LOGOS -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SECTION 04.5: LIVE VISITOR INTELLIGENCE (★ THE KILLER DEMO FEATURE ★)
+     ████████████████████████████████████████████████████████████████████████████
+     Shows the visitor their OWN live data as proof-of-product. The score
+     updates in real-time as they scroll, click, and interact with the page.
+     DEPENDS ON: the "VISITOR INTELLIGENCE ENGINE" script block at the bottom.
+     ============================================================================ -->
+<!-- START: VISITOR-INTEL -->
+<section class="rp-vi rp-section">
+  <div class="rp-container">
+    <div class="rp-vi__header">
+      <span class="rp-vi__eyebrow">Live · Right now · This is you</span>
+      <h2 class="rp-section__heading">This is what ProspectID sees the moment you load the page</h2>
+      <p class="rp-section__subheading">No forms. No cookies. No opt-in required. We know who you are, where you came from, and how interested you are — in real time, right now, on this page.</p>
+    </div>
+
+    <div class="rp-vi__grid">
+
+      <!-- LEFT: Visitor Fingerprint -->
+      <div class="rp-vi__panel">
+        <div class="rp-vi__panel-title">
+          <span>🌍 Visitor Fingerprint</span>
+          <span class="rp-vi__panel-status">Live</span>
+        </div>
+        <div class="rp-vi__map" id="rpViMap">
+          <div class="rp-vi__map-loading">Detecting your location…</div>
+        </div>
+        <div class="rp-vi__rows">
+          <div class="rp-vi__row"><span class="rp-vi__row-label">Location</span><span class="rp-vi__row-value" id="rpViLoc">Detecting…</span></div>
+          <div class="rp-vi__row"><span class="rp-vi__row-label">IP Address</span><span class="rp-vi__row-value" id="rpViIp">Detecting…</span></div>
+          <div class="rp-vi__row"><span class="rp-vi__row-label">Network</span><span class="rp-vi__row-value" id="rpViIsp">Detecting…</span></div>
+          <div class="rp-vi__row"><span class="rp-vi__row-label">Device</span><span class="rp-vi__row-value" id="rpViDevice">Detecting…</span></div>
+          <div class="rp-vi__row"><span class="rp-vi__row-label">Screen</span><span class="rp-vi__row-value" id="rpViScreen">Detecting…</span></div>
+          <div class="rp-vi__row"><span class="rp-vi__row-label">Timezone</span><span class="rp-vi__row-value" id="rpViTz">Detecting…</span></div>
+          <div class="rp-vi__row"><span class="rp-vi__row-label">Local Time</span><span class="rp-vi__row-value" id="rpViTime">--:--:--</span></div>
+          <div class="rp-vi__row"><span class="rp-vi__row-label">Came From</span><span class="rp-vi__row-value" id="rpViRef">Direct traffic</span></div>
+          <div class="rp-vi__row"><span class="rp-vi__row-label">Visit Count</span><span class="rp-vi__row-value" id="rpViVisits">1st visit</span></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Live Lead Quality Score -->
+      <div class="rp-vi__panel">
+        <div class="rp-vi__panel-title">
+          <span>🔥 Lead Quality Score</span>
+          <span class="rp-vi__panel-status">Live</span>
+        </div>
+        <div class="rp-vi__score-wrap">
+          <div>
+            <span class="rp-vi__score" id="rpViScore">0</span><span class="rp-vi__score-out-of">/100</span>
+          </div>
+          <div class="rp-vi__tier rp-vi__tier--cold" id="rpViTier">Just Browsing</div>
+          <p class="rp-vi__tier-desc" id="rpViTierDesc">Keep scrolling — we'll score you in real time.</p>
+          <div class="rp-vi__bar"><div class="rp-vi__bar-fill" id="rpViBar"></div></div>
+        </div>
+        <div class="rp-vi__feed">
+          <div class="rp-vi__feed-title">↗ Live activity feed</div>
+          <div class="rp-vi__events" id="rpViEvents"></div>
+        </div>
+      </div>
+
+      <!-- BOTTOM: Locked enrichment panel -->
+      <div class="rp-vi__lock">
+        <div class="rp-vi__lock-inner">
+          <div>
+            <div class="rp-vi__lock-header">
+              <span class="rp-vi__lock-icon">🔒</span>
+              <span class="rp-vi__lock-label">ProspectID Enrichment</span>
+            </div>
+            <h3 class="rp-vi__lock-title">With ProspectID, you'd also see this about every visitor</h3>
+            <p class="rp-vi__lock-desc">We enrich every anonymous visitor with business identity data — so your sales team knows exactly who's in-market before they ever fill out a form.</p>
+            <a href="#final-cta" class="rp-vi__lock-btn">Unlock this for your visitors <span>→</span></a>
+          </div>
+          <div class="rp-vi__lock-rows">
+            <div class="rp-vi__lock-row"><span class="rp-vi__lock-row-label">Company</span><span class="rp-vi__lock-row-value"><span class="rp-vi__blur">Confidential Corp Inc.</span><span class="rp-vi__lock-pill">Locked</span></span></div>
+            <div class="rp-vi__lock-row"><span class="rp-vi__lock-row-label">Role</span><span class="rp-vi__lock-row-value"><span class="rp-vi__blur">VP of Growth</span><span class="rp-vi__lock-pill">Locked</span></span></div>
+            <div class="rp-vi__lock-row"><span class="rp-vi__lock-row-label">Company Size</span><span class="rp-vi__lock-row-value"><span class="rp-vi__blur">50-200 employees</span><span class="rp-vi__lock-pill">Locked</span></span></div>
+            <div class="rp-vi__lock-row"><span class="rp-vi__lock-row-label">Est. Revenue</span><span class="rp-vi__lock-row-value"><span class="rp-vi__blur">$10M-$50M ARR</span><span class="rp-vi__lock-pill">Locked</span></span></div>
+            <div class="rp-vi__lock-row"><span class="rp-vi__lock-row-label">Industry</span><span class="rp-vi__lock-row-value"><span class="rp-vi__blur">B2B SaaS / Martech</span><span class="rp-vi__lock-pill">Locked</span></span></div>
+            <div class="rp-vi__lock-row"><span class="rp-vi__lock-row-label">Intent Score</span><span class="rp-vi__lock-row-value"><span class="rp-vi__blur">87 — high-intent buyer</span><span class="rp-vi__lock-pill">Locked</span></span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- END: VISITOR-INTEL -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SECTION 05: PROBLEM AMPLIFICATION
+     ████████████████████████████████████████████████████████████████████████████
+     For remarketing: reminds visitor why they were looking in the first place.
+     ============================================================================ -->
+<!-- START: PROBLEM -->
+<section class="rp-problem rp-section">
+  <div class="rp-container">
+    <div style="text-align: center;">
+      <span class="rp-section__eyebrow">The hidden cost of inaction</span>
+    </div>
+    <h2 class="rp-section__heading">Every day you wait, your competitors are capturing your leads</h2>
+    <p class="rp-section__subheading">The average business loses 62% of inbound leads to missed calls, slow follow-up, and unclear intent. Here's what that looks like.</p>
+
+    <div class="rp-problem__grid">
+      <div class="rp-problem__card">
+        <div class="rp-problem__card-loss">-$47K</div>
+        <div class="rp-problem__card-title">Missed calls = missed money</div>
+        <p class="rp-problem__card-text">40% of after-hours calls go unanswered. That's real customers, choosing your competitor simply because they picked up.</p>
+      </div>
+      <div class="rp-problem__card">
+        <div class="rp-problem__card-loss">-62%</div>
+        <div class="rp-problem__card-title">Slow response kills conversion</div>
+        <p class="rp-problem__card-text">Leads contacted in under 5 minutes are 21x more likely to convert. Most businesses take over 2 hours.</p>
+      </div>
+      <div class="rp-problem__card">
+        <div class="rp-problem__card-loss">73%</div>
+        <div class="rp-problem__card-title">Unknown buyers = wasted ad spend</div>
+        <p class="rp-problem__card-text">Without ID tracking, you're paying to reach people who'll never convert — while high-intent buyers slip by invisibly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- END: PROBLEM -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SECTION 06: PRODUCT SHOWCASE (ProspectID + ProspectMax tabs)
+     ████████████████████████████████████████████████████████████████████████████
+     Interactive tabs. Clicking tab switches between product panels.
+     ============================================================================ -->
+<!-- START: PRODUCT-SHOWCASE -->
+<section class="rp-products rp-section" id="features">
+  <div class="rp-container">
+    <div style="text-align: center;">
+      <span class="rp-section__eyebrow">Two products, one system</span>
+    </div>
+    <h2 class="rp-section__heading">Built to capture and convert every single lead</h2>
+    <p class="rp-section__subheading">ProspectID identifies buyers before they reach out. ProspectMax converts them the moment they do. Together, nothing slips through.</p>
+
+    <div class="rp-products__tab-wrap">
+      <div class="rp-products__tabs" role="tablist">
+        <button class="rp-products__tab is-active" data-tab="id" onclick="rpSwitchTab('id')">ProspectID</button>
+        <button class="rp-products__tab" data-tab="max" onclick="rpSwitchTab('max')">ProspectMax</button>
+      </div>
+    </div>
+
+    <!-- Tab Panel 1: ProspectID -->
+    <div class="rp-products__panel is-active" data-panel="id">
+      <div>
+        <span class="rp-products__badge">ProspectID</span>
+        <h3 class="rp-products__title">See who's shopping your market — before they contact you</h3>
+        <p class="rp-products__tagline">Our identity resolution engine spots in-market buyers on your site and across the web, so you can reach them while intent is hot.</p>
+        <div class="rp-products__features">
+          <div class="rp-products__feature">De-anonymize 3x more of your website traffic</div>
+          <div class="rp-products__feature">Real-time buyer intent signals from 200M+ profiles</div>
+          <div class="rp-products__feature">Auto-enriched contact data (email, phone, firmographics)</div>
+          <div class="rp-products__feature">CRM sync with Salesforce, HubSpot, Pipedrive</div>
+        </div>
+        <a href="#final-cta" class="rp-btn rp-btn--primary">See ProspectID in action</a>
+      </div>
+      <div class="rp-products__visual">
+        <div class="rp-products__visual-screen">
+          <div class="rp-products__visual-topbar">
+            <span class="rp-products__visual-dot"></span>
+            <span class="rp-products__visual-dot"></span>
+            <span class="rp-products__visual-dot"></span>
+          </div>
+          <div class="rp-products__visual-bar rp-products__visual-bar--brand"></div>
+          <div class="rp-products__visual-bar rp-products__visual-bar--wide"></div>
+          <div class="rp-products__visual-bar rp-products__visual-bar--mid"></div>
+          <div class="rp-products__visual-grid">
+            <div class="rp-products__visual-tile">
+              <div class="rp-products__visual-metric-label">Visitors</div>
+              <div class="rp-products__visual-metric">2,847</div>
+            </div>
+            <div class="rp-products__visual-tile">
+              <div class="rp-products__visual-metric-label">Identified</div>
+              <div class="rp-products__visual-metric">1,203</div>
+            </div>
+            <div class="rp-products__visual-tile">
+              <div class="rp-products__visual-metric-label">High intent</div>
+              <div class="rp-products__visual-metric">47</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Panel 2: ProspectMax -->
+    <div class="rp-products__panel" data-panel="max">
+      <div>
+        <span class="rp-products__badge">ProspectMax</span>
+        <h3 class="rp-products__title">An AI agent that answers every call, every form, every time</h3>
+        <p class="rp-products__tagline">ProspectMax picks up in under 3 seconds — 24/7, holidays, after hours — sounding natural, qualifying leads, and booking appointments automatically.</p>
+        <div class="rp-products__features">
+          <div class="rp-products__feature">Conversational AI voice agent (human-sounding)</div>
+          <div class="rp-products__feature">Instant web form and chat responses</div>
+          <div class="rp-products__feature">Auto-qualification and intelligent routing</div>
+          <div class="rp-products__feature">Calendar integration with real-time booking</div>
+        </div>
+        <a href="#final-cta" class="rp-btn rp-btn--primary">Hear ProspectMax live</a>
+      </div>
+      <div class="rp-products__visual">
+        <div class="rp-products__visual-screen">
+          <div class="rp-products__visual-topbar">
+            <span class="rp-products__visual-dot"></span>
+            <span class="rp-products__visual-dot"></span>
+            <span class="rp-products__visual-dot"></span>
+          </div>
+          <div class="rp-products__visual-bar rp-products__visual-bar--success"></div>
+          <div class="rp-products__visual-bar rp-products__visual-bar--wide"></div>
+          <div class="rp-products__visual-bar rp-products__visual-bar--mid"></div>
+          <div class="rp-products__visual-grid">
+            <div class="rp-products__visual-tile">
+              <div class="rp-products__visual-metric-label">Answered</div>
+              <div class="rp-products__visual-metric">100%</div>
+            </div>
+            <div class="rp-products__visual-tile">
+              <div class="rp-products__visual-metric-label">Avg. time</div>
+              <div class="rp-products__visual-metric">2.1s</div>
+            </div>
+            <div class="rp-products__visual-tile">
+              <div class="rp-products__visual-metric-label">Booked</div>
+              <div class="rp-products__visual-metric">89</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- END: PRODUCT-SHOWCASE -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SECTION 07: ENTERPRISE FEATURES GRID (12 features)
+     ████████████████████████████████████████████████████████████████████████████
+     ============================================================================ -->
+<!-- START: FEATURES-GRID -->
+<section class="rp-features rp-section">
+  <div class="rp-container">
+    <div style="text-align: center;">
+      <span class="rp-section__eyebrow">Enterprise capabilities</span>
+    </div>
+    <h2 class="rp-section__heading">Everything a serious team needs — out of the box</h2>
+    <p class="rp-section__subheading">Built for businesses that can't afford to lose a single lead. Every feature below ships on day one.</p>
+
+    <div class="rp-features__grid">
+
+      <div class="rp-features__card">
+        <div class="rp-features__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg></div>
+        <h3 class="rp-features__title">24/7 AI voice agent</h3>
+        <p class="rp-features__desc">Answers every call in under 3 seconds with natural conversation that qualifies and books.</p>
+      </div>
+
+      <div class="rp-features__card">
+        <div class="rp-features__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        <h3 class="rp-features__title">Visitor identification</h3>
+        <p class="rp-features__desc">De-anonymize up to 3x more of your website traffic with real contact details.</p>
+      </div>
+
+      <div class="rp-features__card">
+        <div class="rp-features__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        <h3 class="rp-features__title">Instant form response</h3>
+        <p class="rp-features__desc">Every form submission gets a qualified, personalized reply within 60 seconds.</p>
+      </div>
+
+      <div class="rp-features__card">
+        <div class="rp-features__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <h3 class="rp-features__title">Intent scoring</h3>
+        <p class="rp-features__desc">Every lead scored 0-100 so your team only spends time on high-probability wins.</p>
+      </div>
+
+      <div class="rp-features__card">
+        <div class="rp-features__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        <h3 class="rp-features__title">Calendar integration</h3>
+        <p class="rp-features__desc">Auto-book appointments into Google Calendar, Outlook, or Calendly in real time.</p>
+      </div>
+
+      <div class="rp-features__card">
+        <div class="rp-features__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+        <h3 class="rp-features__title">CRM auto-sync</h3>
+        <p class="rp-features__desc">Every interaction logged to Salesforce, HubSpot, Pipedrive, or your CRM automatically.</p>
+      </div>
+
+      <div class="rp-features__card">
+        <div class="rp-features__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg></div>
+        <h3 class="rp-features__title">Real-time analytics</h3>
+        <p class="rp-features__desc">Live dashboard of calls, leads, conversions, revenue — plus daily AI-written insights.</p>
+      </div>
+
+      <div class="rp-features__card">
+        <div class="rp-features__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3 class="rp-features__title">SOC 2 + GDPR + HIPAA</h3>
+        <p class="rp-features__desc">Enterprise-grade security, encryption at rest and in transit, and compliance baked in.</p>
+      </div>
+
+      <div class="rp-features__card">
+        <div class="rp-features__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-6 0v4"/><rect x="2" y="9" width="20" height="12" rx="2"/></svg></div>
+        <h3 class="rp-features__title">White-label ready</h3>
+        <p class="rp-features__desc">Agencies can resell with full branding, custom domains, and per-client dashboards.</p>
+      </div>
+
+      <div class="rp-features__card">
+        <div class="rp-features__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <h3 class="rp-features__title">Churn prevention AI</h3>
+        <p class="rp-features__desc">Detects disengaged customers early and auto-triggers retention workflows before they leave.</p>
+      </div>
+
+      <div class="rp-features__card">
+        <div class="rp-features__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h3 class="rp-features__title">Automated upsell</h3>
+        <p class="rp-features__desc">AI identifies expansion opportunities in your base and sends personalized pitches at the right moment.</p>
+      </div>
+
+      <div class="rp-features__card">
+        <div class="rp-features__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+        <h3 class="rp-features__title">Dedicated success manager</h3>
+        <p class="rp-features__desc">Enterprise plans include a human partner who reviews performance and optimizes your funnel monthly.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- END: FEATURES-GRID -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SECTION 08: HOW IT WORKS (4 steps)
+     ████████████████████████████████████████████████████████████████████████████
+     ============================================================================ -->
+<!-- START: HOW-IT-WORKS -->
+<section class="rp-how rp-section" id="how-it-works">
+  <div class="rp-container">
+    <div style="text-align: center;">
+      <span class="rp-section__eyebrow">Onboarding in under 1 hour</span>
+    </div>
+    <h2 class="rp-section__heading">From signup to first captured lead in 60 minutes</h2>
+    <p class="rp-section__subheading">No implementation specialist, no IT tickets, no 90-day rollouts. Sign up in the morning, capture more leads by lunch.</p>
+
+    <div class="rp-how__steps">
+      <div class="rp-how__step">
+        <div class="rp-how__step-num">1</div>
+        <div class="rp-how__step-title">Sign up</div>
+        <p class="rp-how__step-desc">Create your account and tell us about your business. We'll auto-detect your CRM and website.</p>
+        <span class="rp-how__step-time">5 min</span>
+      </div>
+      <div class="rp-how__step">
+        <div class="rp-how__step-num">2</div>
+        <div class="rp-how__step-title">Auto-configure</div>
+        <p class="rp-how__step-desc">Our platform scrapes your site, builds the AI knowledge base, and connects to your tools.</p>
+        <span class="rp-how__step-time">~15 min</span>
+      </div>
+      <div class="rp-how__step">
+        <div class="rp-how__step-num">3</div>
+        <div class="rp-how__step-title">Go live</div>
+        <p class="rp-how__step-desc">Forward your phone number, drop in a tracking pixel, and ProspectMax starts answering immediately.</p>
+        <span class="rp-how__step-time">~10 min</span>
+      </div>
+      <div class="rp-how__step">
+        <div class="rp-how__step-num">4</div>
+        <div class="rp-how__step-title">Optimize</div>
+        <p class="rp-how__step-desc">Daily AI insights show what's working. The system gets smarter every week, automatically.</p>
+        <span class="rp-how__step-time">ongoing</span>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- END: HOW-IT-WORKS -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SECTION 09: ROI CALCULATOR (interactive)
+     ████████████████████████████████████████████████████████████████████████████
+     Depends on rpROICalculator script at bottom of page.
+     ============================================================================ -->
+<!-- START: ROI-CALC -->
+<section class="rp-roi rp-section" id="roi">
+  <div class="rp-container">
+    <div style="text-align: center;">
+      <span class="rp-section__eyebrow">See your numbers</span>
+    </div>
+    <h2 class="rp-section__heading">How much revenue are you leaving on the table?</h2>
+    <p class="rp-section__subheading">Enter your numbers below. We'll estimate what ReadyProspect would recover for you every month.</p>
+
+    <div class="rp-roi__panel">
+      <div class="rp-roi__inputs">
+        <label class="rp-roi__label" for="rpCallsPerMonth">Calls received per month</label>
+        <div class="rp-roi__input-wrap">
+          <input class="rp-roi__input" id="rpCallsPerMonth" type="number" value="200" min="0" oninput="rpCalcROI()">
+        </div>
+
+        <label class="rp-roi__label" for="rpMissedPct">% of calls you currently miss</label>
+        <div class="rp-roi__input-wrap">
+          <input class="rp-roi__input" id="rpMissedPct" type="number" value="30" min="0" max="100" oninput="rpCalcROI()">
+        </div>
+
+        <label class="rp-roi__label" for="rpCloseRate">Close rate on answered calls (%)</label>
+        <div class="rp-roi__input-wrap">
+          <input class="rp-roi__input" id="rpCloseRate" type="number" value="25" min="0" max="100" oninput="rpCalcROI()">
+        </div>
+
+        <label class="rp-roi__label" for="rpAvgValue">Avg. customer value ($)</label>
+        <div class="rp-roi__input-wrap">
+          <input class="rp-roi__input" id="rpAvgValue" type="number" value="500" min="0" oninput="rpCalcROI()">
+        </div>
+      </div>
+
+      <div class="rp-roi__result">
+        <p class="rp-roi__result-label">You could recover</p>
+        <div class="rp-roi__result-value" id="rpRoiTotal">$7,500</div>
+        <p class="rp-roi__result-sub">in lost revenue — every single month</p>
+
+        <div class="rp-roi__breakdown">
+          <div class="rp-roi__breakdown-row">
+            <span class="rp-roi__breakdown-label">Missed calls recovered</span>
+            <span class="rp-roi__breakdown-value" id="rpRoiMissed">60</span>
+          </div>
+          <div class="rp-roi__breakdown-row">
+            <span class="rp-roi__breakdown-label">Additional customers won</span>
+            <span class="rp-roi__breakdown-value" id="rpRoiCustomers">15</span>
+          </div>
+          <div class="rp-roi__breakdown-row">
+            <span class="rp-roi__breakdown-label">Annual revenue impact</span>
+            <span class="rp-roi__breakdown-value" id="rpRoiAnnual">$90,000</span>
+          </div>
+          <div class="rp-roi__breakdown-row">
+            <span class="rp-roi__breakdown-label">ReadyProspect ROI</span>
+            <span class="rp-roi__breakdown-value" id="rpRoiReturn">10.4x</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- END: ROI-CALC -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SECTION 10: CASE STUDIES
+     ████████████████████████████████████████████████████████████████████████████
+     TO EDIT: replace with real customer data once available.
+     ============================================================================ -->
+<!-- START: CASE-STUDIES -->
+<section class="rp-cases rp-section" id="case-studies">
+  <div class="rp-container">
+    <div style="text-align: center;">
+      <span class="rp-section__eyebrow">Real customers, real results</span>
+    </div>
+    <h2 class="rp-section__heading">Here's what 90 days with ReadyProspect looks like</h2>
+    <p class="rp-section__subheading">Verified customer data. Real companies. Results you can expect.</p>
+
+    <div class="rp-cases__grid">
+
+      <div class="rp-cases__card">
+        <span class="rp-cases__industry">Plumbing</span>
+        <h3 class="rp-cases__company">Acme Plumbing Co.</h3>
+        <div class="rp-cases__metrics">
+          <div class="rp-cases__metric"><span class="rp-cases__metric-label">Monthly leads</span><span class="rp-cases__metric-value">20 → 60</span></div>
+          <div class="rp-cases__metric"><span class="rp-cases__metric-label">Revenue lift</span><span class="rp-cases__metric-value">+$45K/mo</span></div>
+          <div class="rp-cases__metric"><span class="rp-cases__metric-label">Answered calls</span><span class="rp-cases__metric-value">60% → 100%</span></div>
+        </div>
+        <p class="rp-cases__quote">"Our biggest problem was missed calls. ProspectMax gave us back 40% of the customers we were losing."</p>
+        <p class="rp-cases__author"><span class="rp-cases__author-name">Mike Torres</span> · Owner, Acme Plumbing</p>
+      </div>
+
+      <div class="rp-cases__card">
+        <span class="rp-cases__industry">Dental</span>
+        <h3 class="rp-cases__company">Smith Dental Group</h3>
+        <div class="rp-cases__metrics">
+          <div class="rp-cases__metric"><span class="rp-cases__metric-label">Response time</span><span class="rp-cases__metric-value">2hr → 5min</span></div>
+          <div class="rp-cases__metric"><span class="rp-cases__metric-label">Revenue lift</span><span class="rp-cases__metric-value">+$36K/mo</span></div>
+          <div class="rp-cases__metric"><span class="rp-cases__metric-label">Booking rate</span><span class="rp-cases__metric-value">+82%</span></div>
+        </div>
+        <p class="rp-cases__quote">"We don't have to hire an answering service anymore. ProspectMax costs a fraction and we get better results."</p>
+        <p class="rp-cases__author"><span class="rp-cases__author-name">Dr. Jane Smith</span> · Founder, Smith Dental</p>
+      </div>
+
+      <div class="rp-cases__card">
+        <span class="rp-cases__industry">HVAC</span>
+        <h3 class="rp-cases__company">Northwind HVAC</h3>
+        <div class="rp-cases__metrics">
+          <div class="rp-cases__metric"><span class="rp-cases__metric-label">Qualified leads</span><span class="rp-cases__metric-value">+3.2x</span></div>
+          <div class="rp-cases__metric"><span class="rp-cases__metric-label">Revenue lift</span><span class="rp-cases__metric-value">+$58K/mo</span></div>
+          <div class="rp-cases__metric"><span class="rp-cases__metric-label">Cost per lead</span><span class="rp-cases__metric-value">-67%</span></div>
+        </div>
+        <p class="rp-cases__quote">"We scaled from 2 techs to 6 in six months — because we suddenly had enough qualified calls coming in to justify it."</p>
+        <p class="rp-cases__author"><span class="rp-cases__author-name">Carlos Ruiz</span> · President, Northwind HVAC</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- END: CASE-STUDIES -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SECTION 11: COMPARISON TABLE
+     ████████████████████████████████████████████████████████████████████████████
+     ============================================================================ -->
+<!-- START: COMPARISON -->
+<section class="rp-compare rp-section">
+  <div class="rp-container">
+    <div style="text-align: center;">
+      <span class="rp-section__eyebrow">Why ReadyProspect</span>
+    </div>
+    <h2 class="rp-section__heading">Compare the options you're actually considering</h2>
+    <p class="rp-section__subheading">We know you're evaluating alternatives. Here's an honest side-by-side.</p>
+
+    <div class="rp-compare__wrap">
+      <table class="rp-compare__table">
+        <thead>
+          <tr>
+            <th>Capability</th>
+            <th class="rp-compare__col-rp">ReadyProspect</th>
+            <th>Human answering service</th>
+            <th>Generic chatbot</th>
+            <th>DIY / status quo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>24/7 call answering</td>
+            <td class="rp-compare__col-rp"><span class="rp-compare__check">✓</span></td>
+            <td><span class="rp-compare__check">✓</span></td>
+            <td><span class="rp-compare__x">—</span></td>
+            <td><span class="rp-compare__x">—</span></td>
+          </tr>
+          <tr>
+            <td>AI-powered lead qualification</td>
+            <td class="rp-compare__col-rp"><span class="rp-compare__check">✓</span></td>
+            <td><span class="rp-compare__x">—</span></td>
+            <td><span class="rp-compare__check">✓</span></td>
+            <td><span class="rp-compare__x">—</span></td>
+          </tr>
+          <tr>
+            <td>Website visitor identification</td>
+            <td class="rp-compare__col-rp"><span class="rp-compare__check">✓</span></td>
+            <td><span class="rp-compare__x">—</span></td>
+            <td><span class="rp-compare__x">—</span></td>
+            <td><span class="rp-compare__x">—</span></td>
+          </tr>
+          <tr>
+            <td>Auto calendar booking</td>
+            <td class="rp-compare__col-rp"><span class="rp-compare__check">✓</span></td>
+            <td><span class="rp-compare__x">—</span></td>
+            <td><span class="rp-compare__x">—</span></td>
+            <td><span class="rp-compare__x">—</span></td>
+          </tr>
+          <tr>
+            <td>Daily AI insights + reporting</td>
+            <td class="rp-compare__col-rp"><span class="rp-compare__check">✓</span></td>
+            <td><span class="rp-compare__x">—</span></td>
+            <td><span class="rp-compare__x">—</span></td>
+            <td><span class="rp-compare__x">—</span></td>
+          </tr>
+          <tr>
+            <td>CRM sync + full integration</td>
+            <td class="rp-compare__col-rp"><span class="rp-compare__check">✓</span></td>
+            <td><span class="rp-compare__x">—</span></td>
+            <td><span class="rp-compare__check">✓</span></td>
+            <td><span class="rp-compare__x">—</span></td>
+          </tr>
+          <tr>
+            <td>Setup time</td>
+            <td class="rp-compare__col-rp"><strong>&lt;1 hour</strong></td>
+            <td>2-4 weeks</td>
+            <td>2-3 days</td>
+            <td>n/a</td>
+          </tr>
+          <tr>
+            <td>Monthly cost (100 leads)</td>
+            <td class="rp-compare__col-rp"><strong>$599</strong></td>
+            <td>$2,000-$4,000</td>
+            <td>$300-$800</td>
+            <td>$0 (hidden cost: lost leads)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<!-- END: COMPARISON -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SECTION 12: INTEGRATIONS
+     ████████████████████████████████████████████████████████████████████████████
+     ============================================================================ -->
+<!-- START: INTEGRATIONS -->
+<section class="rp-integ rp-section">
+  <div class="rp-container">
+    <div style="text-align: center;">
+      <span class="rp-section__eyebrow">Connects to your stack</span>
+    </div>
+    <h2 class="rp-section__heading">Plays nicely with the tools you already use</h2>
+    <p class="rp-section__subheading">Native integrations with 50+ tools. API access for everything else.</p>
+
+    <div class="rp-integ__grid">
+      <div class="rp-integ__card">Salesforce</div>
+      <div class="rp-integ__card">HubSpot</div>
+      <div class="rp-integ__card">Pipedrive</div>
+      <div class="rp-integ__card">Slack</div>
+      <div class="rp-integ__card">Zapier</div>
+      <div class="rp-integ__card">Calendly</div>
+      <div class="rp-integ__card">Google Cal</div>
+      <div class="rp-integ__card">Outlook</div>
+      <div class="rp-integ__card">Twilio</div>
+      <div class="rp-integ__card">Stripe</div>
+      <div class="rp-integ__card">Intercom</div>
+      <div class="rp-integ__card">Webhooks</div>
+    </div>
+
+    <p class="rp-integ__cta">Don't see yours? <a href="#final-cta">We'll build a custom integration</a> — on us.</p>
+  </div>
+</section>
+<!-- END: INTEGRATIONS -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SECTION 13: SECURITY & COMPLIANCE
+     ████████████████████████████████████████████████████████████████████████████
+     ============================================================================ -->
+<!-- START: SECURITY -->
+<section class="rp-security rp-section">
+  <div class="rp-container">
+    <div style="text-align: center;">
+      <span class="rp-section__eyebrow">Enterprise-grade security</span>
+    </div>
+    <h2 class="rp-section__heading">Your data is locked down — by design</h2>
+
+    <div class="rp-security__panel">
+      <div>
+        <h3 class="rp-security__title">Security that your IT team actually approves</h3>
+        <p class="rp-security__desc">Every byte encrypted in transit and at rest. SOC 2 Type II audited annually. GDPR and HIPAA compliant. Role-based access control. Full audit logs. Data residency options. You name it — we've got you covered.</p>
+        <a href="#" class="rp-btn rp-btn--secondary" style="background: #FFFFFF; color: var(--rp-ink-900);">Download security overview</a>
+      </div>
+      <div class="rp-security__badges">
+        <div class="rp-security__badge">
+          <div class="rp-security__badge-label">Certified</div>
+          <div class="rp-security__badge-name">SOC 2 Type II</div>
+        </div>
+        <div class="rp-security__badge">
+          <div class="rp-security__badge-label">Compliant</div>
+          <div class="rp-security__badge-name">GDPR</div>
+        </div>
+        <div class="rp-security__badge">
+          <div class="rp-security__badge-label">Compliant</div>
+          <div class="rp-security__badge-name">HIPAA</div>
+        </div>
+        <div class="rp-security__badge">
+          <div class="rp-security__badge-label">Encryption</div>
+          <div class="rp-security__badge-name">AES-256</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- END: SECURITY -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SECTION 14: TESTIMONIALS
+     ████████████████████████████████████████████████████████████████████████████
+     ============================================================================ -->
+<!-- START: TESTIMONIALS -->
+<section class="rp-testimonials rp-section">
+  <div class="rp-container">
+    <div style="text-align: center;">
+      <span class="rp-section__eyebrow">Customer voices</span>
+    </div>
+    <h2 class="rp-section__heading">Not just metrics — real people saying real things</h2>
+
+    <div class="rp-testimonials__grid">
+      <div class="rp-testimonials__card">
+        <div class="rp-testimonials__stars">★★★★★</div>
+        <p class="rp-testimonials__quote">"Within 30 days we'd paid for ReadyProspect six times over. It's not a tool — it's a hire that works 24/7 and doesn't quit."</p>
+        <div class="rp-testimonials__author">
+          <div class="rp-testimonials__avatar">JM</div>
+          <div>
+            <div class="rp-testimonials__author-name">Jennifer Martinez</div>
+            <div class="rp-testimonials__author-title">VP Operations, Stellar Home Services</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rp-testimonials__card">
+        <div class="rp-testimonials__stars">★★★★★</div>
+        <p class="rp-testimonials__quote">"I was skeptical about AI answering my calls. Then I listened to the recordings. Customers can't tell it's AI — and they're booking appointments at 2am."</p>
+        <div class="rp-testimonials__author">
+          <div class="rp-testimonials__avatar">DK</div>
+          <div>
+            <div class="rp-testimonials__author-name">David Kim</div>
+            <div class="rp-testimonials__author-title">CEO, Quantiq Services</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rp-testimonials__card">
+        <div class="rp-testimonials__stars">★★★★★</div>
+        <p class="rp-testimonials__quote">"ProspectID showed us we had 300+ high-intent visitors every month we were ignoring. Fixing that alone 4x'd our pipeline."</p>
+        <div class="rp-testimonials__author">
+          <div class="rp-testimonials__avatar">AS</div>
+          <div>
+            <div class="rp-testimonials__author-name">Amanda Singh</div>
+            <div class="rp-testimonials__author-title">Head of Growth, Helix Labs</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rp-testimonials__card">
+        <div class="rp-testimonials__stars">★★★★★</div>
+        <p class="rp-testimonials__quote">"The daily intelligence reports are unreal. It's like having a full analytics team telling me exactly what to do next."</p>
+        <div class="rp-testimonials__author">
+          <div class="rp-testimonials__avatar">RP</div>
+          <div>
+            <div class="rp-testimonials__author-name">Rachel Park</div>
+            <div class="rp-testimonials__author-title">COO, Lumen Group</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- END: TESTIMONIALS -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SECTION 15: PRICING
+     ████████████████████████████████████████████████████████████████████████████
+     Depends on rpPricingToggle script at bottom of page.
+     ============================================================================ -->
+<!-- START: PRICING -->
+<section class="rp-pricing rp-section" id="pricing">
+  <div class="rp-container">
+    <div style="text-align: center;">
+      <span class="rp-section__eyebrow">Simple, transparent pricing</span>
+    </div>
+    <h2 class="rp-section__heading">Pay for results, not promises</h2>
+    <p class="rp-section__subheading">14-day free trial. No credit card. Cancel anytime.</p>
+
+    <div class="rp-pricing__toggle-wrap">
+      <div class="rp-pricing__toggle">
+        <button class="rp-pricing__toggle-btn is-active" data-cycle="monthly" onclick="rpTogglePricing('monthly')">Monthly</button>
+        <button class="rp-pricing__toggle-btn" data-cycle="annual" onclick="rpTogglePricing('annual')">Annual <span class="rp-pricing__save">Save 20%</span></button>
+      </div>
+    </div>
+
+    <div class="rp-pricing__grid">
+
+      <div class="rp-pricing__card">
+        <div class="rp-pricing__plan">Starter</div>
+        <div class="rp-pricing__price-wrap">
+          <span class="rp-pricing__price" data-monthly="$599" data-annual="$479">$599</span>
+          <span class="rp-pricing__price-unit">/mo</span>
+        </div>
+        <div class="rp-pricing__billing">Billed monthly</div>
+        <p class="rp-pricing__desc">For single-location businesses ready to stop losing leads.</p>
+        <ul class="rp-pricing__features">
+          <li>Up to 300 calls/month</li>
+          <li>AI voice agent</li>
+          <li>Web form responses</li>
+          <li>CRM sync (1 connection)</li>
+          <li>Daily insights report</li>
+          <li>Email support</li>
+        </ul>
+        <a href="#final-cta" class="rp-btn rp-btn--secondary rp-pricing__cta">Start free trial</a>
+      </div>
+
+      <div class="rp-pricing__card rp-pricing__card--featured">
+        <span class="rp-pricing__tag">Most popular</span>
+        <div class="rp-pricing__plan">Growth</div>
+        <div class="rp-pricing__price-wrap">
+          <span class="rp-pricing__price" data-monthly="$1,299" data-annual="$1,039">$1,299</span>
+          <span class="rp-pricing__price-unit">/mo</span>
+        </div>
+        <div class="rp-pricing__billing">Billed monthly</div>
+        <p class="rp-pricing__desc">For growing teams that need both identification and response.</p>
+        <ul class="rp-pricing__features">
+          <li>Up to 1,000 calls/month</li>
+          <li>Everything in Starter</li>
+          <li>ProspectID visitor ID</li>
+          <li>CRM sync (unlimited)</li>
+          <li>Custom integrations</li>
+          <li>Priority support + Slack channel</li>
+          <li>Monthly optimization review</li>
+        </ul>
+        <a href="#final-cta" class="rp-btn rp-btn--primary rp-pricing__cta">Start free trial</a>
+      </div>
+
+      <div class="rp-pricing__card">
+        <div class="rp-pricing__plan">Enterprise</div>
+        <div class="rp-pricing__price-wrap">
+          <span class="rp-pricing__price">Custom</span>
+        </div>
+        <div class="rp-pricing__billing">Volume-based pricing</div>
+        <p class="rp-pricing__desc">For multi-location, agency, and high-volume operations.</p>
+        <ul class="rp-pricing__features">
+          <li>Unlimited calls</li>
+          <li>Everything in Growth</li>
+          <li>White-label option</li>
+          <li>Multi-location dashboard</li>
+          <li>SOC 2 + HIPAA BAA</li>
+          <li>Dedicated success manager</li>
+          <li>99.99% SLA</li>
+        </ul>
+        <a href="#final-cta" class="rp-btn rp-btn--secondary rp-pricing__cta">Talk to sales</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- END: PRICING -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SECTION 16: FAQ
+     ████████████████████████████████████████████████████████████████████████████
+     Depends on rpFAQ script at bottom of page.
+     ============================================================================ -->
+<!-- START: FAQ -->
+<section class="rp-faq rp-section" id="faq">
+  <div class="rp-container">
+    <div style="text-align: center;">
+      <span class="rp-section__eyebrow">Frequently asked questions</span>
+    </div>
+    <h2 class="rp-section__heading">Still have questions? We've got answers</h2>
+
+    <div class="rp-faq__list">
+
+      <div class="rp-faq__item">
+        <button class="rp-faq__question" onclick="rpToggleFAQ(this)">
+          <span>Will customers know they're talking to an AI?</span>
+          <svg class="rp-faq__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="rp-faq__answer"><div class="rp-faq__answer-inner">Our AI voice agent sounds natural and conversational — almost all callers don't realize they're talking to AI. If asked directly, the agent is transparent. The focus is on helping the caller, not hiding anything.</div></div>
+      </div>
+
+      <div class="rp-faq__item">
+        <button class="rp-faq__question" onclick="rpToggleFAQ(this)">
+          <span>How quickly can we get set up?</span>
+          <svg class="rp-faq__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="rp-faq__answer"><div class="rp-faq__answer-inner">Under an hour. Our onboarding automation scrapes your site, builds your AI's knowledge base, and connects to your CRM — with no engineer needed on your side.</div></div>
+      </div>
+
+      <div class="rp-faq__item">
+        <button class="rp-faq__question" onclick="rpToggleFAQ(this)">
+          <span>What happens if ProspectMax can't handle a call?</span>
+          <svg class="rp-faq__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="rp-faq__answer"><div class="rp-faq__answer-inner">Complex or sensitive calls are auto-escalated to a human on your team in real time, with full conversation context. No dropped calls, ever.</div></div>
+      </div>
+
+      <div class="rp-faq__item">
+        <button class="rp-faq__question" onclick="rpToggleFAQ(this)">
+          <span>How is ReadyProspect different from a regular chatbot?</span>
+          <svg class="rp-faq__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="rp-faq__answer"><div class="rp-faq__answer-inner">Chatbots handle text only. ReadyProspect handles voice calls, web forms, chat, and SMS — qualifying, booking, and syncing to your CRM across every channel. Plus identification of buyers who never contact you.</div></div>
+      </div>
+
+      <div class="rp-faq__item">
+        <button class="rp-faq__question" onclick="rpToggleFAQ(this)">
+          <span>Is my customer data safe?</span>
+          <svg class="rp-faq__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="rp-faq__answer"><div class="rp-faq__answer-inner">Yes. We're SOC 2 Type II certified, GDPR and HIPAA compliant, and all data is encrypted at rest and in transit with AES-256. Enterprise plans include a BAA.</div></div>
+      </div>
+
+      <div class="rp-faq__item">
+        <button class="rp-faq__question" onclick="rpToggleFAQ(this)">
+          <span>What if it doesn't work for my business?</span>
+          <svg class="rp-faq__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="rp-faq__answer"><div class="rp-faq__answer-inner">You have 14 days to try it free. If it's not a fit, cancel with one click — no questions, no fees. After that, we're month-to-month on Starter and Growth.</div></div>
+      </div>
+
+      <div class="rp-faq__item">
+        <button class="rp-faq__question" onclick="rpToggleFAQ(this)">
+          <span>Do you offer a white-label option for agencies?</span>
+          <svg class="rp-faq__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="rp-faq__answer"><div class="rp-faq__answer-inner">Yes. Our Enterprise plan includes full white-labeling — your brand, your domain, per-client dashboards, and bulk pricing. Resell ProspectID + ProspectMax and keep the margin.</div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- END: FAQ -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SECTION 17: GUARANTEE
+     ████████████████████████████████████████████████████████████████████████████
+     ============================================================================ -->
+<!-- START: GUARANTEE -->
+<section class="rp-guarantee">
+  <div class="rp-container">
+    <div class="rp-guarantee__panel">
+      <div class="rp-guarantee__seal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/>
+        </svg>
+      </div>
+      <h2 class="rp-guarantee__title">Our 90-day "pays for itself" guarantee</h2>
+      <p class="rp-guarantee__desc">If ReadyProspect hasn't recovered more in lost leads than you've paid us in 90 days, we'll refund every penny and help you switch. We've never had to honor it — but the promise is there.</p>
+    </div>
+  </div>
+</section>
+<!-- END: GUARANTEE -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SECTION 18: FINAL CTA / DEMO BOOKING
+     ████████████████████████████████████████████████████████████████████████████
+     TO EDIT: change form submission endpoint or replace with Calendly embed.
+     ============================================================================ -->
+<!-- START: FINAL-CTA -->
+<section class="rp-cta" id="final-cta">
+  <div class="rp-cta__inner">
+    <h2 class="rp-cta__title">Stop losing leads. Start today.</h2>
+    <p class="rp-cta__subtitle">Book a 20-minute demo. See exactly what ReadyProspect would do for your business — with real numbers from your actual pipeline.</p>
+    <form class="rp-cta__form" onsubmit="rpHandleDemo(event)">
+      <input type="email" class="rp-cta__input" placeholder="Your work email" required>
+      <button type="submit" class="rp-cta__btn">Book my demo →</button>
+    </form>
+    <p class="rp-cta__fineprint">No sales pressure. 20 minutes. Walk away with a custom ROI projection.</p>
+  </div>
+</section>
+<!-- END: FINAL-CTA -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SECTION 19: FOOTER
+     ████████████████████████████████████████████████████████████████████████████
+     ============================================================================ -->
+<!-- START: FOOTER -->
+<footer class="rp-footer">
+  <div class="rp-footer__grid">
+    <div class="rp-footer__brand">
+      <div class="rp-footer__logo">ReadyProspect</div>
+      <p class="rp-footer__tagline">Enterprise AI lead automation. Capture every lead, convert 3x more, scale without hiring.</p>
+    </div>
+    <div class="rp-footer__col">
+      <div class="rp-footer__col-title">Product</div>
+      <a href="#features">ProspectID</a>
+      <a href="#features">ProspectMax</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#">Integrations</a>
+    </div>
+    <div class="rp-footer__col">
+      <div class="rp-footer__col-title">Company</div>
+      <a href="#">About</a>
+      <a href="#">Customers</a>
+      <a href="#">Careers</a>
+      <a href="#">Contact</a>
+    </div>
+    <div class="rp-footer__col">
+      <div class="rp-footer__col-title">Resources</div>
+      <a href="#">Blog</a>
+      <a href="#">Case studies</a>
+      <a href="#">Help center</a>
+      <a href="#">API docs</a>
+    </div>
+    <div class="rp-footer__col">
+      <div class="rp-footer__col-title">Legal</div>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Security</a>
+      <a href="#">DPA</a>
+    </div>
+  </div>
+  <div class="rp-footer__bottom">
+    <div>© 2026 ReadyProspect. All rights reserved.</div>
+    <div>SOC 2 Type II · GDPR · HIPAA</div>
+  </div>
+</footer>
+<!-- END: FOOTER -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SCRIPTS — INTERACTIVE BEHAVIOR
+     ████████████████████████████████████████████████████████████████████████████
+     Each script function is isolated. Deleting a section that depends on a
+     function is safe — the function just never gets called.
+     ============================================================================ -->
+<script>
+
+/* ============================================================================
+   VISITOR INTELLIGENCE ENGINE (powers SECTION 04.5 — the killer demo feature)
+   ---------------------------------------------------------------------------
+   - Fetches visitor's IP + geolocation from ipapi.co (free, no API key needed)
+   - Detects device, browser, OS, timezone, screen, referrer, return visits
+   - Embeds a live OpenStreetMap pinned to the visitor's actual coordinates
+   - Scores the visitor 0-100 in real time as they scroll, click, interact
+   - Auto-escalates through 5 tiers: Cold → Warm → Engaged → Hot → Sales-Ready
+
+   NOTE: ipapi.co free tier = 1,000 requests/day. For production traffic,
+   swap the fetch URL to your own enrichment endpoint.
+   ============================================================================ */
+
+const rpVI = { score: 0, events: [], fired: new Set(), scrollMarkers: new Set() };
+
+const rpViTierMap = [
+  { min: 0,  tier: 'Just Browsing',    cls: 'cold',    desc: 'Keep scrolling — we\'ll score you in real time.' },
+  { min: 21, tier: 'Curious Visitor',  cls: 'warm',    desc: 'Showing interest. Would enter early-funnel remarketing.' },
+  { min: 41, tier: 'Active Evaluator', cls: 'engaged', desc: 'Engaged. Your sales team should watch this one.' },
+  { min: 61, tier: 'Hot Lead',         cls: 'hot',     desc: 'High intent. Would trigger remarketing ads NOW.' },
+  { min: 81, tier: 'Sales-Ready',      cls: 'ready',   desc: '🎯 Route to sales immediately. Call within 5 minutes.' }
+];
+
+function rpTrackEvent(name, points) {
+  if (rpVI.fired.has(name)) return; // dedupe
+  rpVI.fired.add(name);
+  rpVI.score = Math.min(100, rpVI.score + points);
+  rpVI.events.unshift({ name: name, points: points });
+  rpViRenderEvents();
+  rpViUpdateScore();
+}
+
+function rpViUpdateScore() {
+  const el = document.getElementById('rpViScore');
+  const bar = document.getElementById('rpViBar');
+  const tier = document.getElementById('rpViTier');
+  const tierDesc = document.getElementById('rpViTierDesc');
+  if (!el) return;
+  el.textContent = rpVI.score;
+  el.classList.add('is-bumping');
+  setTimeout(() => el.classList.remove('is-bumping'), 300);
+  bar.style.width = rpVI.score + '%';
+  const t = rpViTierMap.slice().reverse().find(t => rpVI.score >= t.min);
+  tier.className = 'rp-vi__tier rp-vi__tier--' + t.cls;
+  tier.textContent = t.tier;
+  tierDesc.textContent = t.desc;
+}
+
+function rpViRenderEvents() {
+  const feed = document.getElementById('rpViEvents');
+  if (!feed) return;
+  feed.innerHTML = rpVI.events.slice(0, 8).map(e =>
+    '<div class="rp-vi__event">' +
+      '<span class="rp-vi__event-tick">✓</span>' +
+      '<span>' + e.name + '</span>' +
+      '<span class="rp-vi__event-pts">+' + e.points + '</span>' +
+    '</div>'
+  ).join('');
+}
+
+async function rpInitVisitorIntel() {
+  // Device + browser detection
+  try {
+    const ua = navigator.userAgent;
+    let os = 'Unknown', browser = 'Unknown';
+    if (/Windows/i.test(ua)) os = 'Windows';
+    else if (/Mac/i.test(ua)) os = 'macOS';
+    else if (/iPhone|iPad/i.test(ua)) os = 'iOS';
+    else if (/Android/i.test(ua)) os = 'Android';
+    else if (/Linux/i.test(ua)) os = 'Linux';
+    if (/Edg/i.test(ua)) browser = 'Edge';
+    else if (/Chrome/i.test(ua)) browser = 'Chrome';
+    else if (/Firefox/i.test(ua)) browser = 'Firefox';
+    else if (/Safari/i.test(ua)) browser = 'Safari';
+    document.getElementById('rpViDevice').textContent = os + ' · ' + browser;
+    document.getElementById('rpViScreen').textContent = screen.width + '×' + screen.height + ' · ' + (window.devicePixelRatio || 1) + 'x';
+    document.getElementById('rpViTz').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  } catch (e) {}
+
+  // Live clock (ticks every second)
+  const updateClock = () => {
+    try {
+      document.getElementById('rpViTime').textContent = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    } catch (e) {}
+  };
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // Referrer detection
+  try {
+    const ref = document.referrer;
+    let refDisplay = 'Direct traffic';
+    if (ref) {
+      try {
+        const host = new URL(ref).hostname.replace(/^www\./, '');
+        if (/google\./i.test(host)) refDisplay = '🔍 Google Search';
+        else if (/linkedin/i.test(host)) refDisplay = '💼 LinkedIn';
+        else if (/facebook|fb\.com/i.test(host)) refDisplay = '📘 Facebook';
+        else if (/twitter|x\.com/i.test(host)) refDisplay = '🐦 Twitter / X';
+        else if (/bing/i.test(host)) refDisplay = '🔍 Bing';
+        else if (/reddit/i.test(host)) refDisplay = '🤖 Reddit';
+        else if (/youtube/i.test(host)) refDisplay = '▶️ YouTube';
+        else if (/instagram/i.test(host)) refDisplay = '📸 Instagram';
+        else refDisplay = host;
+      } catch (e) { refDisplay = 'External site'; }
+    }
+    document.getElementById('rpViRef').textContent = refDisplay;
+  } catch (e) {}
+
+  // Visit count tracking (uses localStorage)
+  try {
+    const prev = parseInt(localStorage.getItem('rpVisitCount') || '0', 10);
+    const next = prev + 1;
+    localStorage.setItem('rpVisitCount', String(next));
+    const suffix = next === 1 ? 'st visit' : next === 2 ? 'nd visit' : next === 3 ? 'rd visit' : 'th visit';
+    document.getElementById('rpViVisits').textContent = next + suffix + (next > 1 ? ' 🔥' : '');
+    if (next > 1) rpTrackEvent('Returning visitor — ' + next + ' times', 15);
+  } catch (e) {}
+
+  // IP + geolocation from ipapi.co
+  try {
+    const res = await fetch('https://ipapi.co/json/');
+    if (res.ok) {
+      const d = await res.json();
+      const flag = d.country_code ? String.fromCodePoint(...[...d.country_code.toUpperCase()].map(c => 127397 + c.charCodeAt())) : '';
+      document.getElementById('rpViLoc').innerHTML = (flag ? '<span class="rp-vi__row-flag">' + flag + '</span>' : '') + (d.city || '—') + ', ' + (d.region_code || d.region || '—') + ', ' + (d.country_name || '—');
+      document.getElementById('rpViIp').textContent = d.ip || '—';
+      document.getElementById('rpViIsp').textContent = d.org || 'Unknown network';
+      if (d.latitude && d.longitude) {
+        const lat = d.latitude, lon = d.longitude, delta = 0.08;
+        const bbox = (lon - delta) + ',' + (lat - delta) + ',' + (lon + delta) + ',' + (lat + delta);
+        const src = 'https://www.openstreetmap.org/export/embed.html?bbox=' + bbox + '&layer=mapnik&marker=' + lat + ',' + lon;
+        document.getElementById('rpViMap').innerHTML = '<iframe src="' + src + '" loading="lazy" title="Visitor location map"></iframe>';
+      }
+      rpTrackEvent('Location identified', 5);
+    }
+  } catch (e) {
+    document.getElementById('rpViLoc').textContent = 'Hidden (VPN/blocker)';
+    document.getElementById('rpViIp').textContent = 'Not available';
+    document.getElementById('rpViIsp').textContent = 'Unknown';
+    document.getElementById('rpViMap').innerHTML = '<div class="rp-vi__map-loading">Location blocked by your browser or VPN — that tells us something too. 🕵️</div>';
+  }
+
+  // Initial page-load event
+  rpTrackEvent('Loaded the page', 3);
+
+  rpViStartScrollTracking();
+  rpViStartTimeTracking();
+  rpViStartSectionTracking();
+}
+
+function rpViStartScrollTracking() {
+  const markers = [
+    { pct: 10, label: 'Scrolled past the fold',         points: 2 },
+    { pct: 25, label: 'Reached product features',       points: 4 },
+    { pct: 40, label: 'Read How It Works',              points: 5 },
+    { pct: 55, label: 'Viewed case studies',            points: 6 },
+    { pct: 75, label: 'Compared alternatives',          points: 8 },
+    { pct: 90, label: 'Reached bottom of page',         points: 10 }
+  ];
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const maxScroll = h.scrollHeight - h.clientHeight;
+    if (maxScroll <= 0) return;
+    const pct = (h.scrollTop / maxScroll) * 100;
+    markers.forEach(m => {
+      if (pct >= m.pct && !rpVI.scrollMarkers.has(m.pct)) {
+        rpVI.scrollMarkers.add(m.pct);
+        rpTrackEvent(m.label, m.points);
+      }
+    });
+  }, { passive: true });
+}
+
+function rpViStartTimeTracking() {
+  let seconds = 0;
+  setInterval(() => {
+    seconds += 10;
+    if (seconds === 30)  rpTrackEvent('30 seconds on page',        3);
+    else if (seconds === 60)  rpTrackEvent('1 minute — sticking around', 4);
+    else if (seconds === 120) rpTrackEvent('2 minutes — reading deep',   6);
+    else if (seconds === 300) rpTrackEvent('5 minutes — very engaged',   10);
+  }, 10000);
+}
+
+function rpViStartSectionTracking() {
+  if (!('IntersectionObserver' in window)) return;
+  const watch = [
+    { id: 'pricing',      label: 'Saw pricing plans',      points: 12 },
+    { id: 'roi',          label: 'Saw ROI calculator',     points: 8 },
+    { id: 'case-studies', label: 'Studied case studies',   points: 5 },
+    { id: 'faq',          label: 'Reading the FAQ',        points: 4 }
+  ];
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const w = watch.find(w => w.id === e.target.id);
+        if (w) rpTrackEvent(w.label, w.points);
+      }
+    });
+  }, { threshold: 0.3 });
+  watch.forEach(w => {
+    const el = document.getElementById(w.id);
+    if (el) obs.observe(el);
+  });
+}
+
+// Kick off as soon as the page is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', rpInitVisitorIntel);
+} else {
+  rpInitVisitorIntel();
+}
+
+/* -------- rpSwitchTab: Product showcase tab switcher (SECTION 06) -------- */
+function rpSwitchTab(tabId) {
+  document.querySelectorAll('.rp-products__tab').forEach(t => t.classList.remove('is-active'));
+  document.querySelectorAll('.rp-products__panel').forEach(p => p.classList.remove('is-active'));
+  document.querySelector('[data-tab="' + tabId + '"]').classList.add('is-active');
+  document.querySelector('[data-panel="' + tabId + '"]').classList.add('is-active');
+  if (typeof rpTrackEvent === 'function') rpTrackEvent('Explored ' + (tabId === 'id' ? 'ProspectID' : 'ProspectMax'), 4);
+}
+
+/* -------- rpCalcROI: ROI calculator (SECTION 09) -------- */
+function rpCalcROI() {
+  const calls = parseFloat(document.getElementById('rpCallsPerMonth').value) || 0;
+  const missed = parseFloat(document.getElementById('rpMissedPct').value) || 0;
+  const close = parseFloat(document.getElementById('rpCloseRate').value) || 0;
+  const value = parseFloat(document.getElementById('rpAvgValue').value) || 0;
+
+  const missedCalls = Math.round(calls * (missed / 100));
+  const newCustomers = Math.round(missedCalls * (close / 100));
+  const monthlyRevenue = newCustomers * value;
+  const annualRevenue = monthlyRevenue * 12;
+  const roi = monthlyRevenue > 0 ? (monthlyRevenue / 1299).toFixed(1) : '0';
+
+  const fmt = (n) => '$' + Math.round(n).toLocaleString();
+  document.getElementById('rpRoiTotal').textContent = fmt(monthlyRevenue);
+  document.getElementById('rpRoiMissed').textContent = missedCalls.toLocaleString();
+  document.getElementById('rpRoiCustomers').textContent = newCustomers.toLocaleString();
+  document.getElementById('rpRoiAnnual').textContent = fmt(annualRevenue);
+  document.getElementById('rpRoiReturn').textContent = roi + 'x';
+  if (typeof rpTrackEvent === 'function' && monthlyRevenue > 0) rpTrackEvent('Calculated their ROI', 12);
+}
+rpCalcROI();
+
+/* -------- rpTogglePricing: Monthly/annual pricing toggle (SECTION 15) -------- */
+function rpTogglePricing(cycle) {
+  document.querySelectorAll('.rp-pricing__toggle-btn').forEach(b => b.classList.remove('is-active'));
+  document.querySelector('[data-cycle="' + cycle + '"]').classList.add('is-active');
+  document.querySelectorAll('.rp-pricing__price').forEach(p => {
+    const val = p.getAttribute('data-' + cycle);
+    if (val) p.textContent = val;
+  });
+  document.querySelectorAll('.rp-pricing__billing').forEach(b => {
+    b.textContent = cycle === 'annual' ? 'Billed annually' : 'Billed monthly';
+  });
+  if (typeof rpTrackEvent === 'function') rpTrackEvent('Compared ' + cycle + ' pricing', 4);
+}
+
+/* -------- rpToggleFAQ: FAQ accordion (SECTION 16) -------- */
+function rpToggleFAQ(btn) {
+  const item = btn.closest('.rp-faq__item');
+  item.classList.toggle('is-open');
+  if (typeof rpTrackEvent === 'function' && item.classList.contains('is-open')) {
+    const q = btn.querySelector('span').textContent.trim();
+    rpTrackEvent('Asked: "' + q.slice(0, 34) + (q.length > 34 ? '…' : '') + '"', 3);
+  }
+}
+
+/* -------- rpHandleDemo: Demo form (SECTION 18) -------- */
+function rpHandleDemo(e) {
+  e.preventDefault();
+  const email = e.target.querySelector('input').value;
+  if (typeof rpTrackEvent === 'function') rpTrackEvent('🎯 BOOKED DEMO — sales-ready', 30);
+  // TODO: replace with real endpoint or Calendly redirect
+  alert('Thanks! We\'ll be in touch at ' + email + ' within one business day.');
+  e.target.reset();
+}
+
+</script>
+
+</body>
+</html>
