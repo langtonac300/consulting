@@ -2931,6 +2931,631 @@ p  { color: var(--rp-ink-500); }
 
 /* ============================================================================
    ████████████████████████████████████████████████████████████████████████████
+   SECTION 08.5: DENTAL INDUSTRY SANDBOX (★ INTERACTIVE INTAKE DEMO ★)
+   ████████████████████████████████████████████████████████████████████████████
+   A full working dental patient intake form that drives score, rail data,
+   and ad personalization. Demonstrates ProspectAI's industry customization.
+
+   SAFE TO DELETE. Remove the HTML tagged DENTAL-SANDBOX, this CSS block, the
+   "DENTAL SANDBOX ENGINE" JS block at bottom of page, and the "What You've
+   Shared" rail sub-block (id="rpDentalShared") inside the Score tab.
+   ============================================================================ */
+/* START: DENTAL-SANDBOX STYLES */
+
+/* Medical-grade color palette (scoped to this section) */
+.rp-dental {
+  --rp-dent-primary: #0891B2;      /* cyan-600 */
+  --rp-dent-primary-dark: #0E7490; /* cyan-700 */
+  --rp-dent-primary-light: #CFFAFE;/* cyan-100 */
+  --rp-dent-primary-50: #ECFEFF;   /* cyan-50 */
+
+  background: linear-gradient(180deg, #FFFFFF 0%, var(--rp-dent-primary-50) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Section header */
+.rp-dental__section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--rp-dent-primary-light);
+  color: var(--rp-dent-primary-dark);
+  padding: 0.375rem 0.875rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+/* Layout: 2-column top (questionnaire + summary), full-width bottom (teeth) */
+.rp-dental__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--rp-space-4);
+  max-width: 1050px;
+  margin: 0 auto;
+}
+.rp-dental__grid--full {
+  grid-template-columns: 1fr;
+  margin-top: var(--rp-space-4);
+}
+
+.rp-dental__card {
+  background: #FFFFFF;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: var(--rp-radius-xl);
+  padding: var(--rp-space-6);
+  box-shadow: var(--rp-shadow-sm);
+}
+.rp-dental__card-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rp-dent-primary);
+  margin-bottom: 0.5rem;
+}
+.rp-dental__card-label::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--rp-dent-primary);
+}
+.rp-dental__card-title {
+  font-family: var(--rp-font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--rp-ink-900);
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+.rp-dental__card-sub {
+  font-size: 0.875rem;
+  color: var(--rp-ink-500);
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+/* Questionnaire */
+.rp-dental__q + .rp-dental__q {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rp-ink-100);
+}
+.rp-dental__q-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--rp-ink-700);
+  margin-bottom: 0.625rem;
+}
+.rp-dental__q-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+.rp-dental__q-option {
+  padding: 0.4375rem 0.875rem;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--rp-ink-700);
+  background: var(--rp-ink-25);
+  border: 1px solid var(--rp-ink-100);
+  transition: var(--rp-transition);
+  white-space: nowrap;
+}
+.rp-dental__q-option:hover {
+  border-color: var(--rp-dent-primary);
+  color: var(--rp-dent-primary);
+}
+.rp-dental__q-option.is-selected {
+  background: var(--rp-dent-primary);
+  color: #FFFFFF;
+  border-color: var(--rp-dent-primary);
+}
+.rp-dental__q-option--urgent.is-selected {
+  background: var(--rp-danger);
+  border-color: var(--rp-danger);
+  animation: rpDentalPulseUrgent 1.6s ease-in-out infinite;
+}
+@keyframes rpDentalPulseUrgent {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
+  50%      { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+}
+
+/* Summary card (Step 3) */
+.rp-dental__summary-empty {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--rp-ink-400);
+  font-size: 0.9375rem;
+  font-style: italic;
+}
+.rp-dental__summary-empty::before {
+  content: "↑";
+  display: block;
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+  color: var(--rp-ink-300);
+  font-style: normal;
+}
+.rp-dental__summary-list {
+  display: grid;
+  gap: 0.625rem;
+  margin-bottom: var(--rp-space-4);
+}
+.rp-dental__summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--rp-dent-primary-50);
+  border-radius: 8px;
+  border-left: 3px solid var(--rp-dent-primary);
+  font-size: 0.8125rem;
+}
+.rp-dental__summary-label {
+  font-weight: 600;
+  color: var(--rp-ink-700);
+}
+.rp-dental__summary-value {
+  color: var(--rp-dent-primary-dark);
+  font-weight: 700;
+  font-family: var(--rp-font-mono);
+  text-align: right;
+}
+.rp-dental__routing {
+  background: linear-gradient(135deg, var(--rp-ink-900) 0%, var(--rp-dent-primary-dark) 100%);
+  color: #FFFFFF;
+  border-radius: 10px;
+  padding: 1rem 1.125rem;
+  position: relative;
+  overflow: hidden;
+}
+.rp-dental__routing::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+}
+.rp-dental__routing-label {
+  position: relative;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 0.5rem;
+}
+.rp-dental__routing-step {
+  position: relative;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  padding: 0.25rem 0;
+  color: rgba(255, 255, 255, 0.9);
+}
+.rp-dental__routing-step strong { color: #FFFFFF; font-weight: 700; }
+.rp-dental__routing-step::before { content: "→ "; color: var(--rp-dent-primary-light); font-weight: 700; }
+.rp-dental__routing-value {
+  color: #34D399;
+  font-weight: 700;
+  font-family: var(--rp-font-mono);
+}
+
+/* Teeth diagram */
+.rp-dental__diagram {
+  max-width: 960px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, var(--rp-dent-primary-50) 0%, #FFFFFF 100%);
+  border-radius: var(--rp-radius-xl);
+  padding: 1.5rem 1rem 1.25rem;
+  border: 1px solid var(--rp-dent-primary-light);
+}
+.rp-dental__arch-label {
+  text-align: center;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rp-ink-400);
+  margin: 0.375rem 0;
+}
+.rp-dental__arch {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 2px;
+  padding: 0 0.5rem;
+}
+.rp-dental__arch--upper { align-items: flex-end; }
+.rp-dental__arch--lower { align-items: flex-start; }
+
+/* Individual tooth */
+.rp-dental__tooth {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border: 1.5px solid var(--rp-ink-200);
+  border-radius: 6px 6px 3px 3px;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.2s, box-shadow 0.2s;
+  font-family: var(--rp-font-mono);
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: var(--rp-ink-500);
+  user-select: none;
+  flex-shrink: 0;
+}
+.rp-dental__arch--lower .rp-dental__tooth {
+  border-radius: 3px 3px 6px 6px;
+}
+.rp-dental__tooth:hover {
+  border-color: var(--rp-dent-primary);
+  color: var(--rp-dent-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(8, 145, 178, 0.15);
+}
+.rp-dental__arch--lower .rp-dental__tooth:hover { transform: translateY(2px); }
+
+/* Tooth sizes by type */
+.rp-dental__tooth--molar    { width: 42px; height: 52px; }
+.rp-dental__tooth--premolar { width: 34px; height: 48px; }
+.rp-dental__tooth--canine   { width: 30px; height: 56px; }
+.rp-dental__tooth--incisor  { width: 28px; height: 50px; }
+
+/* Tooth with issues (severity colors) */
+.rp-dental__tooth.has-issue  {
+  border-width: 2px;
+  color: #FFFFFF;
+  font-weight: 700;
+}
+.rp-dental__tooth--sev-minor    { background: #67E8F9; border-color: #0891B2; color: #0C4A6E; }
+.rp-dental__tooth--sev-moderate { background: #FCD34D; border-color: #D97706; color: #713F12; }
+.rp-dental__tooth--sev-serious  { background: #FB923C; border-color: #C2410C; color: #FFFFFF; }
+.rp-dental__tooth--sev-urgent   {
+  background: #EF4444;
+  border-color: #B91C1C;
+  color: #FFFFFF;
+  animation: rpDentalToothPulse 1.8s ease-in-out infinite;
+}
+@keyframes rpDentalToothPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
+  50%      { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+}
+
+/* Multi-issue tooth gets diagonal stripes */
+.rp-dental__tooth.has-multi {
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.3) 0,
+    rgba(255, 255, 255, 0.3) 3px,
+    transparent 3px,
+    transparent 6px
+  );
+}
+.rp-dental__tooth-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  background: var(--rp-ink-900);
+  color: #FFFFFF;
+  border-radius: 999px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  font-family: var(--rp-font-mono);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #FFFFFF;
+}
+
+/* Selected (multi-select via shift+click) */
+.rp-dental__tooth.is-selected {
+  outline: 3px solid var(--rp-dent-primary);
+  outline-offset: 2px;
+}
+
+.rp-dental__tooth-num {
+  font-size: 0.625rem;
+  line-height: 1;
+}
+
+/* Controls row beneath teeth diagram */
+.rp-dental__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rp-ink-100);
+}
+
+.rp-dental__multi-banner {
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.875rem;
+  background: var(--rp-dent-primary);
+  color: #FFFFFF;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  animation: rpDentalSlide 0.3s var(--rp-ease);
+}
+.rp-dental__multi-banner.is-visible { display: inline-flex; }
+.rp-dental__multi-banner-btn {
+  padding: 0.375rem 0.875rem;
+  background: #FFFFFF;
+  color: var(--rp-dent-primary-dark);
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+@keyframes rpDentalSlide {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Legend */
+.rp-dental__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: var(--rp-ink-500);
+}
+.rp-dental__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-weight: 500;
+}
+.rp-dental__legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.rp-dental__legend-dot--minor    { background: #67E8F9; }
+.rp-dental__legend-dot--moderate { background: #FCD34D; }
+.rp-dental__legend-dot--serious  { background: #FB923C; }
+.rp-dental__legend-dot--urgent   { background: #EF4444; }
+
+/* Modal */
+.rp-dental__modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.rp-dental__modal.is-open {
+  display: flex;
+  animation: rpDentalFadeIn 0.2s ease-out;
+}
+@keyframes rpDentalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.rp-dental__modal-panel {
+  background: #FFFFFF;
+  border-radius: var(--rp-radius-xl);
+  width: 100%;
+  max-width: 460px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.3);
+  animation: rpDentalSlideUp 0.3s var(--rp-ease);
+}
+@keyframes rpDentalSlideUp {
+  from { opacity: 0; transform: translateY(16px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.rp-dental__modal-header {
+  padding: 1.25rem 1.25rem 0.75rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--rp-ink-100);
+}
+.rp-dental__modal-title {
+  font-family: var(--rp-font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--rp-ink-900);
+  margin-bottom: 0.25rem;
+}
+.rp-dental__modal-sub {
+  font-size: 0.8125rem;
+  color: var(--rp-ink-500);
+}
+.rp-dental__modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  color: var(--rp-ink-500);
+  font-size: 1.375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: var(--rp-transition);
+}
+.rp-dental__modal-close:hover {
+  background: var(--rp-ink-100);
+  color: var(--rp-ink-900);
+}
+.rp-dental__modal-body {
+  padding: 0.875rem 1.25rem 1rem;
+  overflow-y: auto;
+  flex: 1;
+}
+.rp-dental__modal-desc {
+  font-size: 0.8125rem;
+  color: var(--rp-ink-500);
+  margin-bottom: 0.875rem;
+}
+.rp-dental__issue-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--rp-ink-100);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--rp-transition);
+  margin-bottom: 0.5rem;
+}
+.rp-dental__issue-row:hover { border-color: var(--rp-dent-primary); background: var(--rp-dent-primary-50); }
+.rp-dental__issue-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--rp-dent-primary);
+  cursor: pointer;
+}
+.rp-dental__issue-row.is-checked {
+  border-color: var(--rp-dent-primary);
+  background: var(--rp-dent-primary-50);
+}
+.rp-dental__issue-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+.rp-dental__issue-info { flex: 1; min-width: 0; }
+.rp-dental__issue-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--rp-ink-900);
+  line-height: 1.2;
+}
+.rp-dental__issue-sev {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 0.25rem;
+}
+.rp-dental__issue-sev--minor    { color: #0891B2; }
+.rp-dental__issue-sev--moderate { color: #D97706; }
+.rp-dental__issue-sev--serious  { color: #C2410C; }
+.rp-dental__issue-sev--urgent   { color: #B91C1C; }
+
+.rp-dental__modal-footer {
+  padding: 0.875rem 1.25rem 1.25rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  border-top: 1px solid var(--rp-ink-100);
+}
+.rp-dental__modal-footer .rp-btn {
+  min-width: 96px;
+}
+
+/* Responsive — arch wraps on mobile */
+@media (max-width: 900px) {
+  .rp-dental__grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 700px) {
+  .rp-dental__arch { gap: 1px; flex-wrap: wrap; justify-content: center; }
+  .rp-dental__tooth--molar    { width: 32px; height: 38px; font-size: 0.5rem; }
+  .rp-dental__tooth--premolar { width: 26px; height: 36px; font-size: 0.5rem; }
+  .rp-dental__tooth--canine   { width: 24px; height: 42px; font-size: 0.5rem; }
+  .rp-dental__tooth--incisor  { width: 22px; height: 38px; font-size: 0.5rem; }
+}
+
+/* ---- "What You've Shared" block (inside command center Score tab) ---- */
+.rp-cc__shared {
+  background: linear-gradient(135deg, #0891B2 0%, #0E7490 100%);
+  border-radius: 12px;
+  padding: 1rem;
+  color: #FFFFFF;
+  display: none;
+}
+.rp-cc__shared.is-visible { display: block; }
+.rp-cc__shared-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.rp-cc__shared-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8125rem;
+}
+.rp-cc__shared-title {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.9);
+}
+.rp-cc__shared-list {
+  display: grid;
+  gap: 0.25rem;
+}
+.rp-cc__shared-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+  font-size: 0.75rem;
+}
+.rp-cc__shared-row:last-child { border-bottom: none; }
+.rp-cc__shared-row-label {
+  color: rgba(255, 255, 255, 0.65);
+  font-weight: 500;
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.rp-cc__shared-row-value {
+  color: #FFFFFF;
+  font-weight: 700;
+  font-family: var(--rp-font-mono);
+  text-align: right;
+  font-size: 0.75rem;
+  word-break: break-word;
+}
+
+/* END: DENTAL-SANDBOX STYLES */
+
+
+/* ============================================================================
+   ████████████████████████████████████████████████████████████████████████████
    SECTION 09: ROI CALCULATOR (interactive)
    ████████████████████████████████████████████████████████████████████████████
    SAFE TO DELETE. Remove HTML block tagged ROI-CALC AND this CSS block AND the
@@ -3949,6 +4574,14 @@ p  { color: var(--rp-ink-500); }
       <div class="rp-cc__section-label">↗ Live activity feed</div>
       <div class="rp-cc__feed" id="rpViEvents"></div>
 
+      <div class="rp-cc__shared" id="rpDentalShared">
+        <div class="rp-cc__shared-head">
+          <div class="rp-cc__shared-icon">🦷</div>
+          <div class="rp-cc__shared-title">What you've shared</div>
+        </div>
+        <div class="rp-cc__shared-list" id="rpDentalSharedList"></div>
+      </div>
+
       <div class="rp-cc__section-label">🔒 ProspectID enrichment</div>
       <div class="rp-cc__lock">
         <div class="rp-cc__lock-head">
@@ -4670,6 +5303,140 @@ p  { color: var(--rp-ink-500); }
   </div>
 </section>
 <!-- END: HOW-IT-WORKS -->
+
+
+<!-- ============================================================================
+     ████████████████████████████████████████████████████████████████████████████
+     SECTION 08.5: DENTAL INDUSTRY SANDBOX (★ INTERACTIVE INTAKE DEMO ★)
+     ████████████████████████████████████████████████████████████████████████████
+     A live patient intake form that demonstrates industry-specific
+     personalization. Fills out the "What You've Shared" rail block, auto-
+     switches the Campaign tab to Dental, and personalizes ad copy based on
+     selected tooth issues (pain → emergency ads, whitening → cosmetic ads).
+
+     DEPENDS ON: "DENTAL SANDBOX ENGINE" script block at bottom of page.
+     ============================================================================ -->
+<!-- START: DENTAL-SANDBOX -->
+<section class="rp-dental rp-section" id="dental-sandbox">
+  <div class="rp-container">
+
+    <div style="text-align: center;">
+      <span class="rp-dental__section-eyebrow">🦷 Industry Sandbox · Dental Practice</span>
+    </div>
+    <h2 class="rp-section__heading">Try a real patient intake — see personalization live</h2>
+    <p class="rp-section__subheading">This is a working demo of what ProspectAI builds for dental practices. Answer the questions, mark your concerns on the tooth diagram, and watch the rail update with your data, score, and personalized ads in real time.</p>
+
+    <div class="rp-dental__grid">
+
+      <!-- Step 1: Quick questionnaire -->
+      <div class="rp-dental__card">
+        <div class="rp-dental__card-label">Step 1 · Patient Intake</div>
+        <h3 class="rp-dental__card-title">Quick questions</h3>
+        <p class="rp-dental__card-sub">30 seconds. Pre-qualifies you before the front desk even knows you exist.</p>
+
+        <div class="rp-dental__q">
+          <div class="rp-dental__q-label">When was your last visit?</div>
+          <div class="rp-dental__q-options" data-q-group="visit">
+            <button class="rp-dental__q-option" data-q="visit" data-v="6mo"  onclick="rpDentalAnswer(this)">Under 6 months</button>
+            <button class="rp-dental__q-option" data-q="visit" data-v="1yr"  onclick="rpDentalAnswer(this)">About 1 year</button>
+            <button class="rp-dental__q-option" data-q="visit" data-v="2yr"  onclick="rpDentalAnswer(this)">2+ years</button>
+            <button class="rp-dental__q-option" data-q="visit" data-v="never" onclick="rpDentalAnswer(this)">Never / can't recall</button>
+          </div>
+        </div>
+
+        <div class="rp-dental__q">
+          <div class="rp-dental__q-label">Do you have dental insurance?</div>
+          <div class="rp-dental__q-options" data-q-group="insurance">
+            <button class="rp-dental__q-option" data-q="insurance" data-v="yes"    onclick="rpDentalAnswer(this)">Yes</button>
+            <button class="rp-dental__q-option" data-q="insurance" data-v="no"     onclick="rpDentalAnswer(this)">No</button>
+            <button class="rp-dental__q-option" data-q="insurance" data-v="unsure" onclick="rpDentalAnswer(this)">Not sure</button>
+          </div>
+        </div>
+
+        <div class="rp-dental__q">
+          <div class="rp-dental__q-label">How soon do you need care?</div>
+          <div class="rp-dental__q-options" data-q-group="urgency">
+            <button class="rp-dental__q-option rp-dental__q-option--urgent" data-q="urgency" data-v="emergency" onclick="rpDentalAnswer(this)">🚨 Emergency</button>
+            <button class="rp-dental__q-option" data-q="urgency" data-v="soon"     onclick="rpDentalAnswer(this)">Within 2 weeks</button>
+            <button class="rp-dental__q-option" data-q="urgency" data-v="checking" onclick="rpDentalAnswer(this)">Just browsing</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Auto-routing (lives in the right column even though it's step 3) -->
+      <div class="rp-dental__card" id="rpDentalSummaryCard">
+        <div class="rp-dental__card-label">Step 3 · Auto-Routing</div>
+        <h3 class="rp-dental__card-title">How ProspectAI routes you</h3>
+        <p class="rp-dental__card-sub">Watch this fill in as you complete steps 1 and 2.</p>
+
+        <div class="rp-dental__summary-empty" id="rpDentalSummaryEmpty">
+          Fill out the form to see your personalized routing and ad campaign
+        </div>
+
+        <div class="rp-dental__summary-list" id="rpDentalSummaryList" style="display: none;"></div>
+
+        <div class="rp-dental__routing" id="rpDentalRouting" style="display: none;">
+          <div class="rp-dental__routing-label">⚡ Live routing decisions</div>
+          <div id="rpDentalRoutingSteps"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Step 2: Teeth diagram (full-width, below) -->
+    <div class="rp-dental__grid rp-dental__grid--full">
+      <div class="rp-dental__card">
+        <div class="rp-dental__card-label">Step 2 · Mark Your Concerns</div>
+        <h3 class="rp-dental__card-title">Where does it hurt?</h3>
+        <p class="rp-dental__card-sub">Click any tooth to add an issue. Shift+click to select multiple teeth at once, then apply a common issue.</p>
+
+        <div class="rp-dental__diagram">
+          <div class="rp-dental__arch-label">Upper · Maxillary</div>
+          <div class="rp-dental__arch rp-dental__arch--upper" id="rpDentalArchUpper"></div>
+          <div class="rp-dental__arch-label">Lower · Mandibular</div>
+          <div class="rp-dental__arch rp-dental__arch--lower" id="rpDentalArchLower"></div>
+        </div>
+
+        <div class="rp-dental__controls">
+          <div class="rp-dental__multi-banner" id="rpDentalMultiBanner">
+            <span id="rpDentalMultiCount">0 teeth selected</span>
+            <button class="rp-dental__multi-banner-btn" onclick="rpDentalApplyToSelection()">Apply issue to all →</button>
+          </div>
+          <div class="rp-dental__legend">
+            <div class="rp-dental__legend-item"><span class="rp-dental__legend-dot rp-dental__legend-dot--minor"></span>Minor (cleaning, whitening)</div>
+            <div class="rp-dental__legend-item"><span class="rp-dental__legend-dot rp-dental__legend-dot--moderate"></span>Moderate (cavity, sensitivity)</div>
+            <div class="rp-dental__legend-item"><span class="rp-dental__legend-dot rp-dental__legend-dot--serious"></span>Serious (crown, broken)</div>
+            <div class="rp-dental__legend-item"><span class="rp-dental__legend-dot rp-dental__legend-dot--urgent"></span>Urgent (pain)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Modal for tooth issue selection -->
+  <div class="rp-dental__modal" id="rpDentalModal" role="dialog" aria-modal="true" aria-labelledby="rpDentalModalTitle">
+    <div class="rp-dental__modal-panel">
+      <div class="rp-dental__modal-header">
+        <div>
+          <div class="rp-dental__modal-title" id="rpDentalModalTitle">Tooth #1</div>
+          <div class="rp-dental__modal-sub" id="rpDentalModalSub">Upper right 3rd molar</div>
+        </div>
+        <button class="rp-dental__modal-close" onclick="rpDentalCloseModal()" aria-label="Close">×</button>
+      </div>
+      <div class="rp-dental__modal-body">
+        <p class="rp-dental__modal-desc">Select all that apply. Multiple issues on the same tooth are common.</p>
+        <div id="rpDentalIssueList"></div>
+      </div>
+      <div class="rp-dental__modal-footer">
+        <button class="rp-btn rp-btn--secondary" onclick="rpDentalClearTooth()" id="rpDentalClearBtn">Clear tooth</button>
+        <button class="rp-btn rp-btn--primary" onclick="rpDentalSaveModal()">Save</button>
+      </div>
+    </div>
+  </div>
+
+</section>
+<!-- END: DENTAL-SANDBOX -->
 
 
 <!-- ============================================================================
@@ -5815,6 +6582,506 @@ function rpCCUpdateCTA() {
     tierEl.className = 'rp-cc__cta-status-tier' + (tier.cls ? ' rp-cc__cta-status-tier--' + tier.cls : '');
   }
   if (rail) rail.classList.toggle('is-ready', score >= 81);
+}
+
+
+/* ============================================================================
+   DENTAL SANDBOX ENGINE (powers SECTION 08.5)
+   ---------------------------------------------------------------------------
+   - Renders 32-tooth diagram dynamically
+   - Handles single-tooth click (modal) and Shift+click multi-select
+   - Applies issues with severity-based color coding
+   - Multi-issue teeth get diagonal stripes + count badge
+   - Updates summary + rail + ad copy based on user's selections
+   - Auto-switches Campaign tab to dental industry
+   ============================================================================ */
+
+/* Tooth reference data (universal numbering system) */
+const rpDentalTeeth = [
+  { n: 1,  t: 'molar',    name: 'Upper R 3rd molar',    arch: 'upper' },
+  { n: 2,  t: 'molar',    name: 'Upper R 2nd molar',    arch: 'upper' },
+  { n: 3,  t: 'molar',    name: 'Upper R 1st molar',    arch: 'upper' },
+  { n: 4,  t: 'premolar', name: 'Upper R 2nd premolar', arch: 'upper' },
+  { n: 5,  t: 'premolar', name: 'Upper R 1st premolar', arch: 'upper' },
+  { n: 6,  t: 'canine',   name: 'Upper R canine (K9)',  arch: 'upper' },
+  { n: 7,  t: 'incisor',  name: 'Upper R lateral incisor', arch: 'upper' },
+  { n: 8,  t: 'incisor',  name: 'Upper R central incisor', arch: 'upper' },
+  { n: 9,  t: 'incisor',  name: 'Upper L central incisor', arch: 'upper' },
+  { n: 10, t: 'incisor',  name: 'Upper L lateral incisor', arch: 'upper' },
+  { n: 11, t: 'canine',   name: 'Upper L canine (K9)',  arch: 'upper' },
+  { n: 12, t: 'premolar', name: 'Upper L 1st premolar', arch: 'upper' },
+  { n: 13, t: 'premolar', name: 'Upper L 2nd premolar', arch: 'upper' },
+  { n: 14, t: 'molar',    name: 'Upper L 1st molar',    arch: 'upper' },
+  { n: 15, t: 'molar',    name: 'Upper L 2nd molar',    arch: 'upper' },
+  { n: 16, t: 'molar',    name: 'Upper L 3rd molar',    arch: 'upper' },
+  { n: 17, t: 'molar',    name: 'Lower L 3rd molar',    arch: 'lower' },
+  { n: 18, t: 'molar',    name: 'Lower L 2nd molar',    arch: 'lower' },
+  { n: 19, t: 'molar',    name: 'Lower L 1st molar',    arch: 'lower' },
+  { n: 20, t: 'premolar', name: 'Lower L 2nd premolar', arch: 'lower' },
+  { n: 21, t: 'premolar', name: 'Lower L 1st premolar', arch: 'lower' },
+  { n: 22, t: 'canine',   name: 'Lower L canine (K9)',  arch: 'lower' },
+  { n: 23, t: 'incisor',  name: 'Lower L lateral incisor', arch: 'lower' },
+  { n: 24, t: 'incisor',  name: 'Lower L central incisor', arch: 'lower' },
+  { n: 25, t: 'incisor',  name: 'Lower R central incisor', arch: 'lower' },
+  { n: 26, t: 'incisor',  name: 'Lower R lateral incisor', arch: 'lower' },
+  { n: 27, t: 'canine',   name: 'Lower R canine (K9)',  arch: 'lower' },
+  { n: 28, t: 'premolar', name: 'Lower R 1st premolar', arch: 'lower' },
+  { n: 29, t: 'premolar', name: 'Lower R 2nd premolar', arch: 'lower' },
+  { n: 30, t: 'molar',    name: 'Lower R 1st molar',    arch: 'lower' },
+  { n: 31, t: 'molar',    name: 'Lower R 2nd molar',    arch: 'lower' },
+  { n: 32, t: 'molar',    name: 'Lower R 3rd molar',    arch: 'lower' }
+];
+
+/* Severity map: higher number = more severe */
+const rpDentalIssues = {
+  sensitivity: { name: 'Sensitivity',       icon: '❄️', sev: 1, color: 'minor' },
+  whitening:   { name: 'Whitening',         icon: '⚪', sev: 1, color: 'minor' },
+  cleaning:    { name: 'Needs cleaning',    icon: '🔧', sev: 1, color: 'minor' },
+  cavity:      { name: 'Cavity / decay',    icon: '🦠', sev: 2, color: 'moderate' },
+  crown:       { name: 'Needs crown',       icon: '👑', sev: 2, color: 'serious' },
+  broken:      { name: 'Chipped / broken',  icon: '💥', sev: 3, color: 'serious' },
+  missing:     { name: 'Missing tooth',     icon: '➰', sev: 3, color: 'serious' },
+  pain:        { name: 'Pain / toothache',  icon: '😣', sev: 4, color: 'urgent' }
+};
+
+const rpDentalAnswerLabels = {
+  visit:     { '6mo':'Under 6 months ago', '1yr':'About 1 year ago', '2yr':'2+ years ago', 'never':'Never / cannot recall' },
+  insurance: { 'yes':'Has insurance', 'no':'No insurance', 'unsure':'Insurance status unknown' },
+  urgency:   { 'emergency':'🚨 Emergency', 'soon':'Needs care within 2 weeks', 'checking':'Just browsing' }
+};
+
+const rpDentalState = {
+  answers: {},        // { visit: '6mo', insurance: 'yes', urgency: 'soon' }
+  teeth:   {},        // { 8: ['cavity'], 14: ['pain','sensitivity'] }
+  selected: new Set(),// multi-select (Shift+click)
+  editing: null,      // tooth # currently in modal (or 'multi')
+  hasStarted: false
+};
+
+/* ---------- Render teeth ---------- */
+function rpDentalRenderTeeth() {
+  const upper = document.getElementById('rpDentalArchUpper');
+  const lower = document.getElementById('rpDentalArchLower');
+  if (!upper || !lower) return;
+
+  rpDentalTeeth.forEach(tooth => {
+    const btn = document.createElement('button');
+    btn.className = 'rp-dental__tooth rp-dental__tooth--' + tooth.t;
+    btn.dataset.tooth = tooth.n;
+    btn.setAttribute('aria-label', 'Tooth ' + tooth.n + ' — ' + tooth.name);
+    btn.innerHTML = '<span class="rp-dental__tooth-num">' + tooth.n + '</span>';
+    btn.addEventListener('click', (e) => rpDentalClickTooth(tooth.n, e));
+    (tooth.arch === 'upper' ? upper : lower).appendChild(btn);
+  });
+}
+
+/* ---------- Click a tooth ---------- */
+function rpDentalClickTooth(num, evt) {
+  if (evt && evt.shiftKey) {
+    // Multi-select mode
+    if (rpDentalState.selected.has(num)) {
+      rpDentalState.selected.delete(num);
+    } else {
+      rpDentalState.selected.add(num);
+    }
+    rpDentalUpdateSelectionUI();
+    return;
+  }
+  // If there's a multi-selection, single-click clears it and acts on one
+  if (rpDentalState.selected.size > 0) {
+    rpDentalState.selected.clear();
+    rpDentalUpdateSelectionUI();
+  }
+  rpDentalOpenModal(num);
+}
+
+function rpDentalUpdateSelectionUI() {
+  document.querySelectorAll('.rp-dental__tooth').forEach(el => {
+    const n = parseInt(el.dataset.tooth, 10);
+    el.classList.toggle('is-selected', rpDentalState.selected.has(n));
+  });
+  const banner = document.getElementById('rpDentalMultiBanner');
+  const count = document.getElementById('rpDentalMultiCount');
+  const n = rpDentalState.selected.size;
+  if (banner && count) {
+    banner.classList.toggle('is-visible', n > 0);
+    count.textContent = n === 1 ? '1 tooth selected' : n + ' teeth selected';
+  }
+}
+
+function rpDentalApplyToSelection() {
+  if (rpDentalState.selected.size === 0) return;
+  rpDentalOpenModal('multi');
+}
+
+/* ---------- Open modal ---------- */
+function rpDentalOpenModal(num) {
+  rpDentalState.editing = num;
+  const modal = document.getElementById('rpDentalModal');
+  const title = document.getElementById('rpDentalModalTitle');
+  const sub   = document.getElementById('rpDentalModalSub');
+  const list  = document.getElementById('rpDentalIssueList');
+  const clearBtn = document.getElementById('rpDentalClearBtn');
+
+  if (num === 'multi') {
+    title.textContent = 'Apply to ' + rpDentalState.selected.size + ' teeth';
+    sub.textContent = 'Pick one or more issues for the selected teeth';
+    clearBtn.style.display = 'none';
+  } else {
+    const t = rpDentalTeeth.find(x => x.n === num);
+    title.textContent = 'Tooth #' + num;
+    sub.textContent = t ? t.name : '';
+    clearBtn.style.display = rpDentalState.teeth[num] ? '' : 'none';
+  }
+
+  // Pre-check existing issues (single-tooth mode)
+  const existing = (num !== 'multi' && rpDentalState.teeth[num]) ? rpDentalState.teeth[num] : [];
+  list.innerHTML = Object.entries(rpDentalIssues).map(([id, issue]) => {
+    const checked = existing.includes(id);
+    return '<label class="rp-dental__issue-row' + (checked ? ' is-checked' : '') + '" onclick="rpDentalToggleRow(this)">' +
+      '<input type="checkbox" data-issue="' + id + '"' + (checked ? ' checked' : '') + '>' +
+      '<span class="rp-dental__issue-icon">' + issue.icon + '</span>' +
+      '<div class="rp-dental__issue-info">' +
+        '<div class="rp-dental__issue-name">' + issue.name + '</div>' +
+        '<div class="rp-dental__issue-sev rp-dental__issue-sev--' + issue.color + '">' + issue.color + ' severity</div>' +
+      '</div>' +
+    '</label>';
+  }).join('');
+
+  modal.classList.add('is-open');
+  rpDentalMarkStarted();
+}
+
+function rpDentalToggleRow(row) {
+  // Delay so native checkbox toggle fires first
+  setTimeout(() => {
+    const cb = row.querySelector('input[type="checkbox"]');
+    row.classList.toggle('is-checked', cb.checked);
+  }, 0);
+}
+
+function rpDentalCloseModal() {
+  document.getElementById('rpDentalModal').classList.remove('is-open');
+  rpDentalState.editing = null;
+}
+
+function rpDentalClearTooth() {
+  if (rpDentalState.editing && rpDentalState.editing !== 'multi') {
+    delete rpDentalState.teeth[rpDentalState.editing];
+    rpDentalRenderTooth(rpDentalState.editing);
+    rpDentalUpdateAll();
+  }
+  rpDentalCloseModal();
+}
+
+function rpDentalSaveModal() {
+  const checks = document.querySelectorAll('#rpDentalIssueList input[type="checkbox"]');
+  const chosen = Array.from(checks).filter(c => c.checked).map(c => c.dataset.issue);
+
+  if (rpDentalState.editing === 'multi') {
+    rpDentalState.selected.forEach(n => {
+      if (chosen.length > 0) rpDentalState.teeth[n] = chosen.slice();
+    });
+    const count = rpDentalState.selected.size;
+    rpDentalState.selected.clear();
+    rpDentalUpdateSelectionUI();
+    rpDentalRenderAllTeeth();
+    if (typeof rpTrackEvent === 'function') rpTrackEvent('Marked ' + count + ' teeth at once', 12);
+  } else {
+    if (chosen.length === 0) {
+      delete rpDentalState.teeth[rpDentalState.editing];
+    } else {
+      rpDentalState.teeth[rpDentalState.editing] = chosen;
+    }
+    rpDentalRenderTooth(rpDentalState.editing);
+    if (typeof rpTrackEvent === 'function') {
+      const issueCount = chosen.length;
+      if (issueCount > 0) {
+        const label = issueCount > 1 ? 'Flagged tooth #' + rpDentalState.editing + ' (' + issueCount + ' issues)' : 'Flagged tooth #' + rpDentalState.editing;
+        rpTrackEvent(label, 5);
+      }
+    }
+  }
+  rpDentalUpdateAll();
+  rpDentalCloseModal();
+}
+
+/* ---------- Render tooth state ---------- */
+function rpDentalRenderAllTeeth() {
+  rpDentalTeeth.forEach(t => rpDentalRenderTooth(t.n));
+}
+
+function rpDentalRenderTooth(num) {
+  const el = document.querySelector('.rp-dental__tooth[data-tooth="' + num + '"]');
+  if (!el) return;
+  // Reset
+  el.classList.remove('has-issue','has-multi','rp-dental__tooth--sev-minor','rp-dental__tooth--sev-moderate','rp-dental__tooth--sev-serious','rp-dental__tooth--sev-urgent');
+  const badge = el.querySelector('.rp-dental__tooth-badge');
+  if (badge) badge.remove();
+
+  const issues = rpDentalState.teeth[num];
+  if (!issues || issues.length === 0) return;
+
+  // Find highest severity
+  let maxSev = 0, color = 'minor';
+  issues.forEach(id => {
+    const info = rpDentalIssues[id];
+    if (info && info.sev > maxSev) { maxSev = info.sev; color = info.color; }
+  });
+  el.classList.add('has-issue', 'rp-dental__tooth--sev-' + color);
+
+  if (issues.length > 1) {
+    el.classList.add('has-multi');
+    const b = document.createElement('span');
+    b.className = 'rp-dental__tooth-badge';
+    b.textContent = issues.length;
+    el.appendChild(b);
+  }
+}
+
+/* ---------- Handle quick-question answers ---------- */
+function rpDentalAnswer(btn) {
+  const q = btn.dataset.q;
+  const v = btn.dataset.v;
+  rpDentalState.answers[q] = v;
+  // Update UI
+  btn.parentElement.querySelectorAll('.rp-dental__q-option').forEach(o => o.classList.remove('is-selected'));
+  btn.classList.add('is-selected');
+  // Track
+  if (typeof rpTrackEvent === 'function') {
+    const label = rpDentalAnswerLabels[q] && rpDentalAnswerLabels[q][v] || v;
+    const points = (q === 'urgency' && v === 'emergency') ? 15 : (q === 'urgency' ? 5 : 3);
+    rpTrackEvent('Answered ' + q + ': ' + label, points);
+  }
+  rpDentalMarkStarted();
+  rpDentalUpdateAll();
+}
+
+function rpDentalMarkStarted() {
+  if (rpDentalState.hasStarted) return;
+  rpDentalState.hasStarted = true;
+  if (typeof rpTrackEvent === 'function') rpTrackEvent('Started dental intake', 8);
+  // Auto-switch rail Campaign tab to Dental
+  if (typeof rpAdSwitchIndustry === 'function') rpAdSwitchIndustry('dental');
+  // Reveal "What you've shared" block in rail
+  const shared = document.getElementById('rpDentalShared');
+  if (shared) shared.classList.add('is-visible');
+}
+
+/* ---------- Update summary, rail, ads ---------- */
+function rpDentalUpdateAll() {
+  rpDentalUpdateSummary();
+  rpDentalUpdateRail();
+  rpDentalUpdateAdCopy();
+  // Milestone score bumps
+  const toothCount = Object.keys(rpDentalState.teeth).length;
+  if (toothCount >= 3 && typeof rpTrackEvent === 'function') rpTrackEvent('Flagged 3+ teeth', 10);
+  if (toothCount >= 5 && typeof rpTrackEvent === 'function') rpTrackEvent('Flagged 5+ teeth — high intent', 15);
+}
+
+function rpDentalGetSummaryRows() {
+  const rows = [];
+  if (rpDentalState.answers.visit) {
+    rows.push({ label: 'Last visit',   value: rpDentalAnswerLabels.visit[rpDentalState.answers.visit] });
+  }
+  if (rpDentalState.answers.insurance) {
+    rows.push({ label: 'Insurance',    value: rpDentalAnswerLabels.insurance[rpDentalState.answers.insurance] });
+  }
+  if (rpDentalState.answers.urgency) {
+    rows.push({ label: 'Urgency',      value: rpDentalAnswerLabels.urgency[rpDentalState.answers.urgency] });
+  }
+  const teeth = Object.entries(rpDentalState.teeth);
+  if (teeth.length > 0) {
+    const nums = teeth.map(([n]) => '#' + n).sort((a,b) => parseInt(a.slice(1))-parseInt(b.slice(1))).join(', ');
+    rows.push({ label: 'Flagged teeth', value: nums });
+    const issueSet = new Set();
+    teeth.forEach(([, ids]) => ids.forEach(id => issueSet.add(id)));
+    const issueNames = Array.from(issueSet).map(id => rpDentalIssues[id].name).join(', ');
+    rows.push({ label: 'Issues', value: issueNames });
+  }
+  return rows;
+}
+
+function rpDentalUpdateSummary() {
+  const empty = document.getElementById('rpDentalSummaryEmpty');
+  const list = document.getElementById('rpDentalSummaryList');
+  const routing = document.getElementById('rpDentalRouting');
+  const rows = rpDentalGetSummaryRows();
+
+  if (rows.length === 0) {
+    if (empty) empty.style.display = 'block';
+    if (list) list.style.display = 'none';
+    if (routing) routing.style.display = 'none';
+    return;
+  }
+
+  if (empty) empty.style.display = 'none';
+  if (list) {
+    list.style.display = 'grid';
+    list.innerHTML = rows.map(r =>
+      '<div class="rp-dental__summary-row">' +
+        '<span class="rp-dental__summary-label">' + r.label + '</span>' +
+        '<span class="rp-dental__summary-value">' + r.value + '</span>' +
+      '</div>'
+    ).join('');
+  }
+
+  // Routing simulation — generate based on most severe issue
+  const routingSteps = rpDentalGenerateRouting();
+  if (routing && routingSteps.length > 0) {
+    routing.style.display = 'block';
+    document.getElementById('rpDentalRoutingSteps').innerHTML = routingSteps.map(s =>
+      '<div class="rp-dental__routing-step">' + s + '</div>'
+    ).join('');
+  }
+}
+
+function rpDentalGenerateRouting() {
+  const ans = rpDentalState.answers;
+  const teeth = Object.entries(rpDentalState.teeth);
+  if (!ans.urgency && teeth.length === 0) return [];
+
+  const steps = [];
+  // Urgency-based routing
+  if (ans.urgency === 'emergency') {
+    steps.push('<strong>URGENT</strong> — routed to emergency line. Avg response: <span class="rp-dental__routing-value">&lt; 90 sec</span>');
+  } else if (ans.urgency === 'soon') {
+    steps.push('Scheduled with next available dentist this week');
+  } else {
+    steps.push('Added to new-patient nurture sequence');
+  }
+
+  // Most severe issue
+  let worstColor = null, worstName = null;
+  teeth.forEach(([, ids]) => {
+    ids.forEach(id => {
+      const info = rpDentalIssues[id];
+      if (!info) return;
+      if (!worstColor || info.sev > (rpDentalIssues[worstName] ? rpDentalIssues[worstName].sev : 0)) {
+        worstName = id;
+        worstColor = info.color;
+      }
+    });
+  });
+  if (worstName) {
+    const names = { pain:'pain relief', cavity:'cavity repair', crown:'crown placement', broken:'restorative work', missing:'implant consultation', sensitivity:'sensitivity treatment', whitening:'cosmetic whitening', cleaning:'hygiene cleaning' };
+    steps.push('Matched to specialist: <strong>' + (names[worstName] || worstName) + '</strong>');
+  }
+
+  // Value estimate
+  const est = teeth.reduce((sum, [, ids]) => {
+    return sum + ids.reduce((a, id) => {
+      const v = { pain:400, cavity:250, crown:1200, broken:850, missing:3000, sensitivity:150, whitening:450, cleaning:120 };
+      return a + (v[id] || 0);
+    }, 0);
+  }, 0);
+  if (est > 0) {
+    steps.push('Est. consult value: <span class="rp-dental__routing-value">$' + est.toLocaleString() + '</span>');
+  }
+
+  // Insurance verification
+  if (ans.insurance === 'yes') {
+    steps.push('Insurance verification: <span class="rp-dental__routing-value">auto-queued</span>');
+  } else if (ans.insurance === 'no') {
+    steps.push('Routed to financing options (no insurance)');
+  }
+
+  return steps;
+}
+
+/* ---------- Update rail "What you've shared" ---------- */
+function rpDentalUpdateRail() {
+  const list = document.getElementById('rpDentalSharedList');
+  if (!list) return;
+  const rows = rpDentalGetSummaryRows();
+  if (rows.length === 0) {
+    list.innerHTML = '';
+    return;
+  }
+  list.innerHTML = rows.map(r =>
+    '<div class="rp-cc__shared-row">' +
+      '<span class="rp-cc__shared-row-label">' + r.label + '</span>' +
+      '<span class="rp-cc__shared-row-value">' + r.value + '</span>' +
+    '</div>'
+  ).join('');
+}
+
+/* ---------- Update ad copy in rail based on dental issues ---------- */
+function rpDentalUpdateAdCopy() {
+  if (!rpAdIndustries || !rpAdIndustries.dental || rpAdState.current !== 'dental') return;
+
+  const teeth = Object.values(rpDentalState.teeth).flat();
+  if (teeth.length === 0) return;
+
+  // Determine most severe issue (for dominant copy)
+  let dominant = null, topSev = 0;
+  teeth.forEach(id => {
+    const info = rpDentalIssues[id];
+    if (info && info.sev > topSev) { topSev = info.sev; dominant = id; }
+  });
+
+  // Issue-specific ad copy overrides (tier 3 = most urgent)
+  const overrides = {
+    pain: {
+      headline: '🚨 Emergency pain relief',
+      body: 'Smith Dental opens early for emergencies. Call now — same-day appointments available.',
+      cta: 'Get Relief Now'
+    },
+    cavity: {
+      headline: 'Cavity? We\'ll fix it fast',
+      body: 'Smith Dental · gentle cavity treatment. Insurance accepted. Book your consult.',
+      cta: 'Book Treatment'
+    },
+    crown: {
+      headline: 'Crown placement — 1 visit',
+      body: 'Same-day crowns at Smith Dental. CEREC technology. No temporary needed.',
+      cta: 'Learn More'
+    },
+    broken: {
+      headline: 'Broken tooth? Don\'t wait',
+      body: 'Smith Dental restores chipped and broken teeth. Cosmetic + restorative experts.',
+      cta: 'Book Today'
+    },
+    missing: {
+      headline: 'Permanent implants — $99/mo',
+      body: 'Smith Dental · full implant consultation. Financing available. Get your smile back.',
+      cta: 'Free Consult'
+    },
+    sensitivity: {
+      headline: 'Stop tooth sensitivity for good',
+      body: 'Smith Dental · sensitivity treatments that actually work. Real results.',
+      cta: 'Learn Options'
+    },
+    whitening: {
+      headline: 'Pro whitening — $99 off',
+      body: 'Smith Dental · 8 shades whiter in one visit. Safe, fast, effective.',
+      cta: 'Claim $99 Off'
+    },
+    cleaning: {
+      headline: 'New patient special: $99 exam + cleaning',
+      body: 'Smith Dental · includes X-rays. Insurance welcome.',
+      cta: 'Book Now'
+    }
+  };
+
+  if (dominant && overrides[dominant]) {
+    // Override the dental tier 3 (most aggressive) copy and re-render
+    rpAdIndustries.dental.tiers[3] = overrides[dominant];
+    // Also push tier 2 to the same for intermediate scores
+    rpAdIndustries.dental.tiers[2] = overrides[dominant];
+    if (typeof rpAdRenderCopy === 'function') rpAdRenderCopy();
+  }
+}
+
+/* ---------- Init ---------- */
+function rpDentalInit() {
+  rpDentalRenderTeeth();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', rpDentalInit);
+} else {
+  rpDentalInit();
 }
 
 
